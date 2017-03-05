@@ -58,6 +58,11 @@
     <Compile Include="Dapper\IViewFactory.cs" />
     <Compile Include="Dapper\ViewFactory.cs" />
     <Compile Include="Extension\JsonExtensions.cs" />
+    <Compile Include="Logger\AppLog.cs" />
+    <Compile Include="Logger\DaoLog.cs" />
+    <Compile Include="Logger\ILog.cs" />
+    <Compile Include="Logger\Log.cs" />
+    <Compile Include="Logger\UserLog.cs" />
     <Compile Include="Utility\Assembly.cs" />
     <Compile Include="Model\Attribute.cs" />
     <Compile Include="Model\Condition.cs" />
@@ -75,11 +80,6 @@
     <Compile Include="Extension\AutoMapperHelper.cs" />
     <Compile Include="Extension\CollectionExtensions.cs" />
     <Compile Include="Extension\RepositoryExtensions.cs" />
-    <Compile Include="Logger\AppLog.cs" />
-    <Compile Include="Logger\DaoLog.cs" />
-    <Compile Include="Logger\ILog.cs" />
-    <Compile Include="Logger\Log.cs" />
-    <Compile Include="Logger\UserLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dapper\Repository.cs" />
     <Compile Include="Scheduler\ISchedule.cs" />

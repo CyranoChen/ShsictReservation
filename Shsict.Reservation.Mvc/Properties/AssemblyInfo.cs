@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
@@ -8,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("www.shsict.com")]
-[assembly: AssemblyProduct("")]
+[assembly: AssemblyProduct("Shsict.Reservation.Mvc")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("390c6ad4-120f-4b60-9213-dde5edc01a16")]
+[assembly: Guid("da7f3412-db4d-48e0-8350-b51e3bbf8525")]
 
 // Version information for an assembly consists of the following four values:
 //
