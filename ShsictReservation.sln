@@ -7,6 +7,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shsict.Core", "Shsict.Core\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shsict.Reservation.Mvc", "Shsict.Reservation.Mvc\Shsict.Reservation.Mvc.csproj", "{DC8BD79F-B65A-4E12-9805-636342E35768}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Shsict.Prototype", "Shsict.Prototype\", "{8F614196-8A6E-483D-B376-A93561E097A2}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_51883"
+		Debug.AspNetCompiler.PhysicalPath = "Shsict.Prototype\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51883\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_51883"
+		Release.AspNetCompiler.PhysicalPath = "Shsict.Prototype\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51883\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "51883"
+		SlnRelativePath = "Shsict.Prototype\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +43,10 @@ Global
 		{DC8BD79F-B65A-4E12-9805-636342E35768}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC8BD79F-B65A-4E12-9805-636342E35768}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC8BD79F-B65A-4E12-9805-636342E35768}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F614196-8A6E-483D-B376-A93561E097A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F614196-8A6E-483D-B376-A93561E097A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F614196-8A6E-483D-B376-A93561E097A2}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F614196-8A6E-483D-B376-A93561E097A2}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
