@@ -189,10 +189,6 @@ namespace Shsict.Core
 
     public enum ConfigSystem
     {
-        AcnClub,
-        AcnCasino,
-        // ReSharper disable once InconsistentNaming
-        iArsenal,
-        Arsenal
+        Reservation
     }
 }

@@ -1,0 +1,52 @@
+﻿using System;
+using Shsict.Core;
+
+namespace Shsict.Reservation.Mvc.Entities
+{
+    [DbSchema("Shsict_User", Key = "UserGuid", Sort = "CreateDate DESC")]
+    public class User : Entity<Guid>
+    {
+        #region Members and Properties
+
+        [DbColumn("UserName")]
+        public string UserName { get; set; }
+
+        [DbColumn("Password")]
+        public string Password { get; set; }
+
+        [DbColumn("WeChatOpenID")]
+        public string WeChatOpenID { get; set; }
+
+        [DbColumn("WeChatNickName")]
+        public string WeChatNickName { get; set; }
+
+        [DbColumn("EmployeeNo")]
+        public string EmployeeNo { get; set; }
+
+        [DbColumn("Position")]
+        public string Position { get; set; }
+
+        [DbColumn("Email")]
+        public string Email { get; set; }
+
+        [DbColumn("Mobile")]
+        public string Mobile { get; set; }
+
+        [DbColumn("IsApproved")]
+        public bool IsApproved { get; set; }
+
+        [DbColumn("LastLoginDate")]
+        public DateTime LastLoginDate { get; set; }
+
+        [DbColumn("CreateDate")]
+        public DateTime CreateDate { get; set; }
+
+        [DbColumn("IsActive")]
+        public bool IsActive { get; set; }
+
+        [DbColumn("Remark")]
+        public string Remark { get; set; }
+
+        #endregion
+    }
+}
