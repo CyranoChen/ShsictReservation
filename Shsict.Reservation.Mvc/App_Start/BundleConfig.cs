@@ -4,7 +4,6 @@ namespace Shsict.Reservation.Mvc
 {
     public class BundleConfig
     {
-        // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
@@ -19,11 +18,17 @@ namespace Shsict.Reservation.Mvc
                 "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                "~/Scripts/bootstrap.js",
-                "~/Scripts/respond.js"));
+                "~/Scripts/bootstrap.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/adminlte").Include(
+                "~/Scripts/app.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                "~/Content/bootstrap.css",
+                "~/Content/bootstrap.min.css",
+                "~/Content/bootstrap-theme.min.css",
+                "~/Content/adminlte.min.css",
+                "~/Content/skins/_all-skins.min.css",
+                "~/Content/font-awesome.min.css",
                 "~/Content/site.css"));
         }
     }
