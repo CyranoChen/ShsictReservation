@@ -9,7 +9,7 @@ namespace Shsict.Reservation.Mvc.Services
 {
     public class WeChatApiClient : RestClient
     {
-        public WeChatApiClient()
+        protected WeChatApiClient()
         {
             ServiceUrl = ConfigGlobal.WeChatServiceUrl;
             AppKey = ConfigGlobal.WeChatAppKey;
@@ -22,12 +22,9 @@ namespace Shsict.Reservation.Mvc.Services
 
         #endregion
 
-        private void Init()
+        protected void Init()
         {
-            if (!ConfigGlobal.WeChatActive)
-            {
-                return;
-            }
+            if (!ConfigGlobal.WeChatActive) { return; }
 
             var context = HttpContext.Current;
 
@@ -40,10 +37,10 @@ namespace Shsict.Reservation.Mvc.Services
             {
                 // Get access token
                 // http请求方式: GET
-                // https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
-                // {"access_token":"ACCESS_TOKEN","expires_in":7200}
+                // https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=id&corpsecret=secrect
+                // {"access_toke{ "access_token": "accesstoken000001", "expires_in": 7200}
 
-                var uri = $"{ServiceUrl}token?grant_type=client_credential&appid={AppKey}&secret={CryptographicKey}";
+                var uri = $"{ServiceUrl}gettoken?corpid={AppKey}&corpsecret={CryptographicKey}";
 
                 var responseResult = ApiGet(uri);
 
@@ -62,30 +59,6 @@ namespace Shsict.Reservation.Mvc.Services
                             .ToString();
                 }
             }
-        }
-
-        public string BatchGetUserInfo(string openIds)
-        {
-            if (!ConfigGlobal.WeChatActive)
-            {
-                return null;
-            }
-
-            Init();
-
-            //http请求方式: POST
-            //https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=ACCESS_TOKEN
-
-            var uri = $"{ServiceUrl}user/info/batchget?access_token={AccessToken}";
-
-            var responseResult = ApiPost(uri, openIds);
-
-            if (string.IsNullOrEmpty(responseResult))
-            {
-                throw new Exception("WeChatApiClient.BatchGetUserInfo() responseResult is null");
-            }
-
-            return responseResult;
         }
 
         private object AddItemToCache(string key, object value, double expires)

@@ -116,7 +116,8 @@ namespace Shsict.Reservation.Mvc.Models
                         // 按scope，获取微信用户详情
                         if (scope.Equals(ScopeType.snsapi_userinfo))
                         {
-                            var result = new WeChatSnsClient().GetUserInfo(accessToken, openId);
+                            // TODO
+                            var result = new WeChatAuthClient().GetUserInfo(openId);
 
                             if (!string.IsNullOrEmpty(result))
                             {
