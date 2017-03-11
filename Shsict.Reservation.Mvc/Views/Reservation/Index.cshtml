@@ -1,0 +1,11 @@
+﻿@using Shsict.Core
+@using Shsict.Reservation.Mvc.Services
+
+@{
+    ViewBag.Title = "今日自助订餐";
+    var u = new AuthorizeManager().GetSession();
+}
+
+<h3>@HttpContext.Current.User.Identity.Name</h3>
+<p>@u.ToJson()</p>
+

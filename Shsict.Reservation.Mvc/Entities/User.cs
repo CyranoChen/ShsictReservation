@@ -14,14 +14,23 @@ namespace Shsict.Reservation.Mvc.Entities
         [DbColumn("Password")]
         public string Password { get; set; }
 
-        [DbColumn("WeChatOpenID")]
-        public string WeChatOpenID { get; set; }
+        [DbColumn("WeChatOpenId")]
+        public string WeChatOpenId { get; set; }
 
         [DbColumn("WeChatNickName")]
         public string WeChatNickName { get; set; }
 
+        [DbColumn("EmployeeName")]
+        public string EmployeeName { get; set; }
+
         [DbColumn("EmployeeNo")]
         public string EmployeeNo { get; set; }
+
+        [DbColumn("Department")]
+        public string Department { get; set; }
+
+        [DbColumn("Team")]
+        public string Team { get; set; }
 
         [DbColumn("Position")]
         public string Position { get; set; }

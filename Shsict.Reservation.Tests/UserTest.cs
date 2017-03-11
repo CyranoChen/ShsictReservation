@@ -3,6 +3,8 @@ using Shsict.Core;
 using Shsict.Reservation.Mvc.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shsict.Core.Utility;
+using Shsict.Reservation.Mvc.Models;
+using Shsict.Reservation.Mvc.Services;
 
 namespace Shsict.Reservation.Tests
 {
@@ -12,18 +14,21 @@ namespace Shsict.Reservation.Tests
         [TestMethod]
         public void Test_Insert_Update_Delete()
         {
-            var u = new User
+            var user = new User
             {
-                UserName = "陈继麟", 
-                Password = Encrypt.GetMd5Hash("shsict"), 
-                EmployeeNo = "2607", 
-                Position = "产品总监", 
+                UserName = "cyrano",
+                Password = Encrypt.GetMd5Hash("shsict"),
+                EmployeeName = "陈继麟",
+                EmployeeNo = "2607",
+                Department = "智慧交通事业部",
+                Team = "民航与港口行业",
+                Position = "产品总监",
                 Email = "cyrano@arsenalcn.com",
                 Mobile = "13818059707",
                 IsApproved = true,
                 LastLoginDate = DateTime.Today,
                 CreateDate = DateTime.Now,
-                IsActive = true, 
+                IsActive = true,
                 Remark = "Test Data"
             };
 
@@ -31,7 +36,7 @@ namespace Shsict.Reservation.Tests
 
             object key;
 
-            repo.Insert(u, out key);
+            repo.Insert(user, out key);
 
             Assert.IsNotNull(key);
 
@@ -63,5 +68,47 @@ namespace Shsict.Reservation.Tests
 
             Assert.IsNull(repo.Single<User>(key));
         }
+
+        [TestMethod]
+        public void Test_AutoMapper_User_UserDto()
+        {
+            var user = new User
+            {
+                UserName = "cyrano",
+                Password = Encrypt.GetMd5Hash("shsict"),
+                EmployeeName = "陈继麟",
+                EmployeeNo = "2607",
+                Department = "智慧交通事业部",
+                Team = "民航与港口行业",
+                Position = "产品总监",
+                Email = "cyrano@arsenalcn.com",
+                Mobile = "13818059707",
+                IsApproved = true,
+                LastLoginDate = DateTime.Today,
+                CreateDate = DateTime.Now,
+                IsActive = true,
+                Remark = "Test Data"
+            };
+
+            var u = user.MapTo<User, UserDto>();
+
+            u.UserId = user.UserName;
+
+            Assert.IsNotNull(u.UserId);
+            Assert.IsNotNull(u.EmployeeName);
+        }
+
+        [TestMethod]
+        [Ignore]
+        public void Test_Register()
+        {
+            var userId = "cyrano";
+            var deviceId = "Write by unit test";
+
+            var auth = new AuthorizeManager();
+
+            Assert.IsTrue(auth.AuthorizeUser(userId, deviceId));
+        }
+
     }
 }

@@ -42,7 +42,6 @@ namespace Shsict.Reservation.Mvc.Entities
         public string Remark { get; set; }
 
         #endregion
-
     }
 
     public enum MenuTypeEnum
