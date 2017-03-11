@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
@@ -246,7 +247,7 @@ namespace Shsict.Core
             return list;
         }
 
-        public int Insert<T>(T instance, SqlTransaction trans = null) where T : class, IDao
+        public int Insert<T>(T instance, IDbTransaction trans = null) where T : class, IDao
         {
             var listCol = new List<string>();
             var listColPara = new List<string>();
@@ -293,7 +294,7 @@ namespace Shsict.Core
             return -1;
         }
 
-        public int Insert<T>(T instance, out object key, SqlTransaction trans = null) where T : class, IEntity
+        public int Insert<T>(T instance, out object key, IDbTransaction trans = null) where T : class, IEntity
         {
             var listCol = new List<string>();
             var listColPara = new List<string>();
@@ -349,7 +350,7 @@ namespace Shsict.Core
             return -1;
         }
 
-        public int Update<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
+        public int Update<T>(T instance, IDbTransaction trans = null) where T : class, IEntity
         {
             var listCol = new List<string>();
             var sqlPara = new DynamicParameters(new { });
@@ -381,7 +382,7 @@ namespace Shsict.Core
             return -1;
         }
 
-        public int Update<T>(T instance, Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao
+        public int Update<T>(T instance, Expression<Func<T, bool>> whereBy, IDbTransaction trans = null) where T : class, IDao
         {
             var listCol = new List<string>();
 
@@ -427,7 +428,7 @@ namespace Shsict.Core
             return -1;
         }
 
-        public int Save<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
+        public int Save<T>(T instance, IDbTransaction trans = null) where T : class, IEntity
         {
             var key = instance.GetType().GetProperty("ID").GetValue(instance, null);
 
@@ -441,7 +442,7 @@ namespace Shsict.Core
             }
         }
 
-        public int Save<T>(T instance, Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao
+        public int Save<T>(T instance, Expression<Func<T, bool>> whereBy, IDbTransaction trans = null) where T : class, IDao
         {
             if (Any(whereBy))
             {
@@ -453,7 +454,7 @@ namespace Shsict.Core
             }
         }
 
-        public int Delete<T>(object key, SqlTransaction trans = null) where T : class, IEntity
+        public int Delete<T>(object key, IDbTransaction trans = null) where T : class, IEntity
         {
             var attr = GetTableAttr<T>();
 
@@ -462,14 +463,14 @@ namespace Shsict.Core
             return Dapper.Execute(sql, new { key }, trans);
         }
 
-        public int Delete<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
+        public int Delete<T>(T instance, IDbTransaction trans = null) where T : class, IEntity
         {
             var key = instance.GetType().GetProperty("ID").GetValue(instance, null);
 
             return Delete<T>(key, trans);
         }
 
-        public int Delete<T>(Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao
+        public int Delete<T>(Expression<Func<T, bool>> whereBy, IDbTransaction trans = null) where T : class, IDao
         {
             var attr = GetTableAttr<T>();
 

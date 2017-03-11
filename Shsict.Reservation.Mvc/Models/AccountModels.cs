@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Web;
 using Newtonsoft.Json.Linq;
@@ -69,11 +68,8 @@ namespace Shsict.Reservation.Mvc.Models
         public static UserWeChat Authorize(Guid userGuid, string accessToken, double expiresIn, string refreshToken,
             string openId, ScopeType scope, bool anonymous = false)
         {
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
                     IRepository repo = new Repository();

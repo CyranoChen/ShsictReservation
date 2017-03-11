@@ -25,23 +25,16 @@ namespace Shsict.Reservation.Mvc.Services
 
             //https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=ACCESS_TOKEN&code=CODE
 
-            var uri = $"{ServiceUrl}user/getuserinfo?access_token={GetAccessToken()}&code={code}";
+            var uri = $"{ServiceUrl}user/getuserinfo?access_token={AccessToken}&code={code}";
 
             var responseResult = ApiGet(uri);
 
             if (string.IsNullOrEmpty(responseResult))
             {
-                throw new Exception("WeChatSnsClient.GetUserInfo() responseResult is null");
+                throw new Exception("WeChatAuthClient.GetUserInfo() responseResult is null");
             }
 
             return responseResult;
-        }
-
-        private string GetAccessToken()
-        {
-            Init();
-
-            return AccessToken;
         }
     }
 }

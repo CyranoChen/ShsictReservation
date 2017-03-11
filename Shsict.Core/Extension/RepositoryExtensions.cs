@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
@@ -19,7 +20,7 @@ namespace Shsict.Core
                     return new
                     {
                         sql,
-                        para = (object) dp.ParameterNames.ToDictionary(x => x, x => dp.Get<dynamic>(x))
+                        para = (object)dp.ParameterNames.ToDictionary(x => x, x => dp.Get<dynamic>(x))
                     }
                     .ToJson();
                 }
@@ -45,7 +46,7 @@ namespace Shsict.Core
         }
 
 
-        public static int Insert<T>(this IEnumerable<T> source, SqlTransaction trans = null) where T : class, IEntity
+        public static int Insert<T>(this IEnumerable<T> source, IDbTransaction trans = null) where T : class, IEntity
         {
             var list = source as IList<T> ?? source.ToList();
 
@@ -62,7 +63,7 @@ namespace Shsict.Core
             return list.Count;
         }
 
-        public static int Update<T>(this IEnumerable<T> source, SqlTransaction trans = null) where T : class, IEntity
+        public static int Update<T>(this IEnumerable<T> source, IDbTransaction trans = null) where T : class, IEntity
         {
             var list = source as IList<T> ?? source.ToList();
 
@@ -79,7 +80,7 @@ namespace Shsict.Core
             return list.Count;
         }
 
-        public static int Delete<T>(this IEnumerable<T> source, SqlTransaction trans = null) where T : class, IEntity
+        public static int Delete<T>(this IEnumerable<T> source, IDbTransaction trans = null) where T : class, IEntity
         {
             var list = source as IList<T> ?? source.ToList();
 

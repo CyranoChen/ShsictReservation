@@ -2,3 +2,18 @@
     ViewBag.Title = "Home Page";
 }
 
+
+@*//https://open.weixin.qq.com/connect/oauth2/authorize?appid=CORPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect*@
+
+<div>
+    <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxed1e5aacdfc38665&redirect_uri=http%3a%2f%2freservation.iarsenal.cn%2fAccount%2fDebug&response_type=code&scope=snsapi_base&state=ShsictReservation#wechat_redirect">调试WeChat认证接口（显示调试信息）</a>
+</div>
+<br />
+<div>
+    <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxed1e5aacdfc38665&redirect_uri=http%3a%2f%2freservation.iarsenal.cn%2fAccount%2fWeChatAuth&response_type=code&scope=snsapi_base&state=ShsictReservation#wechat_redirect">测试WeChat认证接口（直接调用微信地址）</a>
+</div>
+<br />
+<div>
+    <a href="@Url.Action("WeChatLogin", "Account")">跳转WeChat认证接口（仿真静默跳转效果）</a>
+</div>
+

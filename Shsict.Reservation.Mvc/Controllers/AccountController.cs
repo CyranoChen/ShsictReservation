@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 using Newtonsoft.Json.Linq;
 using Shsict.Reservation.Mvc.Entities;
 using Shsict.Core.Utility;
@@ -20,6 +21,38 @@ namespace Shsict.Reservation.Mvc.Controllers
             return View();
         }
 
+        // Get: Account
+
+        public ActionResult Debug(string code, string state)
+        {
+            var authClient = new WeChatAuthClient();
+
+            ViewBag.Code = code;
+            ViewBag.State = state;
+
+            ViewBag.Result = authClient.GetUserInfo(code);
+
+            if (!string.IsNullOrEmpty(ViewBag.Result))
+            {
+                JToken json = JToken.Parse(ViewBag.Result.ToString());
+
+                if (json["UserId"] != null && json["DeviceId"] != null)
+                {
+                    // 企业成员授权时返回 {"UserId":"cyrano","DeviceId":"3cc38f93c7d87eec0103c06feca4779f"}
+                    var userid = json["UserId"].Value<string>();
+                    var deviceId = json["DeviceId"].Value<string>();
+
+                    var userclient = new WeChatUserClient();
+
+                    ViewBag.User = userclient.GetUser(userid);
+                }
+            }
+
+            ViewBag.AccessToken = HttpContext?.Cache["AccessToken"].ToString();
+
+            return View();
+        }
+
         // 
         // GET: /Account/WeChatLogin
 
@@ -29,7 +62,7 @@ namespace Shsict.Reservation.Mvc.Controllers
             {
                 var client = new WeChatAuthClient();
 
-                var authUri = client.GetOAuthUrl($"http://{HttpContext.Request.Url.Host}/Account/WeChatAuth", ScopeType.snsapi_base, "ShsictReservation");
+                var authUri = client.GetOAuthUrl($"http://{HttpContext.Request.Url.Authority}/Account/WeChatAuth", ScopeType.snsapi_base, "ShsictReservation");
 
                 if (!string.IsNullOrEmpty(authUri))
                 {
@@ -45,7 +78,8 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         public ActionResult WeChatAuth(string code, string state)
         {
-            if (state.Equals("ShsictReservation"))
+            if (!string.IsNullOrEmpty(code) &&
+                !string.IsNullOrEmpty(state) && state.Equals("ShsictReservation"))
             {
                 // 获取微信授权access_token
                 var client = new WeChatAuthClient();
@@ -57,17 +91,18 @@ namespace Shsict.Reservation.Mvc.Controllers
 
                     if (json["UserId"] != null && json["DeviceId"] != null)
                     {
-                        // 企业成员授权时返回
+                        // 企业成员授权时返回 {"UserId":"cyrano","DeviceId":"3cc38f93c7d87eec0103c06feca4779f"}
                         var userid = json["UserId"].Value<string>();
-                        var deviceId = json["DeviceId"].Values<string>();
+                        var deviceId = json["DeviceId"].Value<string>();
 
                         // TODO Autherize
+
                     }
                     else if (json["OpenId"] != null && json["DeviceId"] != null)
                     {
-                        // 非企业成员授权时返回
+                        // 非企业成员授权时返回 
                         var openId = json["OpenId"].Value<string>();
-                        var deviceId = json["DeviceId"].Values<string>();
+                        var deviceId = json["DeviceId"].Value<string>();
 
                         // TODO Autherize
 
@@ -77,6 +112,11 @@ namespace Shsict.Reservation.Mvc.Controllers
                         // TODO Exception
                     }
                 }
+
+                ViewBag.Result = result;
+
+
+                return View();
             }
 
             return RedirectToAction("Index", "Home");
