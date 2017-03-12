@@ -103,6 +103,14 @@ namespace Shsict.Reservation.Mvc.Services
                 var u = user.MapTo<User, UserDto>();
                 u.UserId = user.UserName;
 
+                var userWeChat = _repo.Single<UserWeChat>(userGuid);
+
+                if (userWeChat != null)
+                {
+                    u.Avatar = userWeChat.Avatar;
+                    u.Gender = userWeChat.Gender;
+                }
+
                 // 设置授权Session
                 HttpContext.Current.Session["AuthorizedUser"] = u;
 

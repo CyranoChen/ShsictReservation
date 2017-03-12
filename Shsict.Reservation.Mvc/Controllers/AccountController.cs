@@ -24,6 +24,28 @@ namespace Shsict.Reservation.Mvc.Controllers
             return View();
         }
 
+        // POST: /Account/Login
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(string employeeNo, string password, string rememberMe)
+        {
+            // TODO DEBUG
+
+            return RedirectToAction("DebugRegister", "Account");
+        }
+
+        //
+        // GET: /Account/Logout
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            Session.Abandon();
+
+            return RedirectToAction("Index", "Home");
+        }
+
         // GET: Account/Detail
 
         public ActionResult Detail()

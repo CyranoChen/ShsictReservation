@@ -1,0 +1,64 @@
+﻿@using Shsict.Reservation.Mvc.Services
+@{
+    var auth = new AuthorizeManager();
+    var authorizedUser = auth.GetSession();
+}
+<div class="navbar-custom-menu">
+    <ul class="nav navbar-nav">
+        @if (Request.IsAuthenticated)
+        {
+            <!-- User Account: style can be found in dropdown.less -->
+            <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="@authorizedUser.Avatar" class="user-image" alt="User Image">
+                    <span class="hidden-xs">@authorizedUser.EmployeeName</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <!-- User image -->
+                    <li class="user-header">
+                        <img src="@authorizedUser.Avatar" class="img-circle" alt="User Image">
+
+                        <p>
+                            @authorizedUser.EmployeeName (@authorizedUser.EmployeeNo)
+                            <small>@authorizedUser.Department - @authorizedUser.Position</small>
+                        </p>
+                    </li>
+                    <!-- Menu Body -->
+                    <li class="user-body">
+                        <div class="row">
+                            <div class="col-xs-6 text-center">
+                                @if (@authorizedUser.Gender == 0)
+                                {
+                                    <a><i class="fa fa-female"></i> @User.Identity.Name</a>
+                                }
+                                else
+                                {
+                                    <a><i class="fa fa-male"></i> @User.Identity.Name</a>
+                                }
+                            </div>
+                            <div class="col-xs-6 text-center">
+                                <a><i class="fa fa-mobile"></i> @authorizedUser.Mobile</a>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                    </li>
+                    <!-- Menu Footer-->
+                    <li class="user-footer">
+                        <div class="pull-left">
+                            <a href="@Url.Action("Detail","Account")" class="btn btn-default btn-flat"><i class="fa fa-user-md"></i> 员工信息</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="@Url.Action("Logout", "Account")" class="btn btn-default btn-flat"><i class="fa fa-sign-out"></i> 退出</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        }
+        else
+        {
+            <li class="user user-menu">
+                <a href="@Url.Action("Login", "Account")" class="btn" role="button"><i class="fa fa-user-o"></i> 登录</a>
+            </li>
+        }
+    </ul>
+</div>

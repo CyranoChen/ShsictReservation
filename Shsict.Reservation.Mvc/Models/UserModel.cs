@@ -18,6 +18,10 @@ namespace Shsict.Reservation.Mvc.Models
 
         public string Mobile { get; set; }
 
+        public string Avatar { get; set; }
+
+        public short Gender { get; set; }
+
         #endregion
     }
 }
