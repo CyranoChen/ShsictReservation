@@ -23,7 +23,7 @@ namespace Shsict.Reservation.Mvc
             bundles.Add(new ScriptBundle("~/bundles/adminlte").Include(
                 "~/Scripts/app.min.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/content/css").Include(
                 "~/Content/bootstrap.min.css",
                 "~/Content/bootstrap-theme.min.css",
                 "~/Content/adminlte.min.css",
