@@ -26,7 +26,7 @@ namespace Shsict.Reservation.Mvc
             bundles.Add(new ScriptBundle("~/bundles/icheck").Include(
                 "~/Scripts/jquery.icheck.min.js"));
 
-            bundles.Add(new StyleBundle("~/content/css").Include(
+            bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.min.css",
                 "~/Content/bootstrap-theme.min.css",
                 "~/Content/adminlte.min.css",
@@ -34,7 +34,7 @@ namespace Shsict.Reservation.Mvc
                 "~/Content/font-awesome.min.css",
                 "~/Content/site.css"));
 
-            bundles.Add(new StyleBundle("~/content/css/icheck").Include("~/Content/iCheck/square/blue.css"));
+            bundles.Add(new StyleBundle("~/Content/iCheck/css").Include("~/Content/iCheck/all.css"));
         }
     }
 }

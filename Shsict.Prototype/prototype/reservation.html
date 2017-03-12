@@ -1,0 +1,261 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>盛东自助订餐系统 | 自助订餐</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="/default.html" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>SHSICT</b></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>盛东自助订餐系统</b></span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">导航栏</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="hidden-xs">系统管理员</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <p>
+                                        系统管理员
+                                        <small>13818059707</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat">详细信息</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="#" class="btn btn-default btn-flat">退出</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu">
+                    <li class="header">导航栏</li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-cutlery"></i> <span>订餐管理</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="#"><i class="fa fa-user"></i> 菜单管理</a></li>
+                            <li><a href="#"><i class="fa fa-map-marker"></i> 订餐查询</a></li>
+                        </ul>
+                    </li>
+                    <li class="active treeview">
+                        <a href="#">
+                            <i class="fa fa-cogs"></i> <span>系统管理</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active"><a href="/prototype/user.html"><i class="fa fa-user"></i> 用户管理</a></li>
+                            <li><a href="#"><i class="fa fa-map-marker"></i> 地点管理</a></li>
+                            <li><a href="#"><i class="fa fa-tasks"></i> 计划任务</a></li>
+                            <li><a href="#"><i class="fa fa-book"></i> 系统日志</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/documentation/index.html"><i class="fa fa-question-circle"></i> <span>系统帮助</span></a></li>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Widgets
+                    <small>Preview page</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li class="active">Widgets</li>
+                </ol>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <h2 class="page-header">Social Widgets</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Widget: user widget style 1 -->
+                        <div class="box box-widget widget-user-2">
+                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                            <div class="widget-user-header bg-yellow-gradient">
+                                <div class="widget-user-image">
+                                    <img class="img-circle" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                                </div>
+                                <!-- /.widget-user-image -->
+                                <h3 class="widget-user-username">午餐 <b>A</b> 套</h3>
+                                <h5 class="widget-user-desc">2017-03-12</h5>
+                            </div>
+                            <div class="box-footer no-padding">
+                                <ul class="nav nav-stacked">
+                                    <li><a href="#">大荤： <span class="pull-right badge bg-blue">31</span></a></li>
+                                    <li><a href="#">小荤： <span class="pull-right badge bg-aqua">5</span></a></li>
+                                    <li><a href="#">素一： <span class="pull-right badge bg-green">12</span></a></li>
+                                    <li><a href="#">素二： <span class="pull-right badge bg-red">842</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.widget-user -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-6">
+                        <!-- Widget: user widget style 1 -->
+                        <div class="box box-widget widget-user-2">
+                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                            <div class="widget-user-header bg-yellow-gradient">
+                                <div class="widget-user-image">
+                                    <img class="img-circle" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                                </div>
+                                <!-- /.widget-user-image -->
+                                <h3 class="widget-user-username">午餐 <b>B</b> 套</h3>
+                                <h5 class="widget-user-desc">Lead Developer</h5>
+                            </div>
+                            <div class="box-footer no-padding">
+                                <ul class="nav nav-stacked">
+                                    <li><a href="#">Projects <span class="pull-right badge bg-blue">31</span></a></li>
+                                    <li><a href="#">Tasks <span class="pull-right badge bg-aqua">5</span></a></li>
+                                    <li><a href="#">Completed Projects <span class="pull-right badge bg-green">12</span></a></li>
+                                    <li><a href="#">Followers <span class="pull-right badge bg-red">842</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.widget-user -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Widget: user widget style 1 -->
+                        <div class="box box-widget widget-user-2">
+                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                            <div class="widget-user-header bg-purple-gradient">
+                                <span style="font-size: 45px; float: right;"><i class="fa fa-check"></i></span>
+                                <div class="widget-user-image">
+                                    <img class="img-circle" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                                </div>
+                                <!-- /.widget-user-image -->
+                                <h3 class="widget-user-username">
+                                    晚餐 <b>A</b> 套
+                                </h3>
+                                <h5 class="widget-user-desc">Lead Developer</h5>
+                            </div>
+                            <div class="box-footer no-padding">
+                                <ul class="nav nav-stacked">
+                                    <li><a href="#">Projects <span class="pull-right badge bg-blue">31</span></a></li>
+                                    <li><a href="#">Tasks <span class="pull-right badge bg-aqua">5</span></a></li>
+                                    <li><a href="#">Completed Projects <span class="pull-right badge bg-green">12</span></a></li>
+                                    <li><a href="#">Followers <span class="pull-right badge bg-red">842</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.widget-user -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-6">
+                        <!-- Widget: user widget style 1 -->
+                        <div class="box box-widget widget-user-2">
+                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                            <div class="widget-user-header bg-purple-active">
+                                <div class="widget-user-image">
+                                    <img class="img-circle" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                                </div>
+                                <!-- /.widget-user-image -->
+                                <h3 class="widget-user-username">晚餐 <b>B</b> 套</h3>
+                                <h5 class="widget-user-desc">Lead Developer</h5>
+                            </div>
+                            <div class="box-footer no-padding">
+                                <ul class="nav nav-stacked">
+                                    <li><a href="#">Projects <span class="pull-right badge bg-blue">31</span></a></li>
+                                    <li><a href="#">Tasks <span class="pull-right badge bg-aqua">5</span></a></li>
+                                    <li><a href="#">Completed Projects <span class="pull-right badge bg-green">12</span></a></li>
+                                    <li><a href="#">Followers <span class="pull-right badge bg-red">842</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.widget-user -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong>Copyright &copy; 2017 <a href="http://www.shsict.com" target="_blank">上海盛东国际集装箱码头有限公司</a></strong>
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+    <!-- jQuery 2.2.3 -->
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="../plugins/fastclick/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../dist/js/app.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="../dist/js/demo.js"></script>
+</body>
+</html>

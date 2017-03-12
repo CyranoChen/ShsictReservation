@@ -1,11 +1,150 @@
-﻿@using Shsict.Core
-@using Shsict.Reservation.Mvc.Services
-
-@{
+﻿@{
+    Layout = "~/Views/Shared/_LayoutMobile.cshtml";
     ViewBag.Title = "今日自助订餐";
-    var u = new AuthorizeManager().GetSession();
 }
 
-<h3>@HttpContext.Current.User.Identity.Name</h3>
-<p>@u.ToJson()</p>
+@section Styles {
+    @Styles.Render("~/Content/iCheck/css")
+}
 
+@section Scripts {
+    @Scripts.Render("~/bundles/icheck")
+    <script type="text/javascript">
+        $(function () {
+            //Flat color scheme for iCheck
+            $('input[type="checkbox"].flat-green, input[type="radio"].flat-green').iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green'
+            });
+
+            $('input[type="checkbox"].flat-purple, input[type="radio"].flat-purple').iCheck({
+                checkboxClass: 'icheckbox_flat-purple',
+                radioClass: 'iradio_flat-purple'
+            });
+        });
+    </script>
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Widget: user widget style 1 -->
+                <div class="box box-widget widget-user-2">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="widget-user-header bg-green-gradient">
+                        <div class="widget-user-image">
+                            <img class="img-circle" src="/Content/images/img-lunch.jpg" alt="Lunch">
+                        </div>
+                        <!-- /.widget-user-image -->
+                        <h3 class="widget-user-username">
+                            2017-03-12 午餐
+                        </h3>
+                        <h5 class="widget-user-desc">预订时间 7:30~9:00</h5>
+                    </div>
+                    <div class="box-footer no-padding">
+                        <ul class="nav nav-stacked">
+                            <li class="active bg-gray-light">
+                                <a><input type="radio" name="radioLunch" class="flat-green" checked="checked"> A套</a>
+                            </li>
+                            <li><a><i class="fa fa-circle-o text-red"></i> 荤菜： 红烧大排、芙蓉鸡片</a></li>
+                            <li><a><i class="fa fa-circle-o text-green"></i> 素菜： 酸辣土豆丝、麻婆豆腐</a></li>
+                            <li class="bg-gray-light">
+                                <a><input type="radio" name="radioLunch" class="flat-green"> B套</a>
+                            </li>
+                            <li><a><i class="fa fa-circle-o text-red"></i> 荤菜： 红烧大排、芙蓉鸡片</a></li>
+                            <li><a><i class="fa fa-circle-o text-green"></i> 素菜： 酸辣土豆丝、麻婆豆腐</a></li>
+                            <li class="bg-gray-light">
+                                <a>
+                                    <!-- Minimal green style -->
+                                    <div class="form-group">
+                                        <label class="col-xs-4">
+                                            <input type="radio" name="rl" class="flat-green" checked> 米饭
+                                        </label>
+                                        <label class="col-xs-4">
+                                            <input type="radio" name="rl" class="flat-green"> 馒头
+                                        </label>
+                                        <label class="col-xs-4">
+                                            <input type="checkbox" class="flat-green"> 加饭
+                                        </label>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <select class="form-control no-border">
+                                    <option>-- 送餐点：桥吊--</option>
+                                    <option>Q801</option>
+                                    <option>Q802</option>
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="javascript:alert('Confirm')" class="btn btn-primary btn-block margin-bottom bg-green-gradient">提交预订</a>
+                <!-- /.widget-user -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-6">
+                <!-- Widget: user widget style 1 -->
+                <div class="box box-widget widget-user-2">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="widget-user-header bg-purple-gradient">
+                        <div class="widget-user-image">
+                            <img class="img-circle" src="/Content/images/img-supper.jpg" alt="Supper">
+                        </div>
+                        <!-- /.widget-user-image -->
+                        <h3 class="widget-user-username">
+                            2017-03-12 夜宵
+                        </h3>
+                        <h5 class="widget-user-desc">预订时间 18:30~20:00</h5>
+                    </div>
+                    <div class="box-footer no-padding">
+                        <ul class="nav nav-stacked">
+                            <li class="active bg-gray-light">
+                                <a><input type="radio" name="radioSupper" class="flat-purple" checked="checked"> A套</a>
+                            </li>
+                            <li><a><i class="fa fa-circle-o text-red"></i> 荤菜： 红烧大排、芙蓉鸡片</a></li>
+                            <li><a><i class="fa fa-circle-o text-green"></i> 素菜： 酸辣土豆丝、麻婆豆腐</a></li>
+                            <li class="bg-gray-light">
+                                <a><input type="radio" name="radioSupper" class="flat-purple"> B套</a>
+                            </li>
+                            <li><a><i class="fa fa-circle-o text-red"></i> 荤菜： 红烧大排、芙蓉鸡片</a></li>
+                            <li><a><i class="fa fa-circle-o text-green"></i> 素菜： 酸辣土豆丝、麻婆豆腐</a></li>
+                            <li class="bg-gray-light">
+                                <a>
+                                    <!-- Minimal purple style -->
+                                    <div class="form-group">
+                                        <label class="col-xs-4">
+                                            <input type="radio" name="rs" class="flat-purple" checked> 米饭
+                                        </label>
+                                        <label class="col-xs-4">
+                                            <input type="radio" name="rs" class="flat-purple"> 馒头
+                                        </label>
+                                        <label class="col-xs-4">
+                                            <input type="checkbox" class="flat-purple"> 加饭
+                                        </label>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <select class="form-control no-border">
+                                    <option>-- 送餐点：桥吊--</option>
+                                    <option>Q801</option>
+                                    <option>Q802</option>
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="javascript:alert('Confirm')" class="btn btn-primary btn-block margin-bottom bg-purple-gradient">提交预订</a>
+                <!-- /.widget-user -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
