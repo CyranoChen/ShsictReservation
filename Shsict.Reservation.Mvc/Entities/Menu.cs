@@ -46,6 +46,7 @@ namespace Shsict.Reservation.Mvc.Entities
 
     public enum MenuTypeEnum
     {
+        None = 0,
         Lunch = 1,
         Supper = 2
     }
