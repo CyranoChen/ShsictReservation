@@ -45,7 +45,7 @@
                     <!-- Menu Footer-->
                     <li class="user-footer">
                         <div class="pull-left">
-                            <a href="@Url.Action("Detail","Account")" class="btn btn-default btn-flat"><i class="fa fa-user-md"></i> 员工信息</a>
+                            <a href="@Url.Action("Index", "Account")" class="btn btn-default btn-flat"><i class="fa fa-user-md"></i> 员工信息</a>
                         </div>
                         <div class="pull-right">
                             <a href="@Url.Action("Logout", "Account")" class="btn btn-default btn-flat"><i class="fa fa-sign-out"></i> 退出</a>
@@ -57,7 +57,7 @@
         else
         {
             <li class="user user-menu">
-                <a href="@Url.Action("Login", "Account")" class="btn" role="button"><i class="fa fa-user-o"></i> 登录</a>
+                <a href="@Url.Action("Login", "Account", new { weChatRedirect = false })" class="btn" role="button"><i class="fa fa-user-o"></i> 登录</a>
             </li>
         }
     </ul>

@@ -11,7 +11,7 @@ namespace Shsict.Reservation.Mvc.Controllers
     public class AccountController : Controller
     {
         // GET: Account
-
+        [Authorize]
         public ActionResult Index()
         {
             return View();
@@ -19,8 +19,18 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         // GET: Account/Login
 
-        public ActionResult Login()
+        public ActionResult Login(bool weChatRedirect = true)
         {
+            if (weChatRedirect)
+            {
+                if (ConfigGlobal.WeChatActive && BrowserInfo.IsWeChatClient())
+                {
+                    // 自动跳转微信认证机制
+                    return RedirectToAction("WeChatLogin", "Account");
+                }
+            }
+
+            // 直接打开登录界面
             return View();
         }
 
@@ -43,14 +53,7 @@ namespace Shsict.Reservation.Mvc.Controllers
             FormsAuthentication.SignOut();
             Session.Abandon();
 
-            return RedirectToAction("Index", "Home");
-        }
-
-        // GET: Account/Detail
-
-        public ActionResult Detail()
-        {
-            return View();
+            return RedirectToAction("Login", "Account", new { weChatRedirect = false });
         }
 
         // 
@@ -72,7 +75,7 @@ namespace Shsict.Reservation.Mvc.Controllers
                 }
             }
 
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "Account", new { weChatRedirect = false });
         }
 
         // 
@@ -124,7 +127,7 @@ namespace Shsict.Reservation.Mvc.Controllers
                             FormsAuthentication.SetAuthCookie(openId, true);
 
                             // 授权成功跳转用户信息页（补充订餐必要信息）
-                            return RedirectToAction("Detail", "Account");
+                            return RedirectToAction("Index", "Account");
                         }
                     }
 
@@ -133,7 +136,7 @@ namespace Shsict.Reservation.Mvc.Controllers
             }
 
             // 授权失败跳转登录界面
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "Account", new { weChatRedirect = false });
         }
 
 
@@ -198,7 +201,7 @@ namespace Shsict.Reservation.Mvc.Controllers
             }
 
             // 授权失败跳转登录界面
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "Account", new { weChatRedirect = false });
         }
     }
 }

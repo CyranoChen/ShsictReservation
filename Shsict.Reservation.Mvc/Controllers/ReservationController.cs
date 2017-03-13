@@ -2,8 +2,10 @@
 
 namespace Shsict.Reservation.Mvc.Controllers
 {
+    [Authorize]
     public class ReservationController : Controller
     {
+
         // GET: Reservation
         public ActionResult Index()
         {
