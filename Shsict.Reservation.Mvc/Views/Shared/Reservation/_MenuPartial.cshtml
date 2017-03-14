@@ -1,12 +1,12 @@
 ﻿@model Shsict.Reservation.Mvc.Models.ReservationModels.IndexDto
 
-@if (Model.MenuA != null && Model.MenuB != null && Model.MenuDate == DateTime.Today)
+@using (Html.BeginForm("MenuOrder", "Reservation", FormMethod.Post, new { id = "formMenuOrder" }))
 {
     <div class="col-md-6">
         <!-- Widget: user widget style 1 -->
         <div class="box box-widget widget-user-2">
             <!-- Add the bg color to the header using any of the bg-* classes -->
-            <div class="widget-user-header bg-green-gradient">
+            <div class="widget-user-header bg-@Model.MenuStyle-gradient">
                 <div class="widget-user-image">
                     <img class="img-circle" src="/Content/images/img-lunch.jpg" alt="Lunch">
                 </div>
@@ -19,12 +19,18 @@
             <div class="box-footer no-padding">
                 <ul class="nav nav-stacked">
                     <li class="active bg-gray-light">
-                        <a><input type="radio" name="radioLunch" class="flat-green" checked="checked"> <b>@Model.MenuA.Flag</b></a>
+                        <a>
+                            <input type="radio" name="MenuID" id="menuA" value="@Model.MenuA.ID" class="flat-@Model.MenuStyle" checked="checked">
+                            <b>@Model.MenuA.Flag</b>
+                        </a>
                     </li>
                     <li><a><i class="fa fa-circle-o text-red"></i> 荤菜： @Model.MenuA.Meat @Model.MenuA.MeatSmall</a></li>
                     <li><a><i class="fa fa-circle-o text-green"></i> 素菜： @Model.MenuA.Vegetable1 @Model.MenuA.Vegetable2</a></li>
                     <li class="bg-gray-light">
-                        <a><input type="radio" name="radioLunch" class="flat-green"> <b>@Model.MenuB.Flag</b></a>
+                        <a>
+                            <input type="radio" name="MenuID" id="menuB" value="@Model.MenuB.ID" class="flat-@Model.MenuStyle">
+                            <b>@Model.MenuB.Flag</b>
+                        </a>
                     </li>
                     <li><a><i class="fa fa-circle-o text-red"></i> 荤菜： @Model.MenuB.Meat @Model.MenuB.MeatSmall</a></li>
                     <li><a><i class="fa fa-circle-o text-green"></i> 素菜： @Model.MenuB.Vegetable1 @Model.MenuB.Vegetable2</a></li>
@@ -33,33 +39,37 @@
                             <!-- Minimal green style -->
                             <div class="form-group">
                                 <label class="col-xs-4">
-                                    <input type="radio" name="rl" class="flat-green" checked> 米饭
+                                    <input type="radio" name="StapleFood" id="rice" value="Rice" class="flat-@Model.MenuStyle" checked="checked"> 米饭
                                 </label>
                                 <label class="col-xs-4">
-                                    <input type="radio" name="rl" class="flat-green"> 馒头
+                                    <input type="radio" name="StapleFood" id="bun" value="Bun" class="flat-@Model.MenuStyle"> 馒头
                                 </label>
                                 <label class="col-xs-4">
-                                    <input type="checkbox" class="flat-green"> 加饭
+                                     <input type="checkbox" name="ExtraFood" id="ExtraFood" class="flat-@Model.MenuStyle"> 加饭
                                 </label>
                             </div>
                         </a>
                     </li>
                     <li>
-                        <select class="form-control no-border" style="width: 49%; display: inline">
+                        <select name="DeliveryZone" id="DeliveryZone" class="form-control no-border" style="width: 49%; display: inline">
                             <option>-- 送餐区域 --</option>
-                            <option>道口</option>
-                            <option>桥吊</option>
+                            <option value="@Guid.NewGuid()">道口</option>
+                            <option value="@Guid.NewGuid()">桥吊</option>
                         </select>
-                        <select class="form-control no-border" style="width: 49%; display: inline">
+                        <select name="DeliveryPoint" id="DeliveryPoint" class="form-control no-border" style="width: 49%; display: inline">
                             <option>-- 送餐点 --</option>
-                            <option>Q801</option>
-                            <option>Q802</option>
+                            <option value="@Guid.NewGuid()">Q801</option>
+                            <option value="@Guid.NewGuid()">Q802</option>
                         </select>
                     </li>
                 </ul>
             </div>
         </div>
-        <a href="javascript:alert('Confirm')" class="btn btn-primary btn-block margin-bottom bg-green-gradient">提交预订</a>
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+
+        <input type="button" id="btnMenuOrder" value="提交预订" class="btn btn-primary btn-block margin-bottom bg-@Model.MenuStyle-gradient" />
         <!-- /.widget-user -->
     </div>
     <!-- /.col -->

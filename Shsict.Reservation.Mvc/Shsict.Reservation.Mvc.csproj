@@ -130,6 +130,7 @@
     </Compile>
     <Compile Include="Models\MenuModel.cs" />
     <Compile Include="Models\ReservationModels.cs" />
+    <Compile Include="Models\TipModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuthorizeManager.cs" />
@@ -355,6 +356,8 @@
     <Content Include="Views\Shared\_LayoutMobile.cshtml" />
     <Content Include="Views\Shared\_AccountPartial.cshtml" />
     <Content Include="Views\Shared\Reservation\_MenuPartial.cshtml" />
+    <Content Include="Views\Shared\TipPartial.cshtml" />
+    <Content Include="Views\Reservation\History.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

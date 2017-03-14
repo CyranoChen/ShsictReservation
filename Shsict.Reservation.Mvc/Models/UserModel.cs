@@ -6,6 +6,8 @@ namespace Shsict.Reservation.Mvc.Models
     {
         #region Members and Properties
 
+        public Guid ID { get; set; }
+
         public string UserId { get; set; }
 
         public string EmployeeName { get; set; }

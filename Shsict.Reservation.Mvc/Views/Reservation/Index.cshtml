@@ -1,4 +1,5 @@
-﻿@model Shsict.Reservation.Mvc.Models.ReservationModels.IndexDto
+﻿@using Shsict.Reservation.Mvc.Models
+@model Shsict.Reservation.Mvc.Models.ReservationModels.IndexDto
 
 @{
     Layout = "~/Views/Shared/_LayoutMobile.cshtml";
@@ -11,17 +12,19 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/icheck")
+    @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
         $(function () {
             //Flat color scheme for iCheck
-            $('input[type="checkbox"].flat-green, input[type="radio"].flat-green').iCheck({
-                checkboxClass: 'icheckbox_flat-green',
-                radioClass: 'iradio_flat-green'
+            $('input[type="checkbox"].flat-@Model.MenuStyle, input[type="radio"].flat-@Model.MenuStyle').iCheck({
+                checkboxClass: 'icheckbox_flat-@Model.MenuStyle',
+                radioClass: 'iradio_flat-@Model.MenuStyle'
             });
 
-            $('input[type="checkbox"].flat-purple, input[type="radio"].flat-purple').iCheck({
-                checkboxClass: 'icheckbox_flat-purple',
-                radioClass: 'iradio_flat-purple'
+            $("#btnMenuOrder").click(function () {
+                if ($("#formMenuOrder").valid()) {
+                    document.forms["formMenuOrder"].submit();
+                }
             });
         });
     </script>
@@ -31,36 +34,39 @@
 <div class="content-wrapper">
     <!-- Main content -->
     <section class="content">
-        @if (Model.MenuA != null && Model.MenuB != null && Model.MenuDate == DateTime.Today)
-            {
+        @if (Model.MenuA != null && Model.MenuB != null && Model.MenuDate == DateTime.Today && Model.IsReserveNow)
+        {
+            @*在订餐时间，可以预订*@
             <div class="row">
                 @Html.Partial("Reservation/_MenuPartial", Model)
             </div>
             <!-- /.row -->
         }
+        else if (Model.MenuA != null && Model.MenuB != null && !Model.IsReserveNow)
+        {
+            var tip = new TipDto
+            {
+                Title = "当前时间 " + DateTime.Now.ToString("yyyy-MM-dd hh:mm"),
+                Message = @" 您已经预订了此时段套餐。",
+                HyperLinkText = "<i class=\"fa fa-eye\"></i> 查看订餐记录",
+                HyperLinkHref = Url.Action("History", "Reservation")
+            };
+
+            @*在订餐时间，不可以预订（已经订过）*@
+            @Html.Partial("TipPartial", tip)
+        }
         else
         {
-            <!-- Default box -->
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-info-circle"></i> 当前时间 @DateTime.Now.ToString("yyyy-MM-dd hh:mm")</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="box-body">
-                    <p>午餐预订时间 07:30~09:00</p>
-                    <p>夜宵预订时间 18:30~20:00</p>
-                </div>
-                <!-- /.box-body -->
-                <div class="box-footer">
-                    <a href="#" class="btn btn-primary"><i class="fa fa-eye"></i> 查看订餐记录</a>
-                </div>
-                <!-- /.box-footer-->
-            </div>
-            <!-- /.box -->
+            var tip = new TipDto
+            {
+                Title = "当前时间 " + DateTime.Now.ToString("yyyy-MM-dd hh:mm"),
+                Message = @"<p>午餐预订时间 07:30~09:00</p><p>夜宵预订时间 18:30~20:00</p>",
+                HyperLinkText = Html.Encode("<i class=\"fa fa-eye\"></i> 查看订餐记录"),
+                HyperLinkHref = Url.Action("History", "Reservation")
+            };
+
+            @*不在订餐时间，或没有菜单*@
+            @Html.Partial("TipPartial", tip)
         }
     </section>
     <!-- /.content -->

@@ -26,6 +26,9 @@ namespace Shsict.Reservation.Mvc.Entities
         [DbColumn("StapleFood")]
         public StapleFoodEnum StapleFood { get; set; }
 
+        [DbColumn("ExtraFood")]
+        public bool ExtraFood { get; set; }
+
         [DbColumn("CreateTime")]
         public DateTime CreateTime { get; set; }
 

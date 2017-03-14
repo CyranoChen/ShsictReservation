@@ -8,6 +8,8 @@ namespace Shsict.Reservation.Mvc.Models
     {
         #region Members and Properties
 
+        public int ID { get; set; }
+
         public DateTime MenuDate { get; set; }
 
         public string Duration { get; set; }
