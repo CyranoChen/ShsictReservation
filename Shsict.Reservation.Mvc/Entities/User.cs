@@ -8,6 +8,22 @@ namespace Shsict.Reservation.Mvc.Entities
     {
         #region Members and Properties
 
+        public override Guid ID
+        {
+            get
+            {
+                if (UserGuid.Equals(Guid.Empty))
+                {
+                    UserGuid = Guid.NewGuid();
+                }
+
+                return UserGuid;
+            }
+            set { UserGuid = value; }
+        }
+
+        private Guid UserGuid { get; set; }
+
         [DbColumn("UserName")]
         public string UserName { get; set; }
 

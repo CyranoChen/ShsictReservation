@@ -47,6 +47,10 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -125,10 +129,13 @@
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserWeChat.cs" />
+    <Compile Include="Entities\Viewer\OrderView.cs" />
+    <Compile Include="Entities\Viewer\OrderViewFactory.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\MenuModel.cs" />
+    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\ReservationModels.cs" />
     <Compile Include="Models\TipModel.cs" />
     <Compile Include="Models\UserModel.cs" />
@@ -356,8 +363,10 @@
     <Content Include="Views\Shared\_LayoutMobile.cshtml" />
     <Content Include="Views\Shared\_AccountPartial.cshtml" />
     <Content Include="Views\Shared\Reservation\_MenuPartial.cshtml" />
-    <Content Include="Views\Shared\TipPartial.cshtml" />
+    <Content Include="Views\Shared\_TipPartial.cshtml" />
     <Content Include="Views\Reservation\History.cshtml" />
+    <Content Include="Views\Shared\Reservation\_MyOrderPartial.cshtml" />
+    <Content Include="Views\Reservation\Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

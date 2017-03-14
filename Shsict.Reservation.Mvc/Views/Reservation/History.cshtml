@@ -1,26 +1,74 @@
-﻿@{
+﻿@model Shsict.Reservation.Mvc.Models.ReservationModels.HistoryDto
+
+@{
     Layout = "~/Views/Shared/_LayoutMobile.cshtml";
     ViewBag.Title = "订餐历史记录";
 }
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            Dashboard
-            <small>Control panel</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Dashboard</li>
-        </ol>
-    </section>
     <!-- Main content -->
     <section class="content">
-        <h2>建设中</h2>
+        <div class="row col-md-12">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#today" data-toggle="tab">今日订餐</a></li>
+                    <li><a href="#history" data-toggle="tab">历史记录</a></li>
+                </ul>
+                <div class="tab-content">
+                    <!-- /.tab-pane -->
+                    <div class="active tab-pane" id="today">
+                        <!-- The timeline -->
+                        <ul class="timeline timeline-inverse">
+                            <!-- timeline time label -->
+                            <li class="time-label">
+                                <span class="bg-red">
+                                    @Model.MenuDate.ToString("yyyy-MM-dd")
+                                </span>
+                            </li>
+                            <!-- /.timeline-label -->
+
+                            @if (Model.MyOrderLunch != null)
+                            {
+                                @Html.Partial("Reservation/_MyOrderPartial", Model.MyOrderLunch)
+                            }
+
+                            @if (Model.MyOrderSupper != null)
+                            {
+                                @Html.Partial("Reservation/_MyOrderPartial", Model.MyOrderSupper)
+                            }
+
+                            @if (Model.MyOrderLunch == null && Model.MyOrderSupper == null)
+                            {
+                                <li>
+                                    <h3 class="timeline-header">
+                                        <b>您今天没有订餐记录</b>
+                                    </h3>
+                                    <div class="timeline-footer">
+                                        <a href="@Url.Action("Index", "Reservation")" class="btn btn-primary btn-xs">
+                                            <i class="fa fa-cutlery"></i> 开始预订
+                                        </a>
+                                    </div>
+                                </li>
+                            }
+                            <li>
+                                <i class="fa fa-clock-o bg-gray"></i>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.tab-pane -->
+
+                    <div class="tab-pane" id="history">
+                        @* TODO *@
+                    </div>
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+            </div>
+            <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.row -->
     </section>
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-

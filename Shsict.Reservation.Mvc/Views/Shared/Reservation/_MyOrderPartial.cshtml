@@ -1,0 +1,45 @@
+﻿@using Shsict.Reservation.Mvc.Entities
+@model Shsict.Reservation.Mvc.Models.OrderDto
+<!-- timeline item -->
+<li>
+
+    @if (Model.MenuType.Equals(MenuTypeEnum.Lunch))
+    {
+        <i class="fa fa-sun-o bg-green"></i>
+    }
+    else if (Model.MenuType.Equals(MenuTypeEnum.Supper))
+    {
+        <i class="fa fa-moon-o bg-purple"></i>
+    }
+
+    <div class="timeline-item">
+        <span class="time"><i class="fa fa-clock-o"></i> @Model.CreateTime.ToString("HH:mm") </span>
+        <h3 class="timeline-header">
+            <b>@Model.Flag</b>
+        </h3>
+        <div class="timeline-body">
+            <p>
+                <i class="fa fa-circle-o text-red"></i> 荤菜：@Model.Meat @Model.MeatSmall
+            </p>
+            <p>
+                <i class="fa fa-circle-o text-green"></i> 素菜：@Model.Vegetable1 @Model.Vegetable2
+            </p>
+            <p>
+                <i class="fa fa-circle-o text-blue"></i> 主食：@Model.StapleFood @if (Model.ExtraFood) { @Html.Raw("(加饭)") }
+            </p>
+            <p>
+                <i class="fa fa-circle-o text-blue"></i> 送餐：@Model.DeliveryZone - @Model.DeliveryPoint
+            </p>
+        </div>
+        @if (Model.CanCancelNow)
+        {
+            <div class="timeline-footer">
+                <a href="@Url.Action("Cancel", "Reservation", new {id = Model.ID})" 
+                   onclick="return confirm('取消今天的 @Model.Flag 预订吗？')" class="btn btn-danger btn-xs">
+                    <i class="fa fa-ban"></i> 取消预订
+                </a>
+            </div>
+        }
+    </div>
+</li>
+<!-- END timeline item -->

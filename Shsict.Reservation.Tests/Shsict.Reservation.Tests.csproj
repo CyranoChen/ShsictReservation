@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="JsonTest.cs" />
     <Compile Include="MenuTest.cs" />
+    <Compile Include="OrderViewTest.cs" />
     <Compile Include="UserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

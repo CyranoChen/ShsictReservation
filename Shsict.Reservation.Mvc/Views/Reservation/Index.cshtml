@@ -34,7 +34,7 @@
 <div class="content-wrapper">
     <!-- Main content -->
     <section class="content">
-        @if (Model.MenuA != null && Model.MenuB != null && Model.MenuDate == DateTime.Today && Model.IsReserveNow)
+        @if (Model.MenuA != null && Model.MenuB != null && Model.MenuDate == DateTime.Today && Model.CanReserveNow)
         {
             @*在订餐时间，可以预订*@
             <div class="row">
@@ -42,18 +42,18 @@
             </div>
             <!-- /.row -->
         }
-        else if (Model.MenuA != null && Model.MenuB != null && !Model.IsReserveNow)
+        else if (Model.MenuA != null && Model.MenuB != null && !Model.CanReserveNow)
         {
             var tip = new TipDto
             {
                 Title = "当前时间 " + DateTime.Now.ToString("yyyy-MM-dd hh:mm"),
-                Message = @" 您已经预订了此时段套餐。",
+                Message = @"您已经成功预订了此时段套餐。",
                 HyperLinkText = "<i class=\"fa fa-eye\"></i> 查看订餐记录",
                 HyperLinkHref = Url.Action("History", "Reservation")
             };
 
             @*在订餐时间，不可以预订（已经订过）*@
-            @Html.Partial("TipPartial", tip)
+            @Html.Partial("_TipPartial", tip)
         }
         else
         {
@@ -61,12 +61,12 @@
             {
                 Title = "当前时间 " + DateTime.Now.ToString("yyyy-MM-dd hh:mm"),
                 Message = @"<p>午餐预订时间 07:30~09:00</p><p>夜宵预订时间 18:30~20:00</p>",
-                HyperLinkText = Html.Encode("<i class=\"fa fa-eye\"></i> 查看订餐记录"),
+                HyperLinkText = "<i class=\"fa fa-eye\"></i> 查看订餐记录",
                 HyperLinkHref = Url.Action("History", "Reservation")
             };
 
             @*不在订餐时间，或没有菜单*@
-            @Html.Partial("TipPartial", tip)
+            @Html.Partial("_TipPartial", tip)
         }
     </section>
     <!-- /.content -->

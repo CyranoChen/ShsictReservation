@@ -1,5 +1,5 @@
-﻿
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Shsict.Core;
 
@@ -13,7 +13,7 @@ namespace Shsict.Reservation.Mvc.Models
 
             public string MenuStyle { get; set; }
 
-            public bool IsReserveNow { get; set; }
+            public bool CanReserveNow { get; set; }
 
             public MenuDto MenuA { get; set; }
 
@@ -41,6 +41,17 @@ namespace Shsict.Reservation.Mvc.Models
             [Required(ErrorMessage = "请选择{0}")]
             [Display(Name = "送餐点")]
             public Guid DeliveryPoint { get; set; }
+        }
+
+        public class HistoryDto
+        {
+            public DateTime MenuDate { get; set; }
+
+            public OrderDto MyOrderLunch { get; set; }
+
+            public OrderDto MyOrderSupper { get; set; }
+
+            public List<OrderDto> MyHistroyOrders { get; set; }
         }
     }
 }
