@@ -37,7 +37,7 @@ namespace Shsict.Reservation.Mvc.Controllers
             }
 
             // 可以订餐，无相关订餐历史记录
-            if (menuA != null && model.MenuB != null && CanReserveNow(new int[2] { menuA.ID, menuB.ID }))
+            if (menuA != null && menuB != null && CanReserveNow(new int[2] { menuA.ID, menuB.ID }))
             {
                 model.MenuDate = DateTime.Today;
 
@@ -67,7 +67,7 @@ namespace Shsict.Reservation.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult MenuOrder(ReservationModels.MenuOrderDto model)
         {
-            if (ModelState.IsValid && _authorizedUser != null)
+            if (ModelState.IsValid && _authorizedUser != null && CanReserveNow(new int[] { model.MenuID }))
             {
                 try
                 {

@@ -62,12 +62,6 @@ namespace Shsict.Reservation.Mvc.Entities
             }
         }
 
-        public static string SystemName => ConfigDictionary["SystemName"];
-
-        public static string SystemVersion => ConfigDictionary["SystemVersion"];
-
-        public static string SystemDisplayName => ConfigDictionary["SystemDisplayName"];
-
         public static bool SystemActive
         {
             get

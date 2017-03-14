@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Shsict.Core")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("http://www.shsict.com")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("www.shsict.com")]
-[assembly: AssemblyProduct("Shsict.Core")]
-[assembly: AssemblyCopyright("Copyright © 2017")]
+[assembly: AssemblyCompany("上海盛东国际集装箱码头有限公司")]
+[assembly: AssemblyProduct("ShsictReservation")]
+[assembly: AssemblyCopyright("© 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

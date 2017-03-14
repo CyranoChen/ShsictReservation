@@ -1,19 +1,25 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_LayoutMobile.cshtml";
+    ViewBag.Title = "我的员工信息";
 }
 
-
-@*//https://open.weixin.qq.com/connect/oauth2/authorize?appid=CORPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect*@
-
-<div>
-    <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxed1e5aacdfc38665&redirect_uri=http%3a%2f%2freservation.iarsenal.cn%2fAccount%2fDebug&response_type=code&scope=snsapi_base&state=ShsictReservation#wechat_redirect">调试WeChat认证接口</a>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Dashboard
+            <small>Control panel</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <h2>建设中</h2>
+    </section>
+    <!-- /.content -->
 </div>
-<br />
-<div>
-    <a href="@Url.Action("DebugRegister", "Account")">固定用户信息注册接口</a>
-</div>
-<br />
-<div>
-    <a href="@Url.Action("WeChatLogin", "Account")">跳转WeChat认证接口</a>
-</div>
-
+<!-- /.content-wrapper -->

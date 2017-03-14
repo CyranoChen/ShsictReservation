@@ -1,6 +1,12 @@
-﻿<footer class="main-footer">
+﻿@using Shsict.Reservation.Mvc.Entities
+<footer class="main-footer">
     <div class="pull-right hidden-xs">
-        <b>Version</b> 1.0.0
+        <b>Version</b> @ConfigGlobal.Assembly.FileVersion
     </div>
-    <strong> &copy; 2017 <a href="http://www.shsict.com" target="_blank">上海盛东国际集装箱码头有限公司</a></strong>
+    <strong>
+        @ConfigGlobal.Assembly.Copyright
+        <a href="@ConfigGlobal.Assembly.Description" target="_blank">
+            @ConfigGlobal.Assembly.Company
+        </a>
+    </strong>
 </footer>
