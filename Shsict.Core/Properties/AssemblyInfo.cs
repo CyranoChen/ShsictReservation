@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("http://www.shsict.com")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("上海盛东国际集装箱码头有限公司")]
-[assembly: AssemblyProduct("ShsictReservation")]
+[assembly: AssemblyProduct("盛东自助订餐系统")]
 [assembly: AssemblyCopyright("© 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
