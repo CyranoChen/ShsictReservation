@@ -88,7 +88,7 @@ namespace Shsict.Reservation.Mvc.Services
             return null;
         }
 
-        private bool SetSession(Guid userGuid)
+        public bool SetSession(Guid userGuid)
         {
             var user = _repo.Single<User>(userGuid);
 

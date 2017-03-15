@@ -1,20 +1,70 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using System.Web.Security;
+using System.Web.UI.WebControls;
 using Newtonsoft.Json.Linq;
 using Shsict.Core;
 using Shsict.Core.Utility;
 using Shsict.Reservation.Mvc.Entities;
+using Shsict.Reservation.Mvc.Models;
 using Shsict.Reservation.Mvc.Services;
 
 namespace Shsict.Reservation.Mvc.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IRepository _repo = new Repository();
+
         // GET: Account
         [Authorize]
         public ActionResult Index()
         {
-            return View();
+            var model = new AuthorizeManager().GetSession();
+
+            return View(model);
+        }
+
+
+        // POST: /Account
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(UserDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var user = _repo.Single<User>(model.ID);
+
+                    // 设置model中的UserID
+                    model.UserId = user.UserName;
+
+                    user.EmployeeName = model.EmployeeName;
+                    user.EmployeeNo = model.EmployeeNo;
+                    user.Department = model.Department;
+                    user.Position = model.Position;
+                    user.Mobile = model.Mobile;
+                    user.IsActive = true;
+
+                    // 更新用户信息
+                    _repo.Update(user);
+
+                    // 更新session中的授权用户
+                    var auth = new AuthorizeManager();
+
+                    if (auth.SetSession(user.ID))
+                    {
+                        ModelState.AddModelError("Success", "保存成功");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Warn", ex.Message);
+                }
+            }
+
+            return View(model);
         }
 
         // GET: Account/Login

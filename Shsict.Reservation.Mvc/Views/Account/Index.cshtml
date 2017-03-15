@@ -4,6 +4,19 @@
     ViewBag.Title = "我的员工信息";
 }
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("#btnAccount").click(function () {
+                if ($("#formAccount").valid()) {
+                    document.forms["formAccount"].submit();
+                }
+            });
+        });
+    </script>
+}
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Main content -->
@@ -16,50 +29,65 @@
                 </ul>
                 <div class="tab-content">
                     <div class="active tab-pane" id="account">
-                        <form class="form-horizontal">
+                        @using (Html.BeginForm("Index", "Account", FormMethod.Post, new { id = "formAccount", @class = "form-horizontal" }))
+                        {
                             <div class="form-group">
-                                <label for="inputName1" class="col-sm-2 control-label">Name</label>
+                                @Html.LabelFor(m => m.UserId, new { @class = "col-sm-2 control-label" })
 
                                 <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputName1" placeholder="Name">
+                                    @Html.TextBoxFor(m => m.UserId, new { @class = "form-control", @disabled = "disabled" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                                @Html.LabelFor(m => m.EmployeeName, new { @class = "col-sm-2 control-label" })
 
                                 <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                                    @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputName2" class="col-sm-2 control-label">Name</label>
+                                @Html.LabelFor(m => m.EmployeeNo, new { @class = "col-sm-2 control-label" })
 
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputName2" placeholder="Name">
+                                    @Html.TextBoxFor(m => m.EmployeeNo, new { @class = "form-control" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
+                                @Html.LabelFor(m => m.Department, new { @class = "col-sm-2 control-label" })
 
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
+                                    @Html.TextBoxFor(m => m.Department, new { @class = "form-control" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputSkills" class="col-sm-2 control-label">Skills</label>
+                                @Html.LabelFor(m => m.Position, new { @class = "col-sm-2 control-label" })
 
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
+                                    @Html.TextBoxFor(m => m.Position, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Mobile, new { @class = "col-sm-2 control-label" })
+
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @type = "tel" })
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" class="btn btn-primary">
+                                    @Html.HiddenFor(m => m.ID)
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary()
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-primary" id="btnAccount">
                                         <i class="fa fa-floppy-o"></i> 保存资料
                                     </button>
                                 </div>
                             </div>
-                        </form>
+                        }
                     </div>
                     <!-- /.tab-pane -->
 

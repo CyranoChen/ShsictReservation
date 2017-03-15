@@ -552,7 +552,6 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Debug.cshtml" />
     <Content Include="Views\Reservation\Index.cshtml" />
-    <Content Include="Views\Account\Detail.cshtml" />
     <Content Include="Views\Shared\_HeaderPartial.cshtml" />
     <Content Include="Views\Shared\_SideBarPartial.cshtml" />
     <Content Include="Views\Shared\_FooterPartial.cshtml" />
