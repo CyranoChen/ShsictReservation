@@ -41,13 +41,15 @@
                             @if (Model.MyOrderLunch == null && Model.MyOrderSupper == null)
                             {
                                 <li>
-                                    <h3 class="timeline-header">
-                                        <b>您今天没有订餐记录</b>
-                                    </h3>
-                                    <div class="timeline-footer">
-                                        <a href="@Url.Action("Index", "Reservation")" class="btn btn-primary btn-xs">
-                                            <i class="fa fa-cutlery"></i> 开始预订
-                                        </a>
+                                    <div class="timeline-item">
+                                        <h3 class="timeline-header">
+                                            <b>您今天没有订餐记录</b>
+                                        </h3>
+                                        <div class="timeline-footer">
+                                            <a href="@Url.Action("Index", "Reservation")" class="btn btn-primary btn-xs">
+                                                <i class="fa fa-cutlery"></i> 开始预订
+                                            </a>
+                                        </div>
                                     </div>
                                 </li>
                             }

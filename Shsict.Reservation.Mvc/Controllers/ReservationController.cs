@@ -220,8 +220,12 @@ namespace Shsict.Reservation.Mvc.Controllers
             if (menuType != MenuTypeEnum.None)
             {
                 // 判断是否今天当前订餐时间段里菜单，是可取消，不是则不可取消
-                return _repo.Any<Menu>(x => x.ID == id &&
-                    x.MenuDate == DateTime.Today && x.MenuType == menuType);
+                var todayMenus = _repo.Query<Menu>(x => x.MenuDate == DateTime.Today && x.MenuType == menuType);
+
+                if (todayMenus.Count > 0)
+                {
+                    return todayMenus.Exists(x => x.ID == id);
+                }
             }
 
             return false;
