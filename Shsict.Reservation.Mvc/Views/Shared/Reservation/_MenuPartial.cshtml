@@ -45,7 +45,7 @@
                                     <input type="radio" name="StapleFood" id="bun" value="Bun" class="flat-@Model.MenuStyle"> 馒头
                                 </label>
                                 <label class="col-xs-4">
-                                     <input type="checkbox" name="ExtraFood" id="ExtraFood" class="flat-@Model.MenuStyle"> 加饭
+                                    <input type="checkbox" name="ExtraFood" id="ExtraFood" class="flat-@Model.MenuStyle"> 加饭
                                 </label>
                             </div>
                         </a>
@@ -53,13 +53,24 @@
                     <li>
                         <select name="DeliveryZone" id="DeliveryZone" class="form-control no-border" style="width: 49%; display: inline">
                             <option>-- 送餐区域 --</option>
-                            <option value="@Guid.NewGuid()">道口</option>
-                            <option value="@Guid.NewGuid()">桥吊</option>
+                            @if (Model.DeliveryZones != null && Model.DeliveryZones.Count > 0)
+                            {
+                                foreach (var m in Model.DeliveryZones)
+                                {
+                                    <option value="@m.ID">@m.DeliveryName</option>
+                                }
+                            }
                         </select>
                         <select name="DeliveryPoint" id="DeliveryPoint" class="form-control no-border" style="width: 49%; display: inline">
                             <option>-- 送餐点 --</option>
-                            <option value="@Guid.NewGuid()">Q801</option>
-                            <option value="@Guid.NewGuid()">Q802</option>
+                            @* TODO *@
+                            @if (Model.DeliveryZones != null && Model.DeliveryZones.Count > 0)
+                            {
+                                foreach (var m in Model.DeliveryZones)
+                                {
+                                    <option value="@m.ID">@m.DeliveryName</option>
+                                }
+                            }
                         </select>
                     </li>
                 </ul>

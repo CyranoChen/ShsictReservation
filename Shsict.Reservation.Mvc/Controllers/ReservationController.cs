@@ -42,6 +42,7 @@ namespace Shsict.Reservation.Mvc.Controllers
             if (menuA != null && menuB != null && CanReserveNow(new int[2] { menuA.ID, menuB.ID }))
             {
                 model.MenuDate = DateTime.Today;
+                model.DeliveryZones = Delivery.Cache.DeliveryZoneList;
 
                 if (GetMenuLunchOrSupper().Equals(MenuTypeEnum.Lunch))
                 {
@@ -199,11 +200,12 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         private MenuTypeEnum GetMenuLunchOrSupper()
         {
-            if (DateTime.Now.Hour >= 7 && DateTime.Now.Hour < 9)
+            // TODO 
+            if (DateTime.Now.Hour >= 7 && DateTime.Now.Hour < 12)
             {
                 return MenuTypeEnum.Lunch;
             }
-            else if (DateTime.Now.Hour >= 18 && DateTime.Now.Hour < 20)
+            else if (DateTime.Now.Hour >= 13 && DateTime.Now.Hour < 20)
             {
                 return MenuTypeEnum.Supper;
             }

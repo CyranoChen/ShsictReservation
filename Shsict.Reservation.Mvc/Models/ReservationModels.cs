@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Shsict.Core;
+using Shsict.Reservation.Mvc.Entities;
 
 namespace Shsict.Reservation.Mvc.Models
 {
@@ -18,6 +19,8 @@ namespace Shsict.Reservation.Mvc.Models
             public MenuDto MenuA { get; set; }
 
             public MenuDto MenuB { get; set; }
+
+            public List<Delivery> DeliveryZones { get; set; }
         }
 
         public class MenuOrderDto

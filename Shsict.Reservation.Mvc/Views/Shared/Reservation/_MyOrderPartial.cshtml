@@ -28,7 +28,7 @@
                 <i class="fa fa-circle-o text-blue"></i> 主食：@Model.StapleFood @if (Model.ExtraFood) { @Html.Raw("(加饭)") }
             </p>
             <p>
-                <i class="fa fa-circle-o text-blue"></i> 送餐：@Model.DeliveryZone - @Model.DeliveryPoint
+                <i class="fa fa-circle-o text-blue"></i> 送餐：@Model.DeliveryZone -> @Model.DeliveryPoint
             </p>
         </div>
         @if (Model.CanCancelNow)

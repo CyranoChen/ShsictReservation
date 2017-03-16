@@ -12,7 +12,7 @@ namespace Shsict.Reservation.Mvc.Entities.Viewer
             Dapper = new DapperHelper();
 
             ViewerSql = @"SELECT o.ID AS OrderID, o.StapleFood, o.ExtraFood, o.CreateTime AS PlaceTime, o.CreateUser AS PlaceUser, 
-                                    u.UserGuid, u.UserName, u.EmployeeName, u.EmployeeNo, m.*, d.* 
+                                    u.UserGuid, u.UserName, u.EmployeeName, u.EmployeeNo, m.*, d.DeliveryGuid, d.DeliveryName, d.ParentID 
                                     FROM Reservation_Order AS o LEFT OUTER JOIN 
                                               Shsict_User AS u ON o.UserGuid = u.UserGuid LEFT OUTER JOIN 
                                               Reservation_Menu AS m ON o.MenuID = m.ID LEFT OUTER JOIN 

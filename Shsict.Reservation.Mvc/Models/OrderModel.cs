@@ -23,8 +23,9 @@ namespace Shsict.Reservation.Mvc.Models
                     MeatSmall = s.Menu.MeatSmall,
                     Vegetable1 = s.Menu.Vegetable1,
                     Vegetable2 = s.Menu.Vegetable2,
-                    DeliveryZone = s.Delivery?.PointName,
-                    DeliveryPoint = s.Delivery?.PointDetail,
+                    DeliveryZone = s.Delivery?.ParentID != null ?
+                        Delivery.Cache.GetParentZone(s.Delivery.ParentID.Value).DeliveryName : null,
+                    DeliveryPoint = s.Delivery?.DeliveryName,
                     ExtraFood = s.ExtraFood,
                     CreateTime = s.PlaceTime,
                     CreateUser = s.PlaceUser

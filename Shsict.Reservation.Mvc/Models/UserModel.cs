@@ -9,6 +9,7 @@ namespace Shsict.Reservation.Mvc.Models
 
         public Guid ID { get; set; }
 
+        [Display(Name = "ÓÃ»§Ãû")]
         public string UserId { get; set; }
 
         [Required(ErrorMessage = "ÇëÌîĞ´{0}")]
