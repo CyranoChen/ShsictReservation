@@ -27,6 +27,10 @@ namespace Shsict.Reservation.Mvc.Models
         [Display(Name = "部门")]
         public string Department { get; set; }
 
+        [StringLength(20, ErrorMessage = "请正确填写{0}")]
+        [Display(Name = "班组")]
+        public string Team { get; set; }
+
         [Required(ErrorMessage = "请填写{0}")]
         [StringLength(20, ErrorMessage = "请正确填写{0}")]
         [Display(Name = "岗位")]

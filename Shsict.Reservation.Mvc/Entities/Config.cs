@@ -113,6 +113,23 @@ namespace Shsict.Reservation.Mvc.Entities
 
         public static string WeChatServiceUrl => ConfigDictionary["WeChatServiceUrl"];
 
+        public static short[] MenuDuration
+        {
+            get
+            {
+                var strHours = ConfigDictionary["MenuDuration"];
+
+                if (!string.IsNullOrEmpty(strHours))
+                {
+                    return strHours.Split('|').Select(x => Convert.ToInt16(x)).ToArray();
+                }
+                else
+                {
+                    return new short[] { 7, 9, 18, 20 };
+                }
+            }
+        }
+
         #endregion
     }
 }

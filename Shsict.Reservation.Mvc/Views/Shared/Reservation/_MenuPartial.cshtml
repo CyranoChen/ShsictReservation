@@ -19,23 +19,23 @@
             <div class="box-footer no-padding">
                 <ul class="nav nav-stacked">
                     <li class="active bg-gray-light">
-                        <a>
+                        <a style="font-size: 18px">
                             <input type="radio" name="MenuID" id="menuA" value="@Model.MenuA.ID" class="flat-@Model.MenuStyle" checked="checked">
                             <b>@Model.MenuA.Flag</b>
                         </a>
                     </li>
-                    <li><a><i class="fa fa-circle-o text-red"></i> 荤菜： @Model.MenuA.Meat @Model.MenuA.MeatSmall</a></li>
-                    <li><a><i class="fa fa-circle-o text-green"></i> 素菜： @Model.MenuA.Vegetable1 @Model.MenuA.Vegetable2</a></li>
+                    <li><a style="font-size: 18px"><i class="fa fa-circle-o text-red"></i> 荤菜： @Model.MenuA.Meat @Model.MenuA.MeatSmall</a></li>
+                    <li><a style="font-size: 18px"><i class="fa fa-circle-o text-green"></i> 素菜： @Model.MenuA.Vegetable1 @Model.MenuA.Vegetable2</a></li>
                     <li class="bg-gray-light">
-                        <a>
+                        <a style="font-size: 18px">
                             <input type="radio" name="MenuID" id="menuB" value="@Model.MenuB.ID" class="flat-@Model.MenuStyle">
                             <b>@Model.MenuB.Flag</b>
                         </a>
                     </li>
-                    <li><a><i class="fa fa-circle-o text-red"></i> 荤菜： @Model.MenuB.Meat @Model.MenuB.MeatSmall</a></li>
-                    <li><a><i class="fa fa-circle-o text-green"></i> 素菜： @Model.MenuB.Vegetable1 @Model.MenuB.Vegetable2</a></li>
+                    <li><a style="font-size: 18px"><i class="fa fa-circle-o text-red"></i> 荤菜： @Model.MenuB.Meat @Model.MenuB.MeatSmall</a></li>
+                    <li><a style="font-size: 18px"><i class="fa fa-circle-o text-green"></i> 素菜： @Model.MenuB.Vegetable1 @Model.MenuB.Vegetable2</a></li>
                     <li class="bg-gray-light">
-                        <a>
+                        <a style="font-size: 18px">
                             <!-- Minimal green style -->
                             <div class="form-group">
                                 <label class="col-xs-4">
@@ -57,7 +57,9 @@
                             {
                                 foreach (var m in Model.DeliveryZones)
                                 {
-                                    <option value="@m.ID">@m.DeliveryName</option>
+                                    <option value="@m.ID" @(m.ID.Equals(Model.MyDefaultDeliveryZone.ID) ? "selected=\" selected\"" : string.Empty)>
+                                        @m.DeliveryName
+                                    </option>
                                 }
                             }
                         </select>

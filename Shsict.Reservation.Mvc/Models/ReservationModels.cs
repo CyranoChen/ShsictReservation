@@ -21,6 +21,8 @@ namespace Shsict.Reservation.Mvc.Models
             public MenuDto MenuB { get; set; }
 
             public List<Delivery> DeliveryZones { get; set; }
+
+            public Delivery MyDefaultDeliveryZone { get; set; }
         }
 
         public class MenuOrderDto

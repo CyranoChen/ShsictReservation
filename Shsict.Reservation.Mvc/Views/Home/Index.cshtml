@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "管理控制台";
 }
 
 <!-- Content Wrapper. Contains page content -->
@@ -7,31 +7,33 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Dashboard
-            <small>Control panel</small>
+            <b><i class="fa fa-dashboard"></i> 管理控制台</b>
+            <small>盛东自助订餐系统的后台管理</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Dashboard</li>
+            <li><a href="@Url.Action("Index","Home")"><i class="fa fa-dashboard"></i> 管理控制台</a></li>
+            <li class="active">首页</li>
         </ol>
     </section>
     <!-- Main content -->
     <section class="content">
-        <div>
-            <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxed1e5aacdfc38665&redirect_uri=http%3a%2f%2freservation.iarsenal.cn%2fAccount%2fDebug&response_type=code&scope=snsapi_base&state=ShsictReservation#wechat_redirect">调试WeChat认证接口</a>
-        </div>
-        <br />
-        <div>
-            <a href="@Url.Action("DebugRegister", "Account")">固定用户信息注册接口</a>
-        </div>
-        <br />
-        <div>
-            <a href="@Url.Action("WeChatLogin", "Account")">跳转WeChat认证接口</a>
-        </div>
-        <br />
+        <div class="Row">
+            <div>
+                <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxed1e5aacdfc38665&redirect_uri=http%3a%2f%2freservation.iarsenal.cn%2fAccount%2fDebug&response_type=code&scope=snsapi_base&state=ShsictReservation#wechat_redirect">调试WeChat认证接口</a>
+            </div>
+            <br />
+            <div>
+                <a href="@Url.Action("DebugRegister", "Account")">固定用户信息注册接口</a>
+            </div>
+            <br />
+            <div>
+                <a href="@Url.Action("WeChatLogin", "Account")">跳转WeChat认证接口</a>
+            </div>
+            <br />
 
-        <div>
-            <a href="@Url.Action("Index", "Reservation")">自助订餐测试界面</a>
+            <div>
+                <a href="@Url.Action("Index", "Reservation")">自助订餐测试界面</a>
+            </div>
         </div>
     </section>
     <!-- /.content -->

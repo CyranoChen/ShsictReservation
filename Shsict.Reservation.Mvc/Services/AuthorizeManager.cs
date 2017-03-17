@@ -132,6 +132,11 @@ namespace Shsict.Reservation.Mvc.Services
                     // user: { "errcode":0,"errmsg":"ok","userid":"cyrano","name":"陈继麟","department":[17],"position":"技术工程师","mobile":"13818059707",
                     // "gender":"1","avatar":"http:\/\/shp.qpic.cn\/bizmp\/sfQa6NT594TUfQ42suia698Kz8KNY8eNmeogXYCNQicsaicnCMy5I1mfQ\/","status":1,"extattr":{"attrs":[]}}
 
+                    // { "UserId":"xudanfu1015","DeviceId":"c90af29b945abf19b1a3cace63ac9d45"}
+                    // user: { "errcode":0,"errmsg":"ok","userid":"xudanfu1015","name":"徐旦复","department":[34],"position":"系统开发主任","mobile":"13482045112",
+                    // "gender":"1","avatar":"http:\/\/shp.qpic.cn\/bizmp\/sfQa6NT594Qm6CnIQicHUTLTDCib0QlmdrlfI3GIsLxknRhBYc7JFb2Q\/","status":1,
+                    // "extattr":{"attrs":[{"name":"班组","value":"信息技术组"},{"name":"出生年月","value":"198509"},{"name":"政治面貌","value":"中共党员"},{"name":"工号","value":"1015"},{"name":"座机","value":""},{"name":"英文名","value":"xudanfu"}]}}
+
                     #region 封装 User 实例
 
                     user.UserName = json["userid"] != null ? json["userid"].Value<string>() : string.Empty;

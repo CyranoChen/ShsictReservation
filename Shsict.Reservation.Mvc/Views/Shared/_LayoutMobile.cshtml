@@ -23,15 +23,15 @@
                 @Html.Partial("_AccountPartial")
             </nav>
         </header>
-        <aside class="main-sidebar">
+        <aside class="main-sidebar" style="padding-top: 50px">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
                     <li class="header">导航栏</li>
-                    <li><a href="@Url.Action("Index","Reservation")"><i class="fa fa fa-cutlery"></i> <span>今日自助订餐</span></a></li>
-                    <li><a href="@Url.Action("History","Reservation")"><i class="fa fa-book"></i> <span>订餐历史记录</span></a></li>
-                    <li><a href="@Url.Action("Index","Account")"><i class="fa fa-user"></i> <span>我的员工信息</span></a></li>
+                    <li><a href="@Url.Action("Index", "Reservation")"><i class="fa fa fa-cutlery"></i> <span>今日自助订餐</span></a></li>
+                    <li><a href="@Url.Action("History", "Reservation")"><i class="fa fa-book"></i> <span>订餐历史记录</span></a></li>
+                    <li><a href="@Url.Action("Index", "Account")"><i class="fa fa-user"></i> <span>我的员工信息</span></a></li>
                 </ul>
             </section>
             <!-- /.sidebar -->

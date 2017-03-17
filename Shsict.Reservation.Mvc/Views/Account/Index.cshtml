@@ -24,11 +24,11 @@
         <div class="row col-md-12">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#account" data-toggle="tab">资料修改</a></li>
-                    <li><a href="#password" data-toggle="tab">修改密码</a></li>
+                    <li ><a href="#account" data-toggle="tab">资料修改</a></li>
+                    <li class="active"><a href="#password" data-toggle="tab">修改密码</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div class="active tab-pane" id="account">
+                    <div class="tab-pane" id="account">
                         @using (Html.BeginForm("Index", "Account", FormMethod.Post, new { id = "formAccount", @class = "form-horizontal" }))
                         {
                             <div class="form-group">
@@ -91,7 +91,7 @@
                     </div>
                     <!-- /.tab-pane -->
 
-                    <div class="tab-pane" id="password">
+                    <div class="active tab-pane" id="password">
                         @* TODO*@
                     </div>
                     <!-- /.tab-pane -->

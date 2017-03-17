@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Shsict.Core;
 using Shsict.Reservation.Mvc.Entities;
+using Shsict.Reservation.Mvc.Entities.Relation;
 using Shsict.Reservation.Mvc.Entities.Viewer;
 using Shsict.Reservation.Mvc.Models;
 using Shsict.Reservation.Mvc.Services;
@@ -39,10 +40,22 @@ namespace Shsict.Reservation.Mvc.Controllers
             }
 
             // 可以订餐，无相关订餐历史记录
-            if (menuA != null && menuB != null && CanReserveNow(new int[2] { menuA.ID, menuB.ID }))
+            if (menuA != null && menuB != null && CanReserveNow(new[] { menuA.ID, menuB.ID }))
             {
                 model.MenuDate = DateTime.Today;
                 model.DeliveryZones = Delivery.Cache.DeliveryZoneList;
+
+                // 设置当前用户的默认送餐区域
+                if (_authorizedUser != null)
+                {
+                    var rela = _repo.Single<RelationTeamPositionDelivery>(x =>
+                        x.Team == _authorizedUser.Team || x.Position == _authorizedUser.Position);
+
+                    if (rela != null)
+                    {
+                        model.MyDefaultDeliveryZone = Delivery.Cache.Load(rela.DeliveryGuid);
+                    }
+                }
 
                 if (GetMenuLunchOrSupper().Equals(MenuTypeEnum.Lunch))
                 {
@@ -63,6 +76,16 @@ namespace Shsict.Reservation.Mvc.Controllers
             return View(model);
         }
 
+        // AJAX JsonResult
+        // GET: Reservation/GetDeliveryPointByZone?zid=911954b1-daf9-48a9-b9b7-f16afec50dde
+
+        public JsonResult GetDeliveryPointByZone(Guid zid)
+        {
+            // TODO
+
+            return Json(new { result = zid.ToString() });
+        }
+
 
         // POST: Reservation/MenuOrder
 
@@ -70,7 +93,7 @@ namespace Shsict.Reservation.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult MenuOrder(ReservationModels.MenuOrderDto model)
         {
-            if (ModelState.IsValid && _authorizedUser != null && CanReserveNow(new int[] { model.MenuID }))
+            if (ModelState.IsValid && _authorizedUser != null && CanReserveNow(new[] { model.MenuID }))
             {
                 try
                 {
@@ -162,17 +185,6 @@ namespace Shsict.Reservation.Mvc.Controllers
             return RedirectToAction("History", "Reservation");
         }
 
-
-        // GET: Reservation/Menu
-
-        public ActionResult Menu()
-        {
-            // TODO
-            var list = _repo.All<Menu>().FindAll(x => x.IsActive);
-
-            return View(list);
-        }
-
         private MenuDto MapperMenu(Menu menu)
         {
             if (menu != null)
@@ -182,12 +194,12 @@ namespace Shsict.Reservation.Mvc.Controllers
                 if (menu.MenuType == MenuTypeEnum.Lunch)
                 {
                     m.Name = "午餐";
-                    m.Duration = "7:30~9:00";
+                    m.Duration = "7:00~9:00";
                 }
                 else if (menu.MenuType == MenuTypeEnum.Supper)
                 {
                     m.Name = "夜宵";
-                    m.Duration = "18:30~20:00";
+                    m.Duration = "18:00~20:00";
                 }
 
                 m.Flag = $" {menu.MenuFlag} 套餐 ";
@@ -198,14 +210,15 @@ namespace Shsict.Reservation.Mvc.Controllers
             return null;
         }
 
-        private MenuTypeEnum GetMenuLunchOrSupper()
+        private MenuTypeEnum GetMenuLunchOrSupper(int deadlineOffset = 0)
         {
-            // TODO 
-            if (DateTime.Now.Hour >= 7 && DateTime.Now.Hour < 12)
+            if (DateTime.Now.Hour >= ConfigGlobal.MenuDuration[0]
+                && DateTime.Now.Hour < ConfigGlobal.MenuDuration[1] + deadlineOffset)
             {
                 return MenuTypeEnum.Lunch;
             }
-            else if (DateTime.Now.Hour >= 13 && DateTime.Now.Hour < 20)
+            else if (DateTime.Now.Hour >= ConfigGlobal.MenuDuration[2]
+                && DateTime.Now.Hour < ConfigGlobal.MenuDuration[3] + deadlineOffset)
             {
                 return MenuTypeEnum.Supper;
             }

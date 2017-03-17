@@ -121,9 +121,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ConsoleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
     <Compile Include="Entities\Config.cs" />
+    <Compile Include="Entities\Relation\RelationTeamPositionDelivery.cs" />
     <Compile Include="Entities\Delivery.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\Menu.cs" />
@@ -136,6 +138,7 @@
     </Compile>
     <Compile Include="Models\MenuModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\ConsoleModels.cs" />
     <Compile Include="Models\ReservationModels.cs" />
     <Compile Include="Models\TipModel.cs" />
     <Compile Include="Models\UserModel.cs" />
@@ -545,8 +548,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
@@ -561,7 +562,9 @@
     <Content Include="Views\Shared\_TipPartial.cshtml" />
     <Content Include="Views\Reservation\History.cshtml" />
     <Content Include="Views\Shared\Reservation\_MyOrderPartial.cshtml" />
-    <Content Include="Views\Reservation\Menu.cshtml" />
+    <Content Include="Views\Console\MenuManagement.cshtml" />
+    <Content Include="Views\Console\OrderManagement.cshtml" />
+    <Content Include="Views\Console\UserManagement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

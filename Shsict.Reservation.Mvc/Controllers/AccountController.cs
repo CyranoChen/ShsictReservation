@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Security;
-using System.Web.UI.WebControls;
 using Newtonsoft.Json.Linq;
 using Shsict.Core;
 using Shsict.Core.Utility;
