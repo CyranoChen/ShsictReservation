@@ -1,0 +1,135 @@
+﻿@model Shsict.Reservation.Mvc.Models.MenuDto
+@{
+    ViewBag.Title = "菜单维护";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/Scripts/datepicker/datepicker3.css">
+    @Styles.Render("~/Content/iCheck/css")
+}
+
+@section Scripts {
+    <script src="~/Scripts/datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
+    @Scripts.Render("~/bundles/icheck")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("#MenuDate").datepicker({
+                autoclose: true,
+                language: "zh-CN",
+                todayHighlight: true
+            });
+
+            //Flat color scheme for iCheck
+            $('input[type="radio"]').iCheck({
+                radioClass: 'iradio_flat-blue'
+            });
+
+            $("#btnMenu").click(function () {
+                if ($("#formMenu").valid()) {
+                    document.forms["formMenu"].submit();
+                }
+            });
+        });
+    </script>
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <b><i class="fa fa-calendar-minus-o"></i> 菜单管理</b>
+            <small>管理每天菜谱，分午餐和夜宵，必有A/B套</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="@Url.Action("Index","Home")"><i class="fa fa-dashboard"></i> 管理控制台</a></li>
+            <li><a href="#">订餐管理</a></li>
+            <li class="active">菜单管理</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row col-md-12">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Quick Example</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                @using (Html.BeginForm("Menu", "Console", FormMethod.Post, new { id = "formMenu", @class = "form-horizontal" }))
+                {
+                    <div class="box-body">
+                        <!-- Date -->
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.MenuDate, new { @class = "col-sm-2 control-label" })
+
+                            <div class="input-group date col-sm-5">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" value="@((Model.MenuDate ?? DateTime.Today).ToString("yyyy年MM月dd日"))"
+                                       class="form-control" id="MenuDate" name="MenuDate">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <!-- /.form group -->
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Name, new { @class = "col-sm-2 control-label" })
+                            <div class="col-sm-10">
+                                @Html.RadioButtonFor(m => m.Name, "Lunch") 午餐
+                                @Html.RadioButtonFor(m => m.Name, "Supper") 夜宵
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Flag, new { @class = "col-sm-2 control-label" })
+                            <div class="col-sm-10">
+                                @Html.RadioButtonFor(m => m.Flag, "A") A 套餐
+                                @Html.RadioButtonFor(m => m.Flag, "B") B 套餐
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("荤菜", new { @class = "col-sm-2 control-label" })
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(m => m.Meat, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Meat) })
+                            </div>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(m => m.MeatSmall, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.MeatSmall) })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("素菜", new { @class = "col-sm-2 control-label" })
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(m => m.Vegetable1, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Vegetable1) })
+                            </div>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(m => m.Vegetable2, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Vegetable2) })
+                            </div>
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10">
+                            @Html.HiddenFor(m => m.ID)
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary()
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            @*TODO*@
+                            <button type="submit" class="btn btn-primary hidden" id="btnMenu">
+                                <i class="fa fa-floppy-o"></i> 保存菜单
+                            </button>
+                            <a href="@Url.Action("UserManagement", "Console")" class="btn btn-default">返回列表</a>
+                        </div>
+                    </div>
+                }
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

@@ -119,7 +119,7 @@
                                             <td>@m.Vegetable2</td>
                                             <td>@m.CreateTime.ToString("yyyy-MM-dd HH:mm")</td>
                                             <td>@m.CreateUser</td>
-                                            <td><a href="#" class="btn btn-info btn-xs">修改</a></td>
+                                            <td><a href="@Url.Action("Menu", "Console", new { id = m.ID })" class="btn btn-info btn-xs">修改</a></td>
                                         </tr>
                                     }
                                 </tbody>

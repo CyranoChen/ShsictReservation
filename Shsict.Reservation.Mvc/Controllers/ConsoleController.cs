@@ -9,6 +9,7 @@ using Shsict.Reservation.Mvc.Models;
 
 namespace Shsict.Reservation.Mvc.Controllers
 {
+    [Authorize]
     public class ConsoleController : Controller
     {
         private readonly IRepository _repo = new Repository();
@@ -20,7 +21,7 @@ namespace Shsict.Reservation.Mvc.Controllers
         }
 
 
-        // GET: Console/Menu
+        // GET: Console/MenuManagement
 
         public ActionResult MenuManagement()
         {
@@ -31,7 +32,34 @@ namespace Shsict.Reservation.Mvc.Controllers
         }
 
 
-        // GET: Console/Order
+        // GET: Console/Menu
+
+        public ActionResult Menu(int id = 0)
+        {
+            var model = new MenuDto();
+
+            if (id > 0)
+            {
+                var menu = _repo.Single<Menu>(id);
+
+                if (menu != null)
+                {
+                    model = menu.MapTo<Menu, MenuDto>();
+
+                    model.Name = menu.MenuType.ToString();
+                    model.Flag = menu.MenuFlag;
+                }
+            }
+            else
+            {
+                model.ID = id;
+            }
+
+            return View(model);
+        }
+
+
+        // GET: Console/OrderManagement
 
         public ActionResult OrderManagement()
         {
@@ -49,9 +77,9 @@ namespace Shsict.Reservation.Mvc.Controllers
             {
                 var mapper = OrderDto.ConfigMapper().CreateMapper();
 
-                var result = mapper.Map<IEnumerable<OrderDto>>(query.AsEnumerable()).ToList();
+                var model = mapper.Map<IEnumerable<OrderDto>>(query.AsEnumerable()).ToList();
 
-                return View(result);
+                return View(model);
             }
 
             return View();
