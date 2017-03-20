@@ -100,15 +100,14 @@ namespace Shsict.Reservation.Tests
 
         [TestMethod]
         [Ignore]
-        public void Test_Register()
+        public void Test_SyncUserWithWeChat()
         {
-            var userId = "cyrano";
+            var userId = "xudanfu1015";
             var deviceId = "Write by unit test";
 
             var auth = new AuthorizeManager();
 
             Assert.IsTrue(auth.AuthorizeUser(userId, deviceId));
         }
-
     }
 }

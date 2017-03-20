@@ -24,5 +24,23 @@ namespace Shsict.Reservation.Mvc.Services
 
             return responseResult;
         }
+
+        public string GetDepartmentList(int departmentid)
+        {
+            if (!ConfigGlobal.WeChatActive) { return null; }
+            
+            //https://qyapi.weixin.qq.com/cgi-bin/department/list?access_token=ACCESS_TOKEN&id=ID
+
+            var uri = $"{ServiceUrl}department/list?access_token={AccessToken}&userid={departmentid}";
+
+            var responseResult = ApiGet(uri);
+
+            if (string.IsNullOrEmpty(responseResult))
+            {
+                throw new Exception("WeChatUserClient.GetDepartmentList() responseResult is null");
+            }
+
+            return responseResult;
+        }
     }
 }

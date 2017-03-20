@@ -145,7 +145,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuthorizeManager.cs" />
     <Compile Include="Services\WeChatApiClient.cs" />
-    <Compile Include="Services\WeChatApiServer.cs" />
     <Compile Include="Services\WeChatUserClient.cs" />
     <Compile Include="Services\WeChatAuthClient.cs" />
   </ItemGroup>

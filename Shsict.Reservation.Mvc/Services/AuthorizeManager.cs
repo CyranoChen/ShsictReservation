@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using Newtonsoft.Json.Linq;
 using Shsict.Core;
@@ -15,38 +16,20 @@ namespace Shsict.Reservation.Mvc.Services
         public bool AuthorizeUser(string userId, string deviceId)
         {
             var user = _repo.Single<User>(x => x.UserName == userId);
+            var userWeChat = _repo.Single<UserWeChat>(x => x.UserName == userId);
 
-            if (user != null)
+            // 数据库中存在对应的企业号成员 且 7天内已更新过微信用户信息
+            if (user != null && userWeChat?.LastAuthorizeDate >= DateTime.Today.AddDays(-7))
             {
-                // 数据库中存在对应的企业号成员
                 return SetSession(user.ID);
             }
 
             // 数据库中不存在对应的企业号成员，需要新增成员并持久化User, UserWeChat
-
-            // 调用Wechat接口，凭userid获取通讯录成员信息
-            var client = new WeChatUserClient();
-            var result = client.GetUser(userId);
-
-            if (!string.IsNullOrEmpty(result))
-            {
-                var json = JToken.Parse(result);
-
-                if (json["errcode"] != null && json["errmsg"] != null &&
-                    json["errcode"].Value<int>() == 0 && json["errmsg"].Value<string>() == "ok")
-                {
-                    // 注册企业成员信息
-                    user = Register(json, deviceId);
-
-                    if (user != null)
-                    {
-                        // 设置授权Session
-                        return SetSession(user.ID);
-                    }
-                }
-            }
-
-            return false;
+            // 如数据库中存在，则同步成员信息，并更新时间戳
+            user = SyncUserWithWeChat(userId, deviceId);
+            
+            // 设置授权Session
+            return user != null && SetSession(user.ID);
         }
 
 
@@ -123,15 +106,22 @@ namespace Shsict.Reservation.Mvc.Services
             return false;
         }
 
-        private User Register(JToken json, string deviceId)
+        private User SyncUserWithWeChat(string userId, string deviceId)
         {
-            var user = new User();
-            var userWeChat = new UserWeChat();
+            // 调用Wechat接口，凭userid获取通讯录成员信息
+            var client = new WeChatUserClient();
+            var result = client.GetUser(userId);
 
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            if (!string.IsNullOrEmpty(result))
             {
-                try
+                var json = JToken.Parse(result);
+
+                if (json["errcode"] != null && json["errmsg"] != null &&
+                    json["errcode"].Value<int>() == 0 && json["errmsg"].Value<string>() == "ok")
                 {
+                    var user = new User();
+                    var userWeChat = new UserWeChat();
+
                     // user: { "errcode":0,"errmsg":"ok","userid":"cyrano","name":"陈继麟","department":[17],"position":"技术工程师","mobile":"13818059707",
                     // "gender":"1","avatar":"http:\/\/shp.qpic.cn\/bizmp\/sfQa6NT594TUfQ42suia698Kz8KNY8eNmeogXYCNQicsaicnCMy5I1mfQ\/","status":1,"extattr":{"attrs":[]}}
 
@@ -140,53 +130,122 @@ namespace Shsict.Reservation.Mvc.Services
                     // "gender":"1","avatar":"http:\/\/shp.qpic.cn\/bizmp\/sfQa6NT594Qm6CnIQicHUTLTDCib0QlmdrlfI3GIsLxknRhBYc7JFb2Q\/","status":1,
                     // "extattr":{"attrs":[{"name":"班组","value":"信息技术组"},{"name":"出生年月","value":"198509"},{"name":"政治面貌","value":"中共党员"},{"name":"工号","value":"1015"},{"name":"座机","value":""},{"name":"英文名","value":"xudanfu"}]}}
 
-                    #region 封装 User 实例
+                    // 获得微信用户的扩展属性
+                    var extattr = json["extattr"].Value<JToken>();
+                    var attrs = extattr?["attrs"].Value<JArray>();
 
-                    user.UserName = json["userid"] != null ? json["userid"].Value<string>() : string.Empty;
-                    user.Password = Encrypt.GetMd5Hash("shsict");
-                    user.EmployeeName = json["name"] != null ? json["name"].Value<string>() : string.Empty;
-                    user.EmployeeNo = string.Empty; // TODO
-                    user.Department = string.Empty; // TODO
-                    user.Team = string.Empty; // TODO
-                    user.Position = json["position"] != null ? json["position"].Value<string>() : string.Empty;
-                    user.Email = string.Empty; // TODO
-                    user.Mobile = json["mobile"] != null ? json["mobile"].Value<string>() : string.Empty;
-                    user.IsApproved = json["status"]?.Value<bool>() ?? true;
-                    user.LastLoginDate = DateTime.Now;
-                    user.CreateDate = DateTime.Now;
-                    user.IsActive = true;
-                    user.Remark = json.ToString();
+                    var userdict = new Dictionary<string, string>();
 
-                    object key;
+                    if (attrs?.Count > 0)
+                    {
+                        foreach (var kvp in attrs)
+                        {
+                            userdict.Add(kvp["name"].Value<string>(), kvp["value"].Value<string>());
+                        }
+                    }
 
-                    _repo.Insert(user, out key, trans);
+                    // 通过userid，从数据库中获取对应用户
+                    if (json["userid"] != null && _repo.Any<User>(x => x.UserName == json["userid"].Value<string>()))
+                    {
+                        user = _repo.Single<User>(x => x.UserName == json["userid"].Value<string>());
+                    }
 
-                    #endregion
+                    using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+                    {
+                        try
+                        {
+                            #region 封装 User 实例
 
-                    #region 封装 UserWeChat 实例
+                            user.UserName = json["userid"] != null ? json["userid"].Value<string>() : string.Empty;
+                            user.Password = Encrypt.GetMd5Hash("shsict");
+                            user.EmployeeName = json["name"] != null ? json["name"].Value<string>() : string.Empty;
+                            user.EmployeeNo = userdict.ContainsKey("工号") && userdict["工号"] != null ? userdict["工号"] : string.Empty;
 
-                    userWeChat.ID = (Guid)key;
-                    userWeChat.UserName = json["userid"] != null ? json["userid"].Value<string>() : string.Empty;
-                    userWeChat.LastAuthorizeDate = DateTime.Now;
-                    userWeChat.Gender = json["gender"]?.Value<short>() ?? -1;
-                    userWeChat.Avatar = json["avatar"] != null ? json["avatar"].Value<string>() : string.Empty;
-                    userWeChat.DeviceId = deviceId;
+                            if (json["department"]?.Value<JArray>() != null && json["department"].Value<JArray>().Count > 0)
+                            {
+                                user.Department = GetDepartment(json["department"].Value<JArray>()[0].Value<int>());
+                            }
+                            else
+                            {
+                                user.Department = string.Empty;
+                            }
 
-                    _repo.Insert(userWeChat, out key, trans);
+                            user.Team = userdict.ContainsKey("班组") && userdict["班组"] != null ? userdict["班组"] : string.Empty;
+                            user.Position = json["position"] != null ? json["position"].Value<string>() : string.Empty;
+                            user.Email = string.Empty; // TODO
+                            user.Mobile = json["mobile"] != null ? json["mobile"].Value<string>() : string.Empty;
+                            user.IsApproved = json["status"]?.Value<bool>() ?? true;
+                            user.LastLoginDate = DateTime.Now;
+                            user.CreateDate = DateTime.Now;
+                            user.IsActive = true;
+                            user.Remark = json.ToString();
 
-                    #endregion
+                            object key;
 
-                    trans.Commit();
+                            _repo.Save(user, out key, trans);
 
-                    return user;
-                }
-                catch
-                {
-                    trans.Rollback();
+                            #endregion
 
-                    return null;
+                            #region 封装 UserWeChat 实例
+
+                            userWeChat.ID = (Guid)key;
+                            userWeChat.UserName = json["userid"] != null ? json["userid"].Value<string>() : string.Empty;
+                            userWeChat.LastAuthorizeDate = DateTime.Now;
+                            userWeChat.Gender = json["gender"]?.Value<short>() ?? -1;
+                            userWeChat.Avatar = json["avatar"] != null ? json["avatar"].Value<string>() : string.Empty;
+
+                            if (!string.IsNullOrEmpty(deviceId))
+                            { userWeChat.DeviceId = deviceId; }
+
+                            _repo.Save(userWeChat, out key, trans);
+
+                            #endregion
+
+                            trans.Commit();
+
+                            return user;
+                        }
+                        catch
+                        {
+                            trans.Rollback();
+                        }
+                    }
                 }
             }
+
+            return null;
+        }
+
+        private string GetDepartment(int id)
+        {
+            if (ConfigGlobal.WeChatActive && id > 0)
+            {
+                var client = new WeChatUserClient();
+
+                var result = client.GetDepartmentList(id);
+
+                // { "errcode": 0, "errmsg": "ok", "department": [ { "id": 2, "name": "广州研发中心", "parentid": 1, "order": 10 },
+                //{ "id": 3, "name": "邮箱产品部",  "parentid": 2, "order": 40 } ]}
+
+                if (!string.IsNullOrEmpty(result))
+                {
+                    var json = JToken.Parse(result);
+
+                    if (json["errcode"] != null && json["errmsg"] != null &&
+                        json["errcode"].Value<int>() == 0 && json["errmsg"].Value<string>() == "ok" &&
+                        json["department"] != null)
+                    {
+                        var departments = json["department"].Value<JArray>();
+
+                        if (departments != null && departments.Count > 0 && departments.Last["name"] != null)
+                        {
+                            return departments.Last["name"].Value<string>();
+                        }
+                    }
+                }
+            }
+
+            return string.Empty;
         }
     }
 }

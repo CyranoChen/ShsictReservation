@@ -89,7 +89,9 @@ namespace Shsict.Reservation.Mvc.Controllers
                     menu.MenuFlag = model.Flag;
 
                     // 更新菜单信息
-                    _repo.Save(menu);
+                    object key;
+
+                    _repo.Save(menu, out key);
 
                     ModelState.AddModelError("Success", "保存成功");
                 }
