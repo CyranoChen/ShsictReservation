@@ -27,7 +27,7 @@
                 }
             });
 
-            $.getJSON("@Url.Action("GetDeliveryPointByZone","Reservation")", { zid: "911954b1-daf9-48a9-b9b7-f16afec50dde" }, function (data, status) {
+            @*$.getJSON("@Url.Action("GetDeliveryPointByZone","Reservation")", { zid: "911954b1-daf9-48a9-b9b7-f16afec50dde" }, function (data, status) {
                 if (status === "success" && data != null) {
                     if (data.result !== "error" && JSON.stringify(data) !== "[]") {
                         alert(data);
@@ -35,7 +35,7 @@
                 } else {
                     alert("调用数据接口失败(GetDeliveryPointByZone)");
                 }
-            });
+            });*@
         });
     </script>
 }

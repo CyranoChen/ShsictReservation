@@ -57,7 +57,8 @@
                             {
                                 foreach (var m in Model.DeliveryZones)
                                 {
-                                    <option value="@m.ID" @(m.ID.Equals(Model.MyDefaultDeliveryZone.ID) ? "selected=\" selected\"" : string.Empty)>
+                                    <option value="@m.ID"
+                                            @(Model.MyDefaultDeliveryZone != null && m.ID.Equals(Model.MyDefaultDeliveryZone.ID) ? "selected=\" selected\"" : string.Empty)>
                                         @m.DeliveryName
                                     </option>
                                 }

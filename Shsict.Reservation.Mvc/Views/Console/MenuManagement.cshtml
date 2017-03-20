@@ -72,12 +72,13 @@
                                 <i class="fa fa-square-o"></i>
                             </button>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+                                <button type="button" class="btn btn-default btn-sm"
+                                        onclick="window.location.href = '@Url.Action("Menu", "Console")'">
+                                    <i class="fa fa-plus-circle"></i>
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
                             </div>
                             <!-- /.btn-group -->
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
 
                             <div class="box-tools pull-right">
                                 <div class="has-feedback">
@@ -109,7 +110,7 @@
                                     @foreach (var m in Model)
                                     {
                                         <tr>
-                                            <td>@m.ID <input type="checkbox"></td>
+                                            <td><input type="checkbox" value="@m.ID"> @m.ID</td>
                                             <td>@m.MenuDate.ToString("yyyy-MM-dd")</td>
                                             <td>@m.MenuType</td>
                                             <td>@m.MenuFlag</td>
@@ -119,7 +120,11 @@
                                             <td>@m.Vegetable2</td>
                                             <td>@m.CreateTime.ToString("yyyy-MM-dd HH:mm")</td>
                                             <td>@m.CreateUser</td>
-                                            <td><a href="@Url.Action("Menu", "Console", new { id = m.ID })" class="btn btn-info btn-xs">修改</a></td>
+                                            <td>
+                                                <a href="@Url.Action("Menu", "Console", new {id = m.ID})" c class="btn btn-info btn-xs">
+                                                    <i class="fa fa-pencil"></i> 修改
+                                                </a>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>

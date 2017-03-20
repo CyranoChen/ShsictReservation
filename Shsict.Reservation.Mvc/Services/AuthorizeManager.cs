@@ -107,6 +107,9 @@ namespace Shsict.Reservation.Mvc.Services
 
                 if (userWeChat != null)
                 {
+                    // TODO 需要测试
+                    // u = userWeChat.MapTo(u);
+
                     u.Avatar = userWeChat.Avatar;
                     u.Gender = userWeChat.Gender;
                 }

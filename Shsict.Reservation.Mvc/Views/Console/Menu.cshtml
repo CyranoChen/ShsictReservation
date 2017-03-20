@@ -31,6 +31,14 @@
                     document.forms["formMenu"].submit();
                 }
             });
+
+            $("#btnDelete").click(function () {
+                if (confirm("确认删除此菜单吗？") && $("#formMenu").valid()) {
+                    $("form#formMenu").attr("action", "@Url.Action("MenuDelete", "Console")");
+
+                    document.forms["formMenu"].submit();
+                }
+            });
         });
     </script>
 }
@@ -55,7 +63,13 @@
             <!-- general form elements -->
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Quick Example</h3>
+                    <h3 class="box-title">
+                        <i class="fa fa-info-circle"></i> 菜单详情与维护
+                        @if (Model != null && Model.ID > 0)
+                        {
+                            @Html.Raw("【ID：" + Model.ID + "】")
+                        }
+                    </h3>
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
@@ -66,7 +80,7 @@
                         <div class="form-group">
                             @Html.LabelFor(m => m.MenuDate, new { @class = "col-sm-2 control-label" })
 
-                            <div class="input-group date col-sm-5">
+                            <div class="input-group date col-sm-5" style="margin: 0 15px">
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
@@ -117,11 +131,18 @@
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <div class="col-sm-offset-2 col-sm-10">
-                            @*TODO*@
-                            <button type="submit" class="btn btn-primary hidden" id="btnMenu">
+                            <button type="submit" class="btn btn-primary" id="btnMenu">
                                 <i class="fa fa-floppy-o"></i> 保存菜单
                             </button>
-                            <a href="@Url.Action("UserManagement", "Console")" class="btn btn-default">返回列表</a>
+
+                            @if (Model != null && Model.ID > 0)
+                            {
+                                <button type="submit" class="btn btn-danger" id="btnDelete">
+                                    <i class="fa fa-trash-o"></i> 删除菜单
+                                </button>
+                            }
+
+                            <a href="@Url.Action("MenuManagement", "Console")" class="btn btn-default">返回列表</a>
                         </div>
                     </div>
                 }

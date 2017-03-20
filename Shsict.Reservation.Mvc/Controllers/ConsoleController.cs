@@ -6,6 +6,7 @@ using Shsict.Core;
 using Shsict.Reservation.Mvc.Entities;
 using Shsict.Reservation.Mvc.Entities.Viewer;
 using Shsict.Reservation.Mvc.Models;
+using Shsict.Reservation.Mvc.Services;
 
 namespace Shsict.Reservation.Mvc.Controllers
 {
@@ -13,6 +14,7 @@ namespace Shsict.Reservation.Mvc.Controllers
     public class ConsoleController : Controller
     {
         private readonly IRepository _repo = new Repository();
+        private readonly UserDto _authorizedUser = new AuthorizeManager().GetSession();
 
         // GET: Console
         public ActionResult Index()
@@ -56,6 +58,72 @@ namespace Shsict.Reservation.Mvc.Controllers
             }
 
             return View(model);
+        }
+
+
+        // POST: /Menu
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Menu(MenuDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var menu = _repo.Single<Menu>(model.ID);
+
+                    if (menu != null)
+                    {
+                        menu = model.MapTo(menu);
+                    }
+                    else
+                    {
+                        menu = model.MapTo<MenuDto, Menu>();
+                        menu.CreateUser = _authorizedUser.UserId;
+                        menu.CreateTime = DateTime.Now;
+                        menu.IsActive = true;
+                        menu.Remark = string.Empty;
+                    }
+
+                    menu.MenuType = (MenuTypeEnum)Enum.Parse(typeof(MenuTypeEnum), model.Name);
+                    menu.MenuFlag = model.Flag;
+
+                    // 更新菜单信息
+                    _repo.Save(menu);
+
+                    ModelState.AddModelError("Success", "保存成功");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Warn", ex.Message);
+                }
+            }
+
+            return View(model);
+        }
+
+
+        // Post: /MenuDelete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MenuDelete(MenuDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (model.ID > 0 && _repo.Delete<Menu>(model.ID) > 0)
+                    {
+                        return RedirectToAction("MenuManagement", "Console");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Warn", ex.Message);
+                }
+            }
+
+            return RedirectToAction("Menu", "Console", new { model.ID });
         }
 
 
