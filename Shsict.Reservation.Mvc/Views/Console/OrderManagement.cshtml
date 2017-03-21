@@ -1,4 +1,4 @@
-﻿@model List<Shsict.Reservation.Mvc.Models.OrderDto>
+﻿@model Shsict.Reservation.Mvc.Models.ConsoleModels.OrderManagementDto
 
 @section Styles {
     <link rel="stylesheet" href="~/Scripts/datatables/dataTables.bootstrap.css">
@@ -51,7 +51,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <b><i class="fa fa-calendar-minus-o"></i> 订餐查询</b>
+            <b><i class="fa fa-clipboard"></i> 订餐查询</b>
             <small></small>
         </h1>
         <ol class="breadcrumb">
@@ -67,22 +67,26 @@
                 <div class="box">
                     <div class="box-body no-padding">
                         <div class="mailbox-controls">
-                            <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle">
-                                <i class="fa fa-square-o"></i>
-                            </button>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm"
-                                        onclick="window.location.href = '@Url.Action("Menu", "Console")'">
-                                    <i class="fa fa-plus-circle"></i>
+                                <!-- Check all button -->
+                                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                    <i class="fa fa-square-o"></i>
                                 </button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
                             </div>
                             <!-- /.btn-group -->
+                            <button type="button" class="btn btn-default btn-sm"
+                                    onclick="window.location.href = '@Url.Action("Menu", "Console")'">
+                                <i class="fa fa-plus-circle"></i>
+                            </button>
 
-                            <div class="box-tools pull-right">
-                                <div class="has-feedback">
-                                    <input type="text" class="form-control input-sm" placeholder="Search Mail">
+                            <div class="box-tools pull-right col-sm-4">
+                                <div class="has-feedback input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" value="" class="form-control input-sm"
+                                           id="MenuDate" name="MenuDate" placeholder="订餐日期">
                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
                             </div>
@@ -103,10 +107,10 @@
                                     <th>操作</th>
                                 </tr>
                             </thead>
-                            @if (Model != null && Model.Count > 0)
+                            @if (Model.Orders != null && Model.Orders.Count > 0)
                             {
                                 <tbody>
-                                    @foreach (var m in Model)
+                                    @foreach (var m in Model.Orders)
                                     {
                                         <tr>
                                             <td>@m.ID <input type="checkbox"></td>

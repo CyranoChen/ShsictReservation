@@ -620,6 +620,7 @@
     <Content Include="Views\Console\OrderManagement.cshtml" />
     <Content Include="Views\Console\UserManagement.cshtml" />
     <Content Include="Views\Console\Menu.cshtml" />
+    <Content Include="Views\Console\ConfigManagement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

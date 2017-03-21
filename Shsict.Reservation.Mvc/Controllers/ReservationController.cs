@@ -29,14 +29,16 @@ namespace Shsict.Reservation.Mvc.Controllers
             var menuA = list.Find(x => x.MenuType == GetMenuLunchOrSupper() && x.MenuFlag == "A" && x.IsActive);
             var menuB = list.Find(x => x.MenuType == GetMenuLunchOrSupper() && x.MenuFlag == "B" && x.IsActive);
 
+            var mapper = MenuDto.ConfigMapper().CreateMapper();
+
             if (menuA != null)
             {
-                model.MenuA = MapperMenu(menuA);
+                model.MenuA = mapper.Map<MenuDto>(menuA);
             }
 
             if (menuB != null)
             {
-                model.MenuB = MapperMenu(menuB);
+                model.MenuB = mapper.Map<MenuDto>(menuB);
             }
 
             // 可以订餐，无相关订餐历史记录
@@ -183,31 +185,6 @@ namespace Shsict.Reservation.Mvc.Controllers
             }
 
             return RedirectToAction("History", "Reservation");
-        }
-
-        private MenuDto MapperMenu(Menu menu)
-        {
-            if (menu != null)
-            {
-                var m = menu.MapTo<Menu, MenuDto>();
-
-                if (menu.MenuType == MenuTypeEnum.Lunch)
-                {
-                    m.Name = "午餐";
-                    m.Duration = "7:00~9:00";
-                }
-                else if (menu.MenuType == MenuTypeEnum.Supper)
-                {
-                    m.Name = "夜宵";
-                    m.Duration = "18:00~20:00";
-                }
-
-                m.Flag = $" {menu.MenuFlag} 套餐 ";
-
-                return m;
-            }
-
-            return null;
         }
 
         private MenuTypeEnum GetMenuLunchOrSupper(int deadlineOffset = 0)

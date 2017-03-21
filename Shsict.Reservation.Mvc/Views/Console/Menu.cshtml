@@ -84,7 +84,8 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="text" value="@((Model.MenuDate ?? DateTime.Today).ToString("yyyy年MM月dd日"))"
+                                <input type="text" value="@((Model != null && Model.MenuDate != null 
+                                       ? Model.MenuDate.Value : DateTime.Today).ToString("yyyy年MM月dd日"))"
                                        class="form-control" id="MenuDate" name="MenuDate">
                             </div>
                             <!-- /.input group -->

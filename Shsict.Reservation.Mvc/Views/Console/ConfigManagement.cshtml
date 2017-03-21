@@ -1,4 +1,4 @@
-﻿@model Shsict.Reservation.Mvc.Models.ConsoleModels.UserManagementDto
+﻿@model Shsict.Reservation.Mvc.Models.ConsoleModels.ConfigManagementDto
 
 @section Styles {
     <link rel="stylesheet" href="~/Scripts/datatables/dataTables.bootstrap.css">
@@ -10,13 +10,13 @@
     <script src="~/Scripts/datatables/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
         $(function () {
-            $("#tblUser").DataTable({
-                "paging": true,
+            $("#tblConfig").DataTable({
+                "paging": false,
                 "lengthChange": false,
                 "searching": true,
                 "ordering": false,
                 "info": true,
-                "autoWidth": true
+                "autoWidth": false
             });
         });
     </script>
@@ -27,13 +27,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <b><i class="fa fa-user"></i> 用户管理</b>
+            <b><i class="fa fa-sliders"></i> 配置管理</b>
             <small></small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="@Url.Action("Index","Home")"><i class="fa fa-dashboard"></i> 管理控制台</a></li>
             <li><a href="#">系统管理</a></li>
-            <li class="active">用户管理</li>
+            <li class="active">配置管理</li>
         </ol>
     </section>
     <!-- Main content -->
@@ -42,33 +42,23 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-body no-padding">
-                        <table id="tblUser" class="table table-bordered table-striped">
+                        <table id="tblConfig" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>用户名</th>
-                                    <th>姓名</th>
-                                    <th>工号</th>
-                                    <th>部门</th>
-                                    <th>班组</th>
-                                    <th>岗位</th>
-                                    <th>手机</th>
+                                    <th>配置名</th>
+                                    <th>配置值</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
-                            @if (Model.Users != null && Model.Users.Count > 0)
+                            @if (Model.Configs != null && Model.Configs.Count > 0)
                             {
                                 <tbody>
-                                    @foreach (var m in Model.Users)
+                                    @foreach (var m in Model.Configs)
                                     {
                                         <tr>
-                                            <td>@m.UserId</td>
-                                            <td>@m.EmployeeName</td>
-                                            <td>@m.EmployeeNo</td>
-                                            <td>@m.Department</td>
-                                            <td>@m.Team</td>
-                                            <td>@m.Position</td>
-                                            <td>@m.Mobile</td>
-                                            <td><a href="#" class="btn btn-info btn-xs"><i class="fa fa-refresh"></i> 更新信息</a></td>
+                                            <td>@m.ConfigKey</td>
+                                            <td><input type="text" class="form-control" style="width: 500px" value="@m.ConfigValue" id="@m.ConfigKey" /></td>
+                                            <td><a href="#" class="btn btn-info"><i class="fa fa-save"></i> 保存</a></td>
                                         </tr>
                                     }
                                 </tbody>

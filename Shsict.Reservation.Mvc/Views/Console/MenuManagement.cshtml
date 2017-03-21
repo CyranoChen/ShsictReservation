@@ -1,17 +1,24 @@
-﻿@model List<Shsict.Reservation.Mvc.Entities.Menu>
+﻿@model Shsict.Reservation.Mvc.Models.ConsoleModels.MenuManagementDto
 
 @section Styles {
+    <link rel="stylesheet" href="~/Scripts/datepicker/datepicker3.css">
     <link rel="stylesheet" href="~/Scripts/datatables/dataTables.bootstrap.css">
-    @Styles.Render("~/Content/iCheck/css")
 }
 
 @section Scripts {
+    <script src="~/Scripts/datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
     <!-- DataTables -->
     <script src="~/Scripts/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/datatables/dataTables.bootstrap.min.js"></script>
-    @Scripts.Render("~/bundles/icheck")
     <script type="text/javascript">
         $(function () {
+            $("#MenuDate").datepicker({
+                autoclose: true,
+                language: "zh-CN",
+                todayHighlight: true
+            });
+
             $("#tblMenu").DataTable({
                 "paging": true,
                 "lengthChange": false,
@@ -19,28 +26,6 @@
                 "ordering": false,
                 "info": true,
                 "autoWidth": true
-            });
-
-            //Enable iCheck plugin for checkboxes
-            //iCheck for checkbox and radio inputs
-            $('#tblMenu input[type="checkbox"]').iCheck({
-                checkboxClass: 'icheckbox_flat-blue',
-                radioClass: 'iradio_flat-blue'
-            });
-
-            //Enable check and uncheck all functionality
-            $(".checkbox-toggle").click(function () {
-                var clicks = $(this).data('clicks');
-                if (clicks) {
-                    //Uncheck all checkboxes
-                    $("#tblMenu input[type='checkbox']").iCheck("uncheck");
-                    $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
-                } else {
-                    //Check all checkboxes
-                    $("#tblMenu input[type='checkbox']").iCheck("check");
-                    $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
-                }
-                $(this).data("clicks", !clicks);
             });
         });
     </script>
@@ -67,10 +52,6 @@
                 <div class="box">
                     <div class="box-body no-padding">
                         <div class="mailbox-controls">
-                            <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle">
-                                <i class="fa fa-square-o"></i>
-                            </button>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-sm"
                                         onclick="window.location.href = '@Url.Action("Menu", "Console")'">
@@ -80,9 +61,13 @@
                             </div>
                             <!-- /.btn-group -->
 
-                            <div class="box-tools pull-right">
-                                <div class="has-feedback">
-                                    <input type="text" class="form-control input-sm" placeholder="Search Mail">
+                            <div class="box-tools pull-right col-sm-4">
+                                <div class="has-feedback input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" value="" class="form-control input-sm"
+                                           id="MenuDate" name="MenuDate" placeholder="菜单对应日期">
                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
                             </div>
@@ -93,33 +78,34 @@
                                 <tr>
                                     <th>序号</th>
                                     <th>日期</th>
-                                    <th>午餐 / 夜宵</th>
-                                    <th>A / B</th>
+                                    <th>套餐</th>
+                                    <th>A/B</th>
                                     <th>大荤</th>
                                     <th>小荤</th>
                                     <th>素菜1</th>
                                     <th>素菜2</th>
-                                    <th>创建时间</th>
-                                    <th>创建人</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
-                            @if (Model.Count > 0)
+                            @if (Model.Menus != null && Model.Menus.Count > 0)
                             {
                                 <tbody>
-                                    @foreach (var m in Model)
+                                    @foreach (var m in Model.Menus)
                                     {
                                         <tr>
-                                            <td><input type="checkbox" value="@m.ID"> @m.ID</td>
-                                            <td>@m.MenuDate.ToString("yyyy-MM-dd")</td>
-                                            <td>@m.MenuType</td>
-                                            <td>@m.MenuFlag</td>
+                                            <td>@m.ID</td>
+                                            <td>
+                                                @if (m.MenuDate != null)
+                                                {
+                                                    @m.MenuDate.Value.ToString("yyyy-MM-dd")
+                                                }
+                                            </td>
+                                            <td>@m.Name</td>
+                                            <td>@m.Flag</td>
                                             <td>@m.Meat</td>
                                             <td>@m.MeatSmall</td>
                                             <td>@m.Vegetable1</td>
                                             <td>@m.Vegetable2</td>
-                                            <td>@m.CreateTime.ToString("yyyy-MM-dd HH:mm")</td>
-                                            <td>@m.CreateUser</td>
                                             <td>
                                                 <a href="@Url.Action("Menu", "Console", new {id = m.ID})" c class="btn btn-info btn-xs">
                                                     <i class="fa fa-pencil"></i> 修改

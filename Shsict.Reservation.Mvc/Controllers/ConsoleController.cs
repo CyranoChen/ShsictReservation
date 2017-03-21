@@ -27,10 +27,18 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         public ActionResult MenuManagement()
         {
-            // TODO
-            var list = _repo.All<Menu>().FindAll(x => x.IsActive);
+            var model = new ConsoleModels.MenuManagementDto();
 
-            return View(list);
+            var list = Entities.Menu.Cache.MenuListActive;
+
+            if (list != null && list.Count > 0)
+            {
+                var mapper = MenuDto.ConfigMapper().CreateMapper();
+
+                model.Menus = mapper.Map<IEnumerable<MenuDto>>(list.AsEnumerable()).ToList();
+            }
+
+            return View(model);
         }
 
 
@@ -146,6 +154,8 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         public ActionResult OrderManagement()
         {
+            var model = new ConsoleModels.OrderManagementDto();
+
             IViewerFactory<OrderView> factory = new OrderViewFactory();
 
             // TODO
@@ -160,27 +170,48 @@ namespace Shsict.Reservation.Mvc.Controllers
             {
                 var mapper = OrderDto.ConfigMapper().CreateMapper();
 
-                var model = mapper.Map<IEnumerable<OrderDto>>(query.AsEnumerable()).ToList();
-
-                return View(model);
+                model.Orders = mapper.Map<IEnumerable<OrderDto>>(query.AsEnumerable()).ToList();
             }
 
-            return View();
+            return View(model);
         }
 
 
-        // GET: Console/UserManage
+        // GET: Console/UserManagement
 
         public ActionResult UserManagement()
         {
             var model = new ConsoleModels.UserManagementDto();
 
-            var list = _repo.All<User>();
+            var list = _repo.All<User>().FindAll(x => x.IsActive);
 
-            if (list != null && list.Count > 0)
+            if (list.Count > 0)
             {
-                model.Users = list.Select(user => user.MapTo<User, UserDto>()).ToList();
+                var users = new List<UserDto>();
+
+                foreach (var user in list)
+                {
+                    var u = user.MapTo<User, UserDto>();
+                    u.UserId = user.UserName;
+
+                    users.Add(u);
+                }
+
+                model.Users = users;
             }
+
+            return View(model);
+        }
+
+
+        // GET: Console/ConfigManagement
+
+        public ActionResult ConfigManagement()
+        {
+            var model = new ConsoleModels.ConfigManagementDto
+            {
+                Configs = _repo.All<Config>().FindAll(x => x.ConfigSystemInfo == ConfigSystem.Reservation)
+            };
 
             return View(model);
         }

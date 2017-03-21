@@ -1,11 +1,50 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Shsict.Core;
+using Shsict.Reservation.Mvc.Entities;
 
 namespace Shsict.Reservation.Mvc.Models
 {
     public class MenuDto
     {
+        public static MapperConfiguration ConfigMapper()
+        {
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<Menu, MenuDto>()
+                .ForMember(d => d.Name, opt => opt.ResolveUsing(s =>
+                {
+                    switch (s.MenuType)
+                    {
+                        case MenuTypeEnum.Lunch:
+                            return "午餐";
+                        case MenuTypeEnum.Supper:
+                            return "夜宵";
+                        default:
+                            return string.Empty;
+                    }
+                }))
+                .ForMember(d => d.Duration, opt => opt.ResolveUsing(s =>
+                {
+                    // TODO 从配置中取值
+                    //var duration = ConfigGlobal.MenuDuration;
+
+                    switch (s.MenuType)
+                    {
+                        case MenuTypeEnum.Lunch:
+                            return $"7:00~9:00";
+                        case MenuTypeEnum.Supper:
+                            return $"18:00~20:00";
+                        default:
+                            return string.Empty;
+                    }
+                }))
+                .ForMember(d => d.Flag, opt => opt.MapFrom(s => s.MenuFlag))
+                );
+
+            return config;
+        }
+
+
         #region Members and Properties
 
         public int ID { get; set; }
