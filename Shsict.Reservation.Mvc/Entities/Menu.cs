@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Shsict.Core;
 
 namespace Shsict.Reservation.Mvc.Entities
@@ -42,6 +43,37 @@ namespace Shsict.Reservation.Mvc.Entities
         public string Remark { get; set; }
 
         #endregion
+
+        public static class Cache
+        {
+            public static List<Menu> MenuList;
+            public static List<Menu> MenuListActive;
+            public static List<Menu> MenuListActiveToday;
+
+            static Cache()
+            {
+                InitCache();
+            }
+
+            public static void RefreshCache()
+            {
+                InitCache();
+            }
+
+            private static void InitCache()
+            {
+                IRepository repo = new Repository();
+
+                MenuList = repo.All<Menu>();
+                MenuListActive = MenuList.FindAll(x => x.IsActive);
+                MenuListActiveToday = MenuListActive.FindAll(x => x.MenuDate == DateTime.Today);
+            }
+
+            public static Menu Load(int id)
+            {
+                return MenuListActive.Find(x => x.ID.Equals(id));
+            }
+        }
     }
 
     public enum MenuTypeEnum

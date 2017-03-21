@@ -4,6 +4,7 @@ using System.Threading;
 using Shsict.Core;
 using Shsict.Core.Logger;
 using Shsict.Core.Scheduler;
+using Shsict.Reservation.Mvc.Entities;
 
 namespace Shsict.Reservation.Mvc.Scheduler
 {
@@ -25,6 +26,8 @@ namespace Shsict.Reservation.Mvc.Scheduler
 
                 Config.Cache.RefreshCache();
 
+                Delivery.Cache.RefreshCache();
+                Menu.Cache.RefreshCache();
 
                 _log.Info("Scheduler End: (RefreshCache)", logInfo);
             }
