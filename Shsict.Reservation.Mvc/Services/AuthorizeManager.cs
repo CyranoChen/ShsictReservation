@@ -106,7 +106,7 @@ namespace Shsict.Reservation.Mvc.Services
             return false;
         }
 
-        private User SyncUserWithWeChat(string userId, string deviceId)
+        public User SyncUserWithWeChat(string userId, string deviceId = null)
         {
             // 调用Wechat接口，凭userid获取通讯录成员信息
             var client = new WeChatUserClient();

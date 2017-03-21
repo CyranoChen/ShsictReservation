@@ -143,6 +143,8 @@
     <Compile Include="Models\TipModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scheduler\SyncUsersWithWeChat.cs" />
+    <Compile Include="Scheduler\RefreshCache.cs" />
     <Compile Include="Services\AuthorizeManager.cs" />
     <Compile Include="Services\WeChatApiClient.cs" />
     <Compile Include="Services\WeChatUserClient.cs" />

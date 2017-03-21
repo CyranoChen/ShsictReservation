@@ -99,15 +99,24 @@ namespace Shsict.Reservation.Tests
         }
 
         [TestMethod]
-        [Ignore]
-        public void Test_SyncUserWithWeChat()
+        public void Test_SyncUsersWithWeChat()
         {
-            var userId = "xudanfu1015";
-            var deviceId = "Write by unit test";
+            IRepository repo = new Repository();
+
+            var list = repo.All<UserWeChat>();
 
             var auth = new AuthorizeManager();
 
-            Assert.IsTrue(auth.AuthorizeUser(userId, deviceId));
+            if (list != null && list.Count > 0)
+            {
+                foreach (var uw in list)
+                {
+                    var user = auth.SyncUserWithWeChat(uw.UserName);
+
+                    Assert.IsNotNull(user);
+                    Assert.AreEqual(user.ID, uw.ID);
+                }
+            }
         }
     }
 }
