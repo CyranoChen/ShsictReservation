@@ -70,6 +70,19 @@ namespace Shsict.Reservation.Mvc.Controllers
             {
                 try
                 {
+                    // 如存在同天且相同午餐或晚餐的同套餐则提示重复
+                    if (model.ID <= 0 && _repo.Any<Menu>(x =>
+                        x.MenuDate == model.MenuDate.Value &&
+                        x.MenuType == (MenuTypeEnum)Enum.Parse(typeof(MenuTypeEnum), model.Name) &&
+                        // ReSharper disable once RedundantBoolCompare
+                        // Shsict.Core.ConditionBuilder
+                        x.MenuFlag == model.Flag && x.IsActive == true))
+                    {
+                        ModelState.AddModelError("Error", "已存在同一时间段的重复套餐，无法添加");
+
+                        return View(model);
+                    }
+
                     var menu = _repo.Single<Menu>(model.ID);
 
                     if (menu != null)

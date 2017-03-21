@@ -24,6 +24,8 @@ namespace Shsict.Reservation.Mvc.Scheduler
             {
                 _log.Info("Scheduler Start: (RefreshCache)", logInfo);
 
+                Config.UpdateAssemblyInfo(Assembly.GetExecutingAssembly(), ConfigSystem.Reservation);
+
                 Config.Cache.RefreshCache();
 
                 Delivery.Cache.RefreshCache();
