@@ -29,10 +29,10 @@ namespace Shsict.Reservation.Mvc
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.min.css",
                 "~/Content/bootstrap-theme.min.css",
-                "~/Content/adminlte.min.css",
+                "~/Content/AdminLTE.min.css",
                 "~/Content/skins/_all-skins.min.css",
                 "~/Content/font-awesome.min.css",
-                "~/Content/site.css"));
+                "~/Content/Site.css"));
 
             bundles.Add(new StyleBundle("~/Content/iCheck/css").Include("~/Content/iCheck/all.css"));
         }

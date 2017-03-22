@@ -1,4 +1,5 @@
-﻿@using Shsict.Reservation.Mvc.Models
+﻿@using Shsict.Reservation.Mvc.Entities
+@using Shsict.Reservation.Mvc.Models
 @model ReservationModels.IndexDto
 
 @{
@@ -70,7 +71,9 @@
             var tip = new TipDto
             {
                 Title = "当前时间 " + DateTime.Now.ToString("yyyy-MM-dd hh:mm"),
-                Message = @"<p>午餐预订时间 07:30~09:00</p><p>夜宵预订时间 18:30~20:00</p>",
+                Message = String.Format("<p>午餐预订时间 {0}:00~{1}:00</p><p>夜宵预订时间 {2}:00~{3}:00</p>", 
+                    ConfigGlobal.MenuDuration[0], ConfigGlobal.MenuDuration[1], 
+                    ConfigGlobal.MenuDuration[2], ConfigGlobal.MenuDuration[3]),
                 HyperLinkText = "<i class=\"fa fa-eye\"></i> 查看订餐记录",
                 HyperLinkHref = Url.Action("History", "Reservation")
             };

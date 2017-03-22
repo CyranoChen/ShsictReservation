@@ -2,9 +2,21 @@
 
 @using (Html.BeginForm("MenuOrder", "Reservation", FormMethod.Post, new { id = "formMenuOrder" }))
 {
+    <style type="text/css">
+        #panel-reservation a,
+        #panel-reservation .form-control, #panel-reservation label {
+            font-size: 16px !important;
+        }
+
+        #panel-reservation #extra-option {
+            height: 35px;
+            padding: 0 10px 5px 10px;
+        }
+    </style>
+
     <div class="col-md-6">
         <!-- Widget: user widget style 1 -->
-        <div class="box box-widget widget-user-2">
+        <div class="box box-widget widget-user-2" id="panel-reservation">
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-@Model.MenuStyle-gradient">
                 <div class="widget-user-image">
@@ -19,36 +31,34 @@
             <div class="box-footer no-padding">
                 <ul class="nav nav-stacked">
                     <li class="active bg-gray-light">
-                        <a style="font-size: 18px">
+                        <a>
                             <input type="radio" name="MenuID" id="menuA" value="@Model.MenuA.ID" class="flat-@Model.MenuStyle" checked="checked">
                             <b>@Model.MenuA.Flag</b>
                         </a>
                     </li>
-                    <li><a style="font-size: 18px"><i class="fa fa-circle-o text-red"></i> 荤菜： @Model.MenuA.Meat @Model.MenuA.MeatSmall</a></li>
-                    <li><a style="font-size: 18px"><i class="fa fa-circle-o text-green"></i> 素菜： @Model.MenuA.Vegetable1 @Model.MenuA.Vegetable2</a></li>
+                    <li><a><i class="fa fa-circle-o text-red"></i> 荤菜： @Model.MenuA.Meat @Model.MenuA.MeatSmall</a></li>
+                    <li><a><i class="fa fa-circle-o text-green"></i> 素菜： @Model.MenuA.Vegetable1 @Model.MenuA.Vegetable2</a></li>
                     <li class="bg-gray-light">
-                        <a style="font-size: 18px">
+                        <a>
                             <input type="radio" name="MenuID" id="menuB" value="@Model.MenuB.ID" class="flat-@Model.MenuStyle">
                             <b>@Model.MenuB.Flag</b>
                         </a>
                     </li>
-                    <li><a style="font-size: 18px"><i class="fa fa-circle-o text-red"></i> 荤菜： @Model.MenuB.Meat @Model.MenuB.MeatSmall</a></li>
-                    <li><a style="font-size: 18px"><i class="fa fa-circle-o text-green"></i> 素菜： @Model.MenuB.Vegetable1 @Model.MenuB.Vegetable2</a></li>
-                    <li class="bg-gray-light">
-                        <a style="font-size: 18px">
-                            <!-- Minimal green style -->
-                            <div class="form-group">
-                                <label class="col-xs-4">
-                                    <input type="radio" name="StapleFood" id="rice" value="Rice" class="flat-@Model.MenuStyle" checked="checked"> 米饭
-                                </label>
-                                <label class="col-xs-4">
-                                    <input type="radio" name="StapleFood" id="bun" value="Bun" class="flat-@Model.MenuStyle"> 馒头
-                                </label>
-                                <label class="col-xs-4">
-                                    <input type="checkbox" name="ExtraFood" id="ExtraFood" class="flat-@Model.MenuStyle"> 加饭
-                                </label>
-                            </div>
-                        </a>
+                    <li><a><i class="fa fa-circle-o text-red"></i> 荤菜： @Model.MenuB.Meat @Model.MenuB.MeatSmall</a></li>
+                    <li><a><i class="fa fa-circle-o text-green"></i> 素菜： @Model.MenuB.Vegetable1 @Model.MenuB.Vegetable2</a></li>
+                    <li id="extra-option">
+                        <!-- Minimal green style -->
+                        <div class="form-group">
+                            <label class="col-xs-4">
+                                <input type="radio" name="StapleFood" id="rice" value="Rice" class="flat-@Model.MenuStyle" checked="checked"> 米饭
+                            </label>
+                            <label class="col-xs-4">
+                                <input type="radio" name="StapleFood" id="bun" value="Bun" class="flat-@Model.MenuStyle"> 馒头
+                            </label>
+                            <label class="col-xs-4">
+                                <input type="checkbox" name="ExtraFood" id="ExtraFood" class="flat-@Model.MenuStyle"> 加饭
+                            </label>
+                        </div>
                     </li>
                     <li>
                         <select name="DeliveryZone" id="DeliveryZone" class="form-control no-border" style="width: 49%; display: inline">

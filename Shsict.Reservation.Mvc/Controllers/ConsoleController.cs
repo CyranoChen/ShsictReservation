@@ -114,6 +114,8 @@ namespace Shsict.Reservation.Mvc.Controllers
 
                     _repo.Save(menu, out key);
 
+                    Entities.Menu.Cache.RefreshCache();
+
                     ModelState.AddModelError("Success", "保存成功");
                 }
                 catch (Exception ex)
@@ -137,6 +139,8 @@ namespace Shsict.Reservation.Mvc.Controllers
                 {
                     if (model.ID > 0 && _repo.Delete<Menu>(model.ID) > 0)
                     {
+                        Entities.Menu.Cache.RefreshCache();
+
                         return RedirectToAction("MenuManagement", "Console");
                     }
                 }
@@ -210,7 +214,8 @@ namespace Shsict.Reservation.Mvc.Controllers
         {
             var model = new ConsoleModels.ConfigManagementDto
             {
-                Configs = _repo.All<Config>().FindAll(x => x.ConfigSystemInfo == ConfigSystem.Reservation)
+                Configs = _repo.All<Config>().FindAll(x => 
+                    x.ConfigSystemInfo == ConfigSystem.Reservation && !x.ConfigKey.Contains("Assembly"))
             };
 
             return View(model);

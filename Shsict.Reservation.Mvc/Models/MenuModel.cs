@@ -38,7 +38,7 @@ namespace Shsict.Reservation.Mvc.Models
                             return string.Empty;
                     }
                 }))
-                .ForMember(d => d.Flag, opt => opt.MapFrom(s => s.MenuFlag))
+                .ForMember(d => d.Flag, opt => opt.MapFrom(s => $" {s.MenuFlag} 套餐"))
                 );
 
             return config;
