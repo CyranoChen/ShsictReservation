@@ -30,6 +30,18 @@ namespace Shsict.Reservation.Mvc.Models
                     CreateTime = s.PlaceTime,
                     CreateUser = s.PlaceUser
                 })
+                .ForMember(d => d.MenuName, opt => opt.ResolveUsing(s =>
+                {
+                    switch (s.Menu.MenuType)
+                    {
+                        case MenuTypeEnum.Lunch:
+                            return "午餐";
+                        case MenuTypeEnum.Supper:
+                            return "夜宵";
+                        default:
+                            return string.Empty;
+                    }
+                }))
                 .ForMember(d => d.StapleFood, opt =>
                     opt.MapFrom(s => s.StapleFood == StapleFoodEnum.Rice ? "米饭" : "馒头"))
                 );
@@ -50,6 +62,8 @@ namespace Shsict.Reservation.Mvc.Models
         public DateTime MenuDate { get; set; }
 
         public MenuTypeEnum MenuType { get; set; }
+
+        public string MenuName { get; set; }
 
         public string Flag { get; set; }
 

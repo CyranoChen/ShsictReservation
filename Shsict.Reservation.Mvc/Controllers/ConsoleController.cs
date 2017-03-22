@@ -25,11 +25,20 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         // GET: Console/MenuManagement
 
-        public ActionResult MenuManagement()
+        public ActionResult MenuManagement(string date)
         {
             var model = new ConsoleModels.MenuManagementDto();
 
             var list = Entities.Menu.Cache.MenuListActive;
+
+            DateTime menuDate;
+
+            if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out menuDate))
+            {
+                list = list.FindAll(x => x.MenuDate == menuDate);
+
+                model.MenuDate = menuDate;
+            }
 
             if (list != null && list.Count > 0)
             {
@@ -156,29 +165,65 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         // GET: Console/OrderManagement
 
-        public ActionResult OrderManagement()
+        public ActionResult OrderManagement(string date)
         {
             var model = new ConsoleModels.OrderManagementDto();
 
             IViewerFactory<OrderView> factory = new OrderViewFactory();
 
-            // TODO
-            var criteria = new Criteria
+            DateTime menuDate;
+            List<OrderView> list;
+
+            if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out menuDate))
             {
-                WhereClause = $"MenuDate = '{DateTime.Today}'"
-            };
+                var criteria = new Criteria
+                {
+                    WhereClause = $"MenuDate = '{menuDate}'"
+                };
 
-            var query = factory.Query(criteria);
+                list = factory.Query(criteria);
 
-            if (query.Any())
+                model.MenuDate = menuDate;
+            }
+            else
+            {
+                list = factory.All();
+            }
+
+            if (list != null && list.Count > 0)
             {
                 var mapper = OrderDto.ConfigMapper().CreateMapper();
 
-                model.Orders = mapper.Map<IEnumerable<OrderDto>>(query.AsEnumerable()).ToList();
+                model.Orders = mapper.Map<IEnumerable<OrderDto>>(list.AsEnumerable()).ToList();
             }
 
             return View(model);
         }
+
+
+        // GET: Console/Order
+
+        public ActionResult Order(int id = 0)
+        {
+            var model = new OrderDto();
+
+            if (id > 0)
+            {
+                var order = _repo.Single<Order>(id);
+
+                if (order != null)
+                {
+                    model = order.MapTo<Order, OrderDto>();
+                }
+            }
+            else
+            {
+                model.ID = id;
+            }
+
+            return View(model);
+        }
+
 
 
         // GET: Console/UserManagement

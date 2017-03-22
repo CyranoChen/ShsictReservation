@@ -121,6 +121,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CacheController.cs" />
     <Compile Include="Controllers\ConsoleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
@@ -621,9 +622,11 @@
     <Content Include="Views\Console\UserManagement.cshtml" />
     <Content Include="Views\Console\Menu.cshtml" />
     <Content Include="Views\Console\ConfigManagement.cshtml" />
+    <Content Include="Views\Console\Order.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Cache\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

@@ -1,17 +1,30 @@
 ﻿@model Shsict.Reservation.Mvc.Models.ConsoleModels.OrderManagementDto
 
 @section Styles {
+    <link rel="stylesheet" href="~/Scripts/datepicker/datepicker3.css">
     <link rel="stylesheet" href="~/Scripts/datatables/dataTables.bootstrap.css">
     @Scripts.Render("~/bundles/icheck")
 }
 
 @section Scripts {
+    <script src="~/Scripts/datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
     <!-- DataTables -->
     <script src="~/Scripts/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/datatables/dataTables.bootstrap.min.js"></script>
     @Scripts.Render("~/bundles/icheck")
     <script type="text/javascript">
         $(function () {
+            $("#MenuDate").datepicker({
+                autoclose: true,
+                language: "zh-CN",
+                todayHighlight: true
+            }).on('changeDate', function (calendar) {
+                var date = calendar.date.getFullYear().toString() + "-" + (calendar.date.getMonth() + 1).toString() + "-" + calendar.date.getDate().toString();
+
+                window.location.href = "@Url.Action("OrderManagement", "Console")" + "?date=" + date;
+            });
+
             $("#tblOrder").DataTable({
                 "paging": true,
                 "lengthChange": false,
@@ -75,18 +88,25 @@
                                 <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
                             </div>
                             <!-- /.btn-group -->
-                            <button type="button" class="btn btn-default btn-sm"
-                                    onclick="window.location.href = '@Url.Action("Menu", "Console")'">
-                                <i class="fa fa-plus-circle"></i>
-                            </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-sm"
+                                        onclick="window.location.href = '@Url.Action("Order", "Console")'">
+                                    <i class="fa fa-plus-circle"></i>
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm"
+                                        onclick="window.location.href = '@Url.Action("OrderManagement", "Console")'">
+                                    <i class="fa fa-refresh"></i>
+                                </button>
+                            </div>
 
                             <div class="box-tools pull-right col-sm-4">
                                 <div class="has-feedback input-group date">
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input type="text" value="" class="form-control input-sm"
-                                           id="MenuDate" name="MenuDate" placeholder="订餐日期">
+                                    <input type="text" value="@(Model.MenuDate.HasValue ?
+                                            Model.MenuDate.Value.ToString("yyyy年MM月dd日") : string.Empty)" 
+                                           class="form-control input-sm" id="MenuDate" name="MenuDate" placeholder="订餐日期">
                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
                             </div>
@@ -97,7 +117,7 @@
                                 <tr>
                                     <th>序号</th>
                                     <th>日期</th>
-                                    <th>午餐 / 夜宵</th>
+                                    <th>时段</th>
                                     <th>A / B</th>
                                     <th>主食</th>
                                     <th>用餐人</th>
@@ -113,9 +133,9 @@
                                     @foreach (var m in Model.Orders)
                                     {
                                         <tr>
-                                            <td>@m.ID <input type="checkbox"></td>
+                                            <td>@m.ID <input type="checkbox" value="@m.ID"></td>
                                             <td>@m.MenuDate.ToString("yyyy-MM-dd")</td>
-                                            <td>@m.MenuType</td>
+                                            <td>@m.MenuName</td>
                                             <td>@m.Flag</td>
                                             <td>
                                                 @m.StapleFood @if (m.ExtraFood)
@@ -125,7 +145,7 @@
                                             <td>@m.DeliveryZone -> @m.DeliveryPoint</td>
                                             <td>@m.CreateTime</td>
                                             <td>@m.CreateUser</td>
-                                            <td><a href="#" class="btn btn-info btn-xs">修改</a></td>
+                                            <td><a href="@Url.Action("Order", "Console", new {id = m.ID})" class="btn btn-info btn-xs">修改</a></td>
                                         </tr>
                                     }
                                 </tbody>
