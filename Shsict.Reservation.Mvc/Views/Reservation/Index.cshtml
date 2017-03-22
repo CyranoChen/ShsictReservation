@@ -79,7 +79,7 @@
         {
             var tip = new TipDto
             {
-                Title = "当前时间 " + DateTime.Now.ToString("yyyy-MM-dd hh:mm"),
+                Title = "当前时间 " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                 Message = @"您已经成功预订了此时段套餐。",
                 HyperLinkText = "<i class=\"fa fa-eye\"></i> 查看订餐记录",
                 HyperLinkHref = Url.Action("History", "Reservation")
@@ -92,7 +92,7 @@
         {
             var tip = new TipDto
             {
-                Title = "当前时间 " + DateTime.Now.ToString("yyyy-MM-dd hh:mm"),
+                Title = "当前时间 " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                 Message = String.Format("<p>午餐预订时间 {0}:00~{1}:00</p><p>夜宵预订时间 {2}:00~{3}:00</p>",
                     ConfigGlobal.MenuDuration[0], ConfigGlobal.MenuDuration[1],
                     ConfigGlobal.MenuDuration[2], ConfigGlobal.MenuDuration[3]),

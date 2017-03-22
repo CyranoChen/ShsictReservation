@@ -1,0 +1,879 @@
+﻿
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>盛东自助订餐系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+
+    <link rel="stylesheet" href="../plugins/datepicker/datepicker3.css">
+    <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>SHSICT</b></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>盛东自助订餐系统</b></span>
+            </a>
+
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">导航栏</span>
+                </a>
+
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="http://shp.qpic.cn/bizmp/sfQa6NT594TUfQ42suia698Kz8KNY8eNmeogXYCNQicsaicnCMy5I1mfQ/" class="user-image" alt="User Image">
+                                <span class="hidden-xs">陈继麟</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="http://shp.qpic.cn/bizmp/sfQa6NT594TUfQ42suia698Kz8KNY8eNmeogXYCNQicsaicnCMy5I1mfQ/" class="img-circle" alt="User Image">
+
+                                    <p>
+                                        陈继麟 ()
+                                        <small>四班 - 技术工程师</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <li class="user-body">
+                                    <div class="row">
+                                        <div class="col-xs-6 text-center">
+                                            <a><i class="fa fa-male"></i> cyrano</a>
+                                        </div>
+                                        <div class="col-xs-6 text-center">
+                                            <a><i class="fa fa-mobile"></i> 13818059707</a>
+                                        </div>
+                                    </div>
+                                    <!-- /.row -->
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="/" class="btn btn-default btn-flat"><i class="fa fa-gear"></i> 后台管理</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="/Account/Logout" class="btn btn-default btn-flat"><i class="fa fa-sign-out"></i> 退出</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </header>
+
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu">
+                    <li class="header">导航栏</li>
+                    <li class="active treeview">
+                        <a href="#">
+                            <i class="fa fa-cutlery"></i> <span>订餐管理</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="/Console/MenuManagement"><i class="fa fa-calendar-minus-o"></i> 菜单管理</a></li>
+                            <li><a href="/Console/OrderManagement"><i class="fa fa-clipboard"></i> 订餐查询</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-cogs"></i> <span>系统管理</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="/Console/UserManagement"><i class="fa fa-user"></i> 用户管理</a></li>
+                            <li><a href="#"><i class="fa fa-map-marker"></i> 地点管理</a></li>
+                            <li><a href="/Console/ConfigManagement"><i class="fa fa-sliders"></i> 配置管理</a></li>
+                            <li><a href="#"><i class="fa fa-tasks"></i> 计划任务</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fa fa-question-circle"></i> <span>系统帮助</span></a></li>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+
+
+
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    <b><i class="fa fa-clipboard"></i> 订餐查询</b>
+                    <small></small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="/"><i class="fa fa-dashboard"></i> 管理控制台</a></li>
+                    <li><a href="#">订餐管理</a></li>
+                    <li class="active">订餐查询</li>
+                </ol>
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="mailbox-controls">
+                                    <div class="btn-group">
+                                        <!-- Check all button -->
+                                        <button type="button" class="btn btn-default checkbox-toggle">
+                                            <i class="fa fa-square-o"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default"><i class="fa fa-trash-o"></i></button>
+                                    </div>
+                                    <!-- /.btn-group -->
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default"
+                                                onclick="window.location.href = '/Console/Order'">
+                                            <i class="fa fa-plus-circle"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default"
+                                                onclick="window.location.href = '/Console/OrderManagement'">
+                                            <i class="fa fa-refresh"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="box-tools pull-right col-sm-3">
+                                        <div class="has-feedback input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" value=""
+                                                   class="form-control" id="MenuDate" name="MenuDate" placeholder="订餐日期">
+                                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                        </div>
+                                    </div>
+                                    <div class="box-tools pull-right col-sm-3" style="text-align: right">
+                                        <select class="form-control">
+                                            <option value="">-- 送餐区域 --</option>
+                                            <option value="1b14ae1e-1a10-47b2-8451-d7e49976d26c">堆高车</option>
+                                            <option value="e39345dc-3ea7-4b87-a45d-00cf4aeaca94">检查口</option>
+                                            <option value="807a49c2-d0db-4567-86fb-4a21dde7b4c8">轮胎吊</option>
+                                            <option value="5bfe8f79-7b9f-4aba-934f-6467f63accbe">桥吊</option>
+                                            <option value="8387cb3e-849b-46f2-8813-40ef37c9fee5">水手间</option>
+                                            <option value="bb4be93d-2ccc-4c9c-abcd-07710a3494f8">危库</option>
+                                            <option value="6b9a4380-3b4d-43db-be33-61f993a9217c">正面吊</option>
+                                            <option value="911954b1-daf9-48a9-b9b7-f16afec50dde">中控室</option>
+                                        </select>
+                                    </div>
+                                    <!-- /.box-tools -->
+                                </div>
+                                <table id="tblOrder" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>日期</th>
+                                            <th>时段</th>
+                                            <th>A / B</th>
+                                            <th>主食</th>
+                                            <th>用餐人</th>
+                                            <th>送餐点</th>
+                                            <th>创建时间</th>
+                                            <th>创建人</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>日期</th>
+                                            <th>时段</th>
+                                            <th>A / B</th>
+                                            <th>主食</th>
+                                            <th>用餐人</th>
+                                            <th>送餐点</th>
+                                            <th>创建时间</th>
+                                            <th>创建人</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="checkbox" value="11"> 11</td>
+                                            <td>2017-03-22</td>
+                                            <td>午餐</td>
+                                            <td> A 套餐</td>
+                                            <td>
+                                                米饭
+                                            </td>
+                                            <td>陈继麟</td>
+                                            <td>水手间 -> 1号水手间</td>
+                                            <td>2017-03-22 12:23</td>
+                                            <td>cyrano</td>
+                                            <td>
+                                                <a href="/Console/Order/11" class="btn btn-info btn-xs">
+                                                    <i class="fa fa-pencil"></i> 修改
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" value="7"> 7</td>
+                                            <td>2017-03-16</td>
+                                            <td>午餐</td>
+                                            <td> A 套餐</td>
+                                            <td>
+                                                米饭
+                                            </td>
+                                            <td>陈继麟</td>
+                                            <td> -> 桥吊</td>
+                                            <td>2017-03-16 11:42</td>
+                                            <td>cyrano</td>
+                                            <td>
+                                                <a href="/Console/Order/7" class="btn btn-info btn-xs">
+                                                    <i class="fa fa-pencil"></i> 修改
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" value="4"> 4</td>
+                                            <td>2017-03-14</td>
+                                            <td>夜宵</td>
+                                            <td> A 套餐</td>
+                                            <td>
+                                                米饭 (加饭)
+                                            </td>
+                                            <td>陈继麟</td>
+                                            <td> -> 桥吊</td>
+                                            <td>2017-03-14 17:59</td>
+                                            <td>cyrano</td>
+                                            <td>
+                                                <a href="/Console/Order/4" class="btn btn-info btn-xs">
+                                                    <i class="fa fa-pencil"></i> 修改
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" value="1"> 1</td>
+                                            <td>2017-03-14</td>
+                                            <td>午餐</td>
+                                            <td> A 套餐</td>
+                                            <td>
+                                                馒头 (加饭)
+                                            </td>
+                                            <td>陈继麟</td>
+                                            <td> -> 桥吊</td>
+                                            <td>2017-03-14 11:57</td>
+                                            <td>cyrano</td>
+                                            <td>
+                                                <a href="/Console/Order/1" class="btn btn-info btn-xs">
+                                                    <i class="fa fa-pencil"></i> 修改
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <div class="Row">
+                    <table id="example" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Age</th>
+                                <th>Start date</th>
+                                <th>Salary</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Age</th>
+                                <th>Start date</th>
+                                <th>Salary</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr>
+                                <td>Tiger Nixon</td>
+                                <td>System Architect</td>
+                                <td>Edinburgh</td>
+                                <td>61</td>
+                                <td>2011/04/25</td>
+                                <td>$320,800</td>
+                            </tr>
+                            <tr>
+                                <td>Garrett Winters</td>
+                                <td>Accountant</td>
+                                <td>Tokyo</td>
+                                <td>63</td>
+                                <td>2011/07/25</td>
+                                <td>$170,750</td>
+                            </tr>
+                            <tr>
+                                <td>Ashton Cox</td>
+                                <td>Junior Technical Author</td>
+                                <td>San Francisco</td>
+                                <td>66</td>
+                                <td>2009/01/12</td>
+                                <td>$86,000</td>
+                            </tr>
+                            <tr>
+                                <td>Cedric Kelly</td>
+                                <td>Senior Javascript Developer</td>
+                                <td>Edinburgh</td>
+                                <td>22</td>
+                                <td>2012/03/29</td>
+                                <td>$433,060</td>
+                            </tr>
+                            <tr>
+                                <td>Airi Satou</td>
+                                <td>Accountant</td>
+                                <td>Tokyo</td>
+                                <td>33</td>
+                                <td>2008/11/28</td>
+                                <td>$162,700</td>
+                            </tr>
+                            <tr>
+                                <td>Brielle Williamson</td>
+                                <td>Integration Specialist</td>
+                                <td>New York</td>
+                                <td>61</td>
+                                <td>2012/12/02</td>
+                                <td>$372,000</td>
+                            </tr>
+                            <tr>
+                                <td>Herrod Chandler</td>
+                                <td>Sales Assistant</td>
+                                <td>San Francisco</td>
+                                <td>59</td>
+                                <td>2012/08/06</td>
+                                <td>$137,500</td>
+                            </tr>
+                            <tr>
+                                <td>Rhona Davidson</td>
+                                <td>Integration Specialist</td>
+                                <td>Tokyo</td>
+                                <td>55</td>
+                                <td>2010/10/14</td>
+                                <td>$327,900</td>
+                            </tr>
+                            <tr>
+                                <td>Colleen Hurst</td>
+                                <td>Javascript Developer</td>
+                                <td>San Francisco</td>
+                                <td>39</td>
+                                <td>2009/09/15</td>
+                                <td>$205,500</td>
+                            </tr>
+                            <tr>
+                                <td>Sonya Frost</td>
+                                <td>Software Engineer</td>
+                                <td>Edinburgh</td>
+                                <td>23</td>
+                                <td>2008/12/13</td>
+                                <td>$103,600</td>
+                            </tr>
+                            <tr>
+                                <td>Jena Gaines</td>
+                                <td>Office Manager</td>
+                                <td>London</td>
+                                <td>30</td>
+                                <td>2008/12/19</td>
+                                <td>$90,560</td>
+                            </tr>
+                            <tr>
+                                <td>Quinn Flynn</td>
+                                <td>Support Lead</td>
+                                <td>Edinburgh</td>
+                                <td>22</td>
+                                <td>2013/03/03</td>
+                                <td>$342,000</td>
+                            </tr>
+                            <tr>
+                                <td>Charde Marshall</td>
+                                <td>Regional Director</td>
+                                <td>San Francisco</td>
+                                <td>36</td>
+                                <td>2008/10/16</td>
+                                <td>$470,600</td>
+                            </tr>
+                            <tr>
+                                <td>Haley Kennedy</td>
+                                <td>Senior Marketing Designer</td>
+                                <td>London</td>
+                                <td>43</td>
+                                <td>2012/12/18</td>
+                                <td>$313,500</td>
+                            </tr>
+                            <tr>
+                                <td>Tatyana Fitzpatrick</td>
+                                <td>Regional Director</td>
+                                <td>London</td>
+                                <td>19</td>
+                                <td>2010/03/17</td>
+                                <td>$385,750</td>
+                            </tr>
+                            <tr>
+                                <td>Michael Silva</td>
+                                <td>Marketing Designer</td>
+                                <td>London</td>
+                                <td>66</td>
+                                <td>2012/11/27</td>
+                                <td>$198,500</td>
+                            </tr>
+                            <tr>
+                                <td>Paul Byrd</td>
+                                <td>Chief Financial Officer (CFO)</td>
+                                <td>New York</td>
+                                <td>64</td>
+                                <td>2010/06/09</td>
+                                <td>$725,000</td>
+                            </tr>
+                            <tr>
+                                <td>Gloria Little</td>
+                                <td>Systems Administrator</td>
+                                <td>New York</td>
+                                <td>59</td>
+                                <td>2009/04/10</td>
+                                <td>$237,500</td>
+                            </tr>
+                            <tr>
+                                <td>Bradley Greer</td>
+                                <td>Software Engineer</td>
+                                <td>London</td>
+                                <td>41</td>
+                                <td>2012/10/13</td>
+                                <td>$132,000</td>
+                            </tr>
+                            <tr>
+                                <td>Dai Rios</td>
+                                <td>Personnel Lead</td>
+                                <td>Edinburgh</td>
+                                <td>35</td>
+                                <td>2012/09/26</td>
+                                <td>$217,500</td>
+                            </tr>
+                            <tr>
+                                <td>Jenette Caldwell</td>
+                                <td>Development Lead</td>
+                                <td>New York</td>
+                                <td>30</td>
+                                <td>2011/09/03</td>
+                                <td>$345,000</td>
+                            </tr>
+                            <tr>
+                                <td>Yuri Berry</td>
+                                <td>Chief Marketing Officer (CMO)</td>
+                                <td>New York</td>
+                                <td>40</td>
+                                <td>2009/06/25</td>
+                                <td>$675,000</td>
+                            </tr>
+                            <tr>
+                                <td>Caesar Vance</td>
+                                <td>Pre-Sales Support</td>
+                                <td>New York</td>
+                                <td>21</td>
+                                <td>2011/12/12</td>
+                                <td>$106,450</td>
+                            </tr>
+                            <tr>
+                                <td>Doris Wilder</td>
+                                <td>Sales Assistant</td>
+                                <td>Sidney</td>
+                                <td>23</td>
+                                <td>2010/09/20</td>
+                                <td>$85,600</td>
+                            </tr>
+                            <tr>
+                                <td>Angelica Ramos</td>
+                                <td>Chief Executive Officer (CEO)</td>
+                                <td>London</td>
+                                <td>47</td>
+                                <td>2009/10/09</td>
+                                <td>$1,200,000</td>
+                            </tr>
+                            <tr>
+                                <td>Gavin Joyce</td>
+                                <td>Developer</td>
+                                <td>Edinburgh</td>
+                                <td>42</td>
+                                <td>2010/12/22</td>
+                                <td>$92,575</td>
+                            </tr>
+                            <tr>
+                                <td>Jennifer Chang</td>
+                                <td>Regional Director</td>
+                                <td>Singapore</td>
+                                <td>28</td>
+                                <td>2010/11/14</td>
+                                <td>$357,650</td>
+                            </tr>
+                            <tr>
+                                <td>Brenden Wagner</td>
+                                <td>Software Engineer</td>
+                                <td>San Francisco</td>
+                                <td>28</td>
+                                <td>2011/06/07</td>
+                                <td>$206,850</td>
+                            </tr>
+                            <tr>
+                                <td>Fiona Green</td>
+                                <td>Chief Operating Officer (COO)</td>
+                                <td>San Francisco</td>
+                                <td>48</td>
+                                <td>2010/03/11</td>
+                                <td>$850,000</td>
+                            </tr>
+                            <tr>
+                                <td>Shou Itou</td>
+                                <td>Regional Marketing</td>
+                                <td>Tokyo</td>
+                                <td>20</td>
+                                <td>2011/08/14</td>
+                                <td>$163,000</td>
+                            </tr>
+                            <tr>
+                                <td>Michelle House</td>
+                                <td>Integration Specialist</td>
+                                <td>Sidney</td>
+                                <td>37</td>
+                                <td>2011/06/02</td>
+                                <td>$95,400</td>
+                            </tr>
+                            <tr>
+                                <td>Suki Burks</td>
+                                <td>Developer</td>
+                                <td>London</td>
+                                <td>53</td>
+                                <td>2009/10/22</td>
+                                <td>$114,500</td>
+                            </tr>
+                            <tr>
+                                <td>Prescott Bartlett</td>
+                                <td>Technical Author</td>
+                                <td>London</td>
+                                <td>27</td>
+                                <td>2011/05/07</td>
+                                <td>$145,000</td>
+                            </tr>
+                            <tr>
+                                <td>Gavin Cortez</td>
+                                <td>Team Leader</td>
+                                <td>San Francisco</td>
+                                <td>22</td>
+                                <td>2008/10/26</td>
+                                <td>$235,500</td>
+                            </tr>
+                            <tr>
+                                <td>Martena Mccray</td>
+                                <td>Post-Sales support</td>
+                                <td>Edinburgh</td>
+                                <td>46</td>
+                                <td>2011/03/09</td>
+                                <td>$324,050</td>
+                            </tr>
+                            <tr>
+                                <td>Unity Butler</td>
+                                <td>Marketing Designer</td>
+                                <td>San Francisco</td>
+                                <td>47</td>
+                                <td>2009/12/09</td>
+                                <td>$85,675</td>
+                            </tr>
+                            <tr>
+                                <td>Howard Hatfield</td>
+                                <td>Office Manager</td>
+                                <td>San Francisco</td>
+                                <td>51</td>
+                                <td>2008/12/16</td>
+                                <td>$164,500</td>
+                            </tr>
+                            <tr>
+                                <td>Hope Fuentes</td>
+                                <td>Secretary</td>
+                                <td>San Francisco</td>
+                                <td>41</td>
+                                <td>2010/02/12</td>
+                                <td>$109,850</td>
+                            </tr>
+                            <tr>
+                                <td>Vivian Harrell</td>
+                                <td>Financial Controller</td>
+                                <td>San Francisco</td>
+                                <td>62</td>
+                                <td>2009/02/14</td>
+                                <td>$452,500</td>
+                            </tr>
+                            <tr>
+                                <td>Timothy Mooney</td>
+                                <td>Office Manager</td>
+                                <td>London</td>
+                                <td>37</td>
+                                <td>2008/12/11</td>
+                                <td>$136,200</td>
+                            </tr>
+                            <tr>
+                                <td>Jackson Bradshaw</td>
+                                <td>Director</td>
+                                <td>New York</td>
+                                <td>65</td>
+                                <td>2008/09/26</td>
+                                <td>$645,750</td>
+                            </tr>
+                            <tr>
+                                <td>Olivia Liang</td>
+                                <td>Support Engineer</td>
+                                <td>Singapore</td>
+                                <td>64</td>
+                                <td>2011/02/03</td>
+                                <td>$234,500</td>
+                            </tr>
+                            <tr>
+                                <td>Bruno Nash</td>
+                                <td>Software Engineer</td>
+                                <td>London</td>
+                                <td>38</td>
+                                <td>2011/05/03</td>
+                                <td>$163,500</td>
+                            </tr>
+                            <tr>
+                                <td>Sakura Yamamoto</td>
+                                <td>Support Engineer</td>
+                                <td>Tokyo</td>
+                                <td>37</td>
+                                <td>2009/08/19</td>
+                                <td>$139,575</td>
+                            </tr>
+                            <tr>
+                                <td>Thor Walton</td>
+                                <td>Developer</td>
+                                <td>New York</td>
+                                <td>61</td>
+                                <td>2013/08/11</td>
+                                <td>$98,540</td>
+                            </tr>
+                            <tr>
+                                <td>Finn Camacho</td>
+                                <td>Support Engineer</td>
+                                <td>San Francisco</td>
+                                <td>47</td>
+                                <td>2009/07/07</td>
+                                <td>$87,500</td>
+                            </tr>
+                            <tr>
+                                <td>Serge Baldwin</td>
+                                <td>Data Coordinator</td>
+                                <td>Singapore</td>
+                                <td>64</td>
+                                <td>2012/04/09</td>
+                                <td>$138,575</td>
+                            </tr>
+                            <tr>
+                                <td>Zenaida Frank</td>
+                                <td>Software Engineer</td>
+                                <td>New York</td>
+                                <td>63</td>
+                                <td>2010/01/04</td>
+                                <td>$125,250</td>
+                            </tr>
+                            <tr>
+                                <td>Zorita Serrano</td>
+                                <td>Software Engineer</td>
+                                <td>San Francisco</td>
+                                <td>56</td>
+                                <td>2012/06/01</td>
+                                <td>$115,000</td>
+                            </tr>
+                            <tr>
+                                <td>Jennifer Acosta</td>
+                                <td>Junior Javascript Developer</td>
+                                <td>Edinburgh</td>
+                                <td>43</td>
+                                <td>2013/02/01</td>
+                                <td>$75,650</td>
+                            </tr>
+                            <tr>
+                                <td>Cara Stevens</td>
+                                <td>Sales Assistant</td>
+                                <td>New York</td>
+                                <td>46</td>
+                                <td>2011/12/06</td>
+                                <td>$145,600</td>
+                            </tr>
+                            <tr>
+                                <td>Hermione Butler</td>
+                                <td>Regional Director</td>
+                                <td>London</td>
+                                <td>47</td>
+                                <td>2011/03/21</td>
+                                <td>$356,250</td>
+                            </tr>
+                            <tr>
+                                <td>Lael Greer</td>
+                                <td>Systems Administrator</td>
+                                <td>London</td>
+                                <td>21</td>
+                                <td>2009/02/27</td>
+                                <td>$103,500</td>
+                            </tr>
+                            <tr>
+                                <td>Jonas Alexander</td>
+                                <td>Developer</td>
+                                <td>San Francisco</td>
+                                <td>30</td>
+                                <td>2010/07/14</td>
+                                <td>$86,500</td>
+                            </tr>
+                            <tr>
+                                <td>Shad Decker</td>
+                                <td>Regional Director</td>
+                                <td>Edinburgh</td>
+                                <td>51</td>
+                                <td>2008/11/13</td>
+                                <td>$183,000</td>
+                            </tr>
+                            <tr>
+                                <td>Michael Bruce</td>
+                                <td>Javascript Developer</td>
+                                <td>Singapore</td>
+                                <td>29</td>
+                                <td>2011/06/27</td>
+                                <td>$183,000</td>
+                            </tr>
+                            <tr>
+                                <td>Donna Snider</td>
+                                <td>Customer Support</td>
+                                <td>New York</td>
+                                <td>27</td>
+                                <td>2011/01/25</td>
+                                <td>$112,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.3.2
+            </div>
+            <strong>
+                &#169; 2017
+                <a href="http://www.shsict.com" target="_blank">
+                    上海盛东国际集装箱码头有限公司
+                </a>
+            </strong>
+        </footer>
+
+    </div>
+    <!-- ./wrapper -->
+
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="../dist/js/app.min.js"></script>
+    <script src="/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <script src="/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
+    <!-- DataTables -->
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables/dataTables.bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#MenuDate").datepicker({
+                autoclose: true,
+                language: "zh-CN",
+                todayHighlight: true
+            }).on('changeDate', function (calendar) {
+                var date = calendar.date.getFullYear().toString() + "-" + (calendar.date.getMonth() + 1).toString() + "-" + calendar.date.getDate().toString();
+
+                window.location.href = "/Console/OrderManagement" + "?date=" + date;
+            });
+
+            $('#example').DataTable({
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        });
+                    });
+                }
+            });
+
+            $("#tblOrder").DataTable({
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        var column = this;
+
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>');
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

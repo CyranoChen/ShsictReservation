@@ -3,7 +3,7 @@
 @section Styles {
     <link rel="stylesheet" href="~/Scripts/datepicker/datepicker3.css">
     <link rel="stylesheet" href="~/Scripts/datatables/dataTables.bootstrap.css">
-    @Scripts.Render("~/bundles/icheck")
+    @Styles.Render("~/Content/iCheck/css")
 }
 
 @section Scripts {
@@ -13,7 +13,18 @@
     <script src="~/Scripts/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/datatables/dataTables.bootstrap.min.js"></script>
     @Scripts.Render("~/bundles/icheck")
+
     <script type="text/javascript">
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            var selectedZone = $("#DeliveryZone").val();
+            var deliveryZone = data[6];
+
+            if (selectedZone === "" || deliveryZone.indexOf(selectedZone) >= 0) {
+                return true;
+            }
+            return false;
+        });
+
         $(function () {
             $("#MenuDate").datepicker({
                 autoclose: true,
@@ -25,13 +36,18 @@
                 window.location.href = "@Url.Action("OrderManagement", "Console")" + "?date=" + date;
             });
 
-            $("#tblOrder").DataTable({
+            var table = $("#tblOrder").DataTable({
                 "paging": true,
                 "lengthChange": false,
-                "searching": false,
                 "ordering": false,
                 "info": true,
                 "autoWidth": true
+            });
+
+            $("#tblOrder_filter").hide();
+
+            $("#DeliveryZone").change(function () {
+                table.draw();
             });
 
             //Enable iCheck plugin for checkboxes
@@ -82,33 +98,45 @@
                         <div class="mailbox-controls">
                             <div class="btn-group">
                                 <!-- Check all button -->
-                                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                <button type="button" class="btn btn-default checkbox-toggle">
                                     <i class="fa fa-square-o"></i>
                                 </button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fa fa-trash-o"></i></button>
                             </div>
                             <!-- /.btn-group -->
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm"
+                                <button type="button" class="btn btn-default"
                                         onclick="window.location.href = '@Url.Action("Order", "Console")'">
                                     <i class="fa fa-plus-circle"></i>
                                 </button>
-                                <button type="button" class="btn btn-default btn-sm"
+                                <button type="button" class="btn btn-default"
                                         onclick="window.location.href = '@Url.Action("OrderManagement", "Console")'">
                                     <i class="fa fa-refresh"></i>
                                 </button>
                             </div>
 
-                            <div class="box-tools pull-right col-sm-4">
+                            <div class="box-tools pull-right col-sm-3">
                                 <div class="has-feedback input-group date">
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
                                     <input type="text" value="@(Model.MenuDate.HasValue ?
-                                            Model.MenuDate.Value.ToString("yyyy年MM月dd日") : string.Empty)" 
-                                           class="form-control input-sm" id="MenuDate" name="MenuDate" placeholder="订餐日期">
+                                        Model.MenuDate.Value.ToString("yyyy年MM月dd日") : string.Empty)"
+                                           class="form-control" id="MenuDate" name="MenuDate" placeholder="订餐日期">
                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
+                            </div>
+                            <div class="box-tools pull-right col-sm-3" style="text-align: right">
+                                <select class="form-control" id="DeliveryZone">
+                                    <option value="">-- 送餐区域 --</option>
+                                    @if (Model.DeliveryZones != null && Model.DeliveryZones.Count > 0)
+                                    {
+                                        foreach (var m in Model.DeliveryZones)
+                                        {
+                                            <option>@m.DeliveryName</option>
+                                        }
+                                    }
+                                </select>
                             </div>
                             <!-- /.box-tools -->
                         </div>
@@ -133,7 +161,7 @@
                                     @foreach (var m in Model.Orders)
                                     {
                                         <tr>
-                                            <td>@m.ID <input type="checkbox" value="@m.ID"></td>
+                                            <td><input type="checkbox" value="@m.ID"> @m.ID</td>
                                             <td>@m.MenuDate.ToString("yyyy-MM-dd")</td>
                                             <td>@m.MenuName</td>
                                             <td>@m.Flag</td>
@@ -143,9 +171,13 @@
                                             </td>
                                             <td>@m.UserName</td>
                                             <td>@m.DeliveryZone -> @m.DeliveryPoint</td>
-                                            <td>@m.CreateTime</td>
+                                            <td>@m.CreateTime.ToString("yyyy-MM-dd HH:mm")</td>
                                             <td>@m.CreateUser</td>
-                                            <td><a href="@Url.Action("Order", "Console", new {id = m.ID})" class="btn btn-info btn-xs">修改</a></td>
+                                            <td>
+                                                <a href="@Url.Action("Order", "Console", new {id = m.ID})" class="btn btn-info btn-xs">
+                                                    <i class="fa fa-pencil"></i> 修改
+                                                </a>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>

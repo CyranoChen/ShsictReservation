@@ -58,11 +58,11 @@
                     <div class="box-body">
                         <div class="mailbox-controls">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm"
+                                <button type="button" class="btn btn-default"
                                         onclick="window.location.href = '@Url.Action("Menu", "Console")'">
                                     <i class="fa fa-plus-circle"></i>
                                 </button>
-                                <button type="button" class="btn btn-default btn-sm"
+                                <button type="button" class="btn btn-default"
                                         onclick="window.location.href = '@Url.Action("MenuRefresh", "Cache")'">
                                     <i class="fa fa-refresh"></i>
                                 </button>
@@ -76,7 +76,7 @@
                                     </div>
                                     <input type="text" value="@(Model.MenuDate.HasValue ?
                                             Model.MenuDate.Value.ToString("yyyy年MM月dd日") : string.Empty)"
-                                           class="form-control input-sm" id="MenuDate" name="MenuDate" placeholder="菜单对应日期">
+                                           class="form-control" id="MenuDate" name="MenuDate" placeholder="菜单对应日期">
                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
                             </div>

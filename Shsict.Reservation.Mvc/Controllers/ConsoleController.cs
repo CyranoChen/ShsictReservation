@@ -197,6 +197,8 @@ namespace Shsict.Reservation.Mvc.Controllers
                 model.Orders = mapper.Map<IEnumerable<OrderDto>>(list.AsEnumerable()).ToList();
             }
 
+            model.DeliveryZones = Delivery.Cache.DeliveryZoneList;
+
             return View(model);
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Shsict.Core;
+using Shsict.Reservation.Mvc.Entities;
 
 namespace Shsict.Reservation.Mvc.Models
 {
@@ -16,6 +17,8 @@ namespace Shsict.Reservation.Mvc.Models
         public class OrderManagementDto
         {
             public DateTime? MenuDate { get; set; }
+
+            public List<Delivery> DeliveryZones { get; set; }
 
             public List<OrderDto> Orders { get; set; }
         }
