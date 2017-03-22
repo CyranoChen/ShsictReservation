@@ -28,16 +28,38 @@
                 }
             });
 
-            @*$.getJSON("@Url.Action("GetDeliveryPointByZone","Reservation")", { zid: "911954b1-daf9-48a9-b9b7-f16afec50dde" }, function (data, status) {
-                if (status === "success" && data != null) {
-                    if (data.result !== "error" && JSON.stringify(data) !== "[]") {
-                        alert(data);
-                    } 
-                } else {
-                    alert("调用数据接口失败(GetDeliveryPointByZone)");
-                }
-            });*@
+            bindDeliveryPointByZone($("select#DeliveryZone").val());
+
+            $("select#DeliveryZone").change(function () {
+                bindDeliveryPointByZone($(this).val());
+            });
         });
+
+        function bindDeliveryPointByZone(zid) {
+            if (zid !== "") {
+                $.getJSON("@Url.Action("GetDeliveryPointByZone","Reservation")", { zid }, function (data, status) {
+                    if (status === "success" && data != null) {
+                        if (JSON.stringify(data) !== "[]") {
+                            $("select#DeliveryPoint").empty();
+                            $.each(data, function (i, entry) {
+                                $("select#DeliveryPoint").append($("<option>", { value: entry.ID })
+                                    .text(entry.DeliveryName));
+                            });
+                        } else {
+                            $("select#DeliveryPoint").empty();
+                            $("select#DeliveryPoint").append($("<option>", { value: zid }).prop("selected", "selected")
+                                // 如果对应订餐区域无订餐点，则显示订餐区域信息
+                                .text($('select#DeliveryZone>option[selected=" selected"]').text()));
+                        }
+                    } else {
+                        alert("调用数据接口失败(GetDeliveryPointByZone)");
+                    }
+                });
+            } else {
+                $("select#DeliveryPoint").empty();
+                $("select#DeliveryPoint").append($("<option>", { value: "" }).text("-- 送餐点 --"));
+            }
+        }
     </script>
 }
 
@@ -71,8 +93,8 @@
             var tip = new TipDto
             {
                 Title = "当前时间 " + DateTime.Now.ToString("yyyy-MM-dd hh:mm"),
-                Message = String.Format("<p>午餐预订时间 {0}:00~{1}:00</p><p>夜宵预订时间 {2}:00~{3}:00</p>", 
-                    ConfigGlobal.MenuDuration[0], ConfigGlobal.MenuDuration[1], 
+                Message = String.Format("<p>午餐预订时间 {0}:00~{1}:00</p><p>夜宵预订时间 {2}:00~{3}:00</p>",
+                    ConfigGlobal.MenuDuration[0], ConfigGlobal.MenuDuration[1],
                     ConfigGlobal.MenuDuration[2], ConfigGlobal.MenuDuration[3]),
                 HyperLinkText = "<i class=\"fa fa-eye\"></i> 查看订餐记录",
                 HyperLinkHref = Url.Action("History", "Reservation")

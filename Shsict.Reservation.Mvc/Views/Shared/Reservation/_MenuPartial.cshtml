@@ -62,7 +62,7 @@
                     </li>
                     <li>
                         <select name="DeliveryZone" id="DeliveryZone" class="form-control no-border" style="width: 49%; display: inline">
-                            <option>-- 送餐区域 --</option>
+                            <option value="">-- 送餐区域 --</option>
                             @if (Model.DeliveryZones != null && Model.DeliveryZones.Count > 0)
                             {
                                 foreach (var m in Model.DeliveryZones)
@@ -75,7 +75,7 @@
                             }
                         </select>
                         <select name="DeliveryPoint" id="DeliveryPoint" class="form-control no-border" style="width: 49%; display: inline">
-                            <option>-- 送餐点 --</option>
+                            <option value="">-- 送餐点 --</option>
                             @* TODO *@
                             @if (Model.DeliveryZones != null && Model.DeliveryZones.Count > 0)
                             {

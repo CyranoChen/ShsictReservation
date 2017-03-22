@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Web.Mvc;
 using Shsict.Core;
 using Shsict.Reservation.Mvc.Entities;
@@ -80,12 +81,11 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         // AJAX JsonResult
         // GET: Reservation/GetDeliveryPointByZone?zid=911954b1-daf9-48a9-b9b7-f16afec50dde
-
         public JsonResult GetDeliveryPointByZone(Guid zid)
         {
-            // TODO
+            var list = Delivery.Cache.GetDeliveryPointsByZone(zid);
 
-            return Json(new { result = zid.ToString() });
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
 
 

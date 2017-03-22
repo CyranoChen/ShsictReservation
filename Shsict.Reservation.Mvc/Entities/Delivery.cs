@@ -28,9 +28,6 @@ namespace Shsict.Reservation.Mvc.Entities
         [DbColumn("DeliveryName")]
         public string DeliveryName { get; set; }
 
-        [DbColumn("PointDetail")]
-        public string PointDetail { get; set; }
-
         [DbColumn("ParentID")]
         public Guid? ParentID { get; set; }
 
@@ -77,7 +74,7 @@ namespace Shsict.Reservation.Mvc.Entities
                 return DeliveryZoneList.Find(x => x.ID == parentId);
             }
 
-            public static List<Delivery> GetDeliveryPointByZone(Guid guid)
+            public static List<Delivery> GetDeliveryPointsByZone(Guid guid)
             {
                 return DeliveryListActive.FindAll(x => x.ParentID.HasValue && x.ParentID.Value == guid);
             }
