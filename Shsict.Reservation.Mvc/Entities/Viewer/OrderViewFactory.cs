@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Shsict.Core;
 
@@ -24,7 +25,7 @@ namespace Shsict.Reservation.Mvc.Entities.Viewer
             DbSchema = Repository.GetTableAttr<OrderView>();
         }
 
-        public OrderView Single(object key)
+        public OrderView Single(object key, IDbTransaction trans = null)
         {
             return Dapper.Query<OrderView, User, Menu, Delivery, OrderView>(BuildSingleSql(),
                         (x, u, m, d) =>
@@ -34,10 +35,10 @@ namespace Shsict.Reservation.Mvc.Entities.Viewer
                             x.Delivery = d;
 
                             return x;
-                        }, new { key }, SplitOn).FirstOrDefault();
+                        }, new { key }, trans, SplitOn).FirstOrDefault();
         }
 
-        public OrderView Single(Criteria criteria)
+        public OrderView Single(Criteria criteria, IDbTransaction trans = null)
         {
             return Dapper.Query<OrderView, User, Menu, Delivery, OrderView>(BuildSingleSql(criteria),
                         (x, u, m, d) =>
@@ -47,10 +48,10 @@ namespace Shsict.Reservation.Mvc.Entities.Viewer
                             x.Delivery = d;
 
                             return x;
-                        }, criteria?.Parameters, SplitOn).FirstOrDefault();
+                        }, criteria?.Parameters, trans, SplitOn).FirstOrDefault();
         }
 
-        public List<OrderView> All()
+        public List<OrderView> All(IDbTransaction trans = null)
         {
             return Dapper.Query<OrderView, User, Menu, Delivery, OrderView>(BuildAllSql(),
                         (x, u, m, d) =>
@@ -60,10 +61,10 @@ namespace Shsict.Reservation.Mvc.Entities.Viewer
                             x.Delivery = d;
 
                             return x;
-                        }, null, SplitOn).ToList();
+                        }, null, trans, SplitOn).ToList();
         }
 
-        public List<OrderView> All(IPager pager, string orderBy = null)
+        public List<OrderView> All(IPager pager, string orderBy = null, IDbTransaction trans = null)
         {
             return Dapper.Query<OrderView, User, Menu, Delivery, OrderView>(BuildAllSql(pager, orderBy),
                         (x, u, m, d) =>
@@ -73,10 +74,10 @@ namespace Shsict.Reservation.Mvc.Entities.Viewer
                             x.Delivery = d;
 
                             return x;
-                        }, null, SplitOn).ToList();
+                        }, null, trans, SplitOn).ToList();
         }
 
-        public List<OrderView> Query(Criteria criteria)
+        public List<OrderView> Query(Criteria criteria, IDbTransaction trans = null)
         {
             return Dapper.Query<OrderView, User, Menu, Delivery, OrderView>(BuildQuerySql(criteria),
                         (x, u, m, d) =>
@@ -86,7 +87,7 @@ namespace Shsict.Reservation.Mvc.Entities.Viewer
                             x.Delivery = d;
 
                             return x;
-                        }, criteria?.Parameters, SplitOn).ToList();
+                        }, criteria?.Parameters, trans, SplitOn).ToList();
         }
     }
 }
