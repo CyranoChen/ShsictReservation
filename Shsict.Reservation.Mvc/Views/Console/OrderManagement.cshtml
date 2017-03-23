@@ -151,7 +151,6 @@
                                     <th>用餐人</th>
                                     <th>送餐点</th>
                                     <th>创建时间</th>
-                                    <th>创建人</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -161,17 +160,16 @@
                                     @foreach (var m in Model.Orders)
                                     {
                                         <tr>
-                                            <td><input type="checkbox" value="@m.ID"> @m.ID</td>
-                                            <td>@m.MenuDate.ToString("yyyy-MM-dd")</td>
+                                            <td><input type="checkbox" value="@m.ID" title="@m.ID"></td>
+                                            <td>@m.MenuDate.ToString("yyyyMMdd")</td>
                                             <td>@m.MenuName</td>
                                             <td>@m.Flag</td>
                                             <td>@m.StapleFood @if (m.ExtraFood)
-                                            { @Html.Raw("(加饭)") }</td>
+                                            { @Html.Raw("(+)") }</td>
                                             <td>@m.UserName @if (!string.IsNullOrEmpty(m.EmployeeNo))
                                             { @Html.Raw("(" + m.EmployeeNo + ")")}</td>
                                             <td>@m.DeliveryZone -> @m.DeliveryPoint</td>
-                                            <td>@m.CreateTime.ToString("yyyy-MM-dd HH:mm")</td>
-                                            <td>@m.CreateUser</td>
+                                            <td>@m.CreateTime.ToString("yyyyMMdd HH:mm")</td>
                                             <td>
                                                 <a href="@Url.Action("Order", "Console", new {id = m.ID})" class="btn btn-info btn-xs">
                                                     <i class="fa fa-pencil"></i> 修改
