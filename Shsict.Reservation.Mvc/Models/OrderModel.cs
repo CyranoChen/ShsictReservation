@@ -15,6 +15,7 @@ namespace Shsict.Reservation.Mvc.Models
                     ID = s.OrderID,
                     UserGuid = s.User.ID,
                     UserName = s.User.EmployeeName,
+                    EmployeeNo = s.User.EmployeeNo,
                     MenuID = s.Menu.ID,
                     MenuDate = s.Menu.MenuDate,
                     MenuType = s.Menu.MenuType,
@@ -56,6 +57,8 @@ namespace Shsict.Reservation.Mvc.Models
         public Guid UserGuid { get; set; }
 
         public string UserName { get; set; }
+
+        public string EmployeeNo { get; set; }
 
         public int MenuID { get; set; }
 

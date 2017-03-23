@@ -15,7 +15,7 @@ namespace Shsict.Reservation.Tests
         {
             var factory = new OrderViewFactory();
 
-            var key1 = 1;
+            var key1 = 14;
 
             var instance1 = factory.Single(key1);
 
