@@ -33,7 +33,7 @@
             });
 
             $("#btnDelete").click(function () {
-                if (confirm("确认删除此菜单吗？") && $("#formMenu").valid()) {
+                if (confirm("确认删除此菜单吗？\r\n提醒：删除菜单会同时删除对应菜单下的所有订餐记录") && $("#formMenu").valid()) {
                     $("form#formMenu").attr("action", "@Url.Action("MenuDelete", "Console")");
 
                     document.forms["formMenu"].submit();
@@ -84,7 +84,7 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="text" value="@((Model != null && Model.MenuDate != null 
+                                <input type="text" value="@((Model != null && Model.MenuDate != null
                                        ? Model.MenuDate.Value : DateTime.Today).ToString("yyyy年MM月dd日"))"
                                        class="form-control" id="MenuDate" name="MenuDate">
                             </div>
@@ -138,7 +138,7 @@
 
                             @if (Model != null && Model.ID > 0)
                             {
-                                <button type="submit" class="btn btn-danger" id="btnDelete">
+                                <button type="button" class="btn btn-danger" id="btnDelete">
                                     <i class="fa fa-trash-o"></i> 删除菜单
                                 </button>
                             }

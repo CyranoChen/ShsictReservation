@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Web.Mvc;
 using Shsict.Core;
 using Shsict.Reservation.Mvc.Entities;
@@ -25,10 +24,12 @@ namespace Shsict.Reservation.Mvc.Controllers
         {
             var model = new ReservationModels.IndexDto();
 
-            var list = _repo.Query<Menu>(x => x.MenuDate == DateTime.Today);
+            var menuType = GetMenuLunchOrSupper();
 
-            var menuA = list.Find(x => x.MenuType == GetMenuLunchOrSupper() && x.MenuFlag == "A" && x.IsActive);
-            var menuB = list.Find(x => x.MenuType == GetMenuLunchOrSupper() && x.MenuFlag == "B" && x.IsActive);
+            var menuA = Menu.Cache.MenuListActiveToday.Find(x =>
+                x.MenuType == menuType && x.MenuFlag == "A");
+            var menuB = Menu.Cache.MenuListActiveToday.Find(x =>
+                x.MenuType == menuType && x.MenuFlag == "B");
 
             var mapper = MenuDto.ConfigMapper().CreateMapper();
 
@@ -60,11 +61,11 @@ namespace Shsict.Reservation.Mvc.Controllers
                     }
                 }
 
-                if (GetMenuLunchOrSupper().Equals(MenuTypeEnum.Lunch))
+                if (menuType.Equals(MenuTypeEnum.Lunch))
                 {
                     model.MenuStyle = "green";
                 }
-                else if (GetMenuLunchOrSupper().Equals(MenuTypeEnum.Supper))
+                else if (menuType.Equals(MenuTypeEnum.Supper))
                 {
                     model.MenuStyle = "purple";
                 }
@@ -181,7 +182,8 @@ namespace Shsict.Reservation.Mvc.Controllers
             // 有对应订单，并可取消，且是当前用户的订单
             if (o != null && CanCancelNow(o.MenuID) && o.UserGuid == _authorizedUser.ID)
             {
-                _repo.Delete<Order>(id);
+                o.IsActive = false;
+                _repo.Update(o);
             }
 
             return RedirectToAction("History", "Reservation");

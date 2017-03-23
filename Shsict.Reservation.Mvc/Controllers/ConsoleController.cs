@@ -144,18 +144,37 @@ namespace Shsict.Reservation.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
+                using (var trans = DapperHelper.MarsConnection.BeginTransaction())
                 {
-                    if (model.ID > 0 && _repo.Delete<Menu>(model.ID) > 0)
+                    try
                     {
-                        Entities.Menu.Cache.RefreshCache();
+                        if (model.ID > 0 && _repo.Delete<Menu>(model.ID, trans) > 0)
+                        {
+                            var list = _repo.Query<Order>(x => x.MenuID == model.ID, trans);
 
-                        return RedirectToAction("MenuManagement", "Console");
+                            if (list != null && list.Count > 0)
+                            {
+                                foreach (var o in list)
+                                {
+                                    o.IsActive = false;
+                                }
+                            }
+
+                            list.Update(trans);
+
+                            trans.Commit();
+
+                            Entities.Menu.Cache.RefreshCache();
+
+                            return RedirectToAction("MenuManagement", "Console");
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("Warn", ex.Message);
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();
+
+                        ModelState.AddModelError("Warn", ex.Message);
+                    }
                 }
             }
 
