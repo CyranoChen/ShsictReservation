@@ -66,6 +66,7 @@ namespace Shsict.Reservation.Mvc.Controllers
             return View(model);
         }
 
+
         // GET: Account/Login
 
         public ActionResult Login(bool weChatRedirect = true)
@@ -83,15 +84,43 @@ namespace Shsict.Reservation.Mvc.Controllers
             return View();
         }
 
+
         // POST: /Account/Login
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(string employeeNo, string password, string rememberMe)
+        public ActionResult Login(AccountModels.LoginDto model, string returnUrl)
         {
-            // TODO DEBUG
+            if (ModelState.IsValid)
+            {
+                var auth = new AuthorizeManager();
 
-            return RedirectToAction("DebugRegister", "Account");
+                if (auth.AuthorizeEmployee(model.UserId, model.Password))
+                {
+                    var u = auth.GetSession();
+
+                    // Sign in
+                    FormsAuthentication.SetAuthCookie(u.UserId, !string.IsNullOrEmpty(model.RememberMe));
+
+                    if (Url.IsLocalUrl(returnUrl)) { return Redirect(returnUrl); }
+
+                    if (ConfigGlobal.IsSystemAdmin(u.UserId))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Reservation");
+                    }
+
+                }
+                else
+                {
+                    ModelState.AddModelError("Warn", "用户名或密码不正确");
+                }
+            }
+
+            return View(model);
         }
 
         //
@@ -189,68 +218,111 @@ namespace Shsict.Reservation.Mvc.Controllers
         }
 
 
+        #region 用户认证状态码
+
+        private static string ErrorCodeToString(MembershipCreateStatus createStatus)
+        {
+            // See http://go.microsoft.com/fwlink/?LinkID=177550 for
+            // a full list of status codes.
+            switch (createStatus)
+            {
+                case MembershipCreateStatus.DuplicateUserName:
+                    return "此用户名已存在";
+
+                case MembershipCreateStatus.DuplicateEmail:
+                    return "此邮箱已被其他用户注册使用";
+
+                case MembershipCreateStatus.InvalidPassword:
+                    return "此密码不符合密码规则";
+
+                case MembershipCreateStatus.InvalidEmail:
+                    return "此邮箱地址无效";
+
+                case MembershipCreateStatus.InvalidAnswer:
+                    return "此密码问题答案无效";
+
+                case MembershipCreateStatus.InvalidQuestion:
+                    return "此密码问题无效";
+
+                case MembershipCreateStatus.InvalidUserName:
+                    return "此用户名无效";
+
+                case MembershipCreateStatus.ProviderError:
+                    return "注册过程出错，请联系管理员";
+
+                case MembershipCreateStatus.UserRejected:
+                    return "此申请被取消";
+
+                default:
+                    return "发生未知错误，请联系管理员";
+            }
+        }
+
+        #endregion
+
+
         // Get: Account/Debug
 
-        public ActionResult Debug(string code, string state)
-        {
-            var authClient = new WeChatAuthClient();
+        //public ActionResult Debug(string code, string state)
+        //{
+        //    var authClient = new WeChatAuthClient();
 
-            ViewBag.Code = code;
-            ViewBag.State = state;
+        //    ViewBag.Code = code;
+        //    ViewBag.State = state;
 
-            ViewBag.Result = authClient.GetUserInfo(code);
+        //    ViewBag.Result = authClient.GetUserInfo(code);
 
-            if (!string.IsNullOrEmpty(ViewBag.Result))
-            {
-                JToken json = JToken.Parse(ViewBag.Result.ToString());
+        //    if (!string.IsNullOrEmpty(ViewBag.Result))
+        //    {
+        //        JToken json = JToken.Parse(ViewBag.Result.ToString());
 
-                if (json["UserId"] != null && json["DeviceId"] != null)
-                {
-                    // 企业成员授权时返回 {"UserId":"cyrano","DeviceId":"3cc38f93c7d87eec0103c06feca4779f"}
-                    var userid = json["UserId"].Value<string>();
-                    var deviceId = json["DeviceId"].Value<string>();
+        //        if (json["UserId"] != null && json["DeviceId"] != null)
+        //        {
+        //            // 企业成员授权时返回 {"UserId":"cyrano","DeviceId":"3cc38f93c7d87eec0103c06feca4779f"}
+        //            var userid = json["UserId"].Value<string>();
+        //            var deviceId = json["DeviceId"].Value<string>();
 
-                    var userclient = new WeChatUserClient();
+        //            var userclient = new WeChatUserClient();
 
-                    ViewBag.User = userclient.GetUser(userid);
-                }
-            }
+        //            ViewBag.User = userclient.GetUser(userid);
+        //        }
+        //    }
 
-            ViewBag.AccessToken = HttpContext?.Cache["AccessToken"].ToString();
+        //    ViewBag.AccessToken = HttpContext?.Cache["AccessToken"].ToString();
 
-            return View();
-        }
+        //    return View();
+        //}
 
 
         // Get: Account/DebugRegister
 
-        public ActionResult DebugRegister()
-        {
-            var result = new { UserId = "cyrano", DeviceId = "3cc38f93c7d87eec0103c06feca4779f" }.ToJson();
+        //public ActionResult DebugRegister()
+        //{
+        //    var result = new { UserId = "cyrano", DeviceId = "3cc38f93c7d87eec0103c06feca4779f" }.ToJson();
 
-            var json = JToken.Parse(result);
+        //    var json = JToken.Parse(result);
 
-            if (json["UserId"] != null && json["DeviceId"] != null)
-            {
-                // 企业成员授权时返回 {"UserId":"cyrano","DeviceId":"3cc38f93c7d87eec0103c06feca4779f"}
-                var userid = json["UserId"].Value<string>();
-                var deviceId = json["DeviceId"].Value<string>();
+        //    if (json["UserId"] != null && json["DeviceId"] != null)
+        //    {
+        //        // 企业成员授权时返回 {"UserId":"cyrano","DeviceId":"3cc38f93c7d87eec0103c06feca4779f"}
+        //        var userid = json["UserId"].Value<string>();
+        //        var deviceId = json["DeviceId"].Value<string>();
 
-                // 授权当前企业号成员
-                var auth = new AuthorizeManager();
+        //        // 授权当前企业号成员
+        //        var auth = new AuthorizeManager();
 
-                if (auth.AuthorizeUser(userid, deviceId))
-                {
-                    // 设置Cookie
-                    FormsAuthentication.SetAuthCookie(userid, true);
+        //        if (auth.AuthorizeUser(userid, deviceId))
+        //        {
+        //            // 设置Cookie
+        //            FormsAuthentication.SetAuthCookie(userid, true);
 
-                    // 授权成功跳转订餐界面
-                    return RedirectToAction("Index", "Reservation");
-                }
-            }
+        //            // 授权成功跳转订餐界面
+        //            return RedirectToAction("Index", "Reservation");
+        //        }
+        //    }
 
-            // 授权失败跳转登录界面
-            return RedirectToAction("Login", "Account", new { weChatRedirect = false });
-        }
+        //    // 授权失败跳转登录界面
+        //    return RedirectToAction("Login", "Account", new { weChatRedirect = false });
+        //}
     }
 }

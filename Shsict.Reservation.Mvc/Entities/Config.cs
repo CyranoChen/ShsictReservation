@@ -40,12 +40,11 @@ namespace Shsict.Reservation.Mvc.Entities
             };
         }
 
-        public static bool IsSystemAdmin(int userid)
+        public static bool IsSystemAdmin(string userId)
         {
-            var admins = SystemAdmin;
-            if (userid > 0 && admins.Length > 0)
+            if (!string.IsNullOrEmpty(userId) && SystemAdmin.Length > 0)
             {
-                return admins.Any(a => a == userid.ToString());
+                return SystemAdmin.Any(a => a.Equals(userId, StringComparison.OrdinalIgnoreCase));
             }
 
             return false;

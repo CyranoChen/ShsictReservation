@@ -27,11 +27,40 @@ namespace Shsict.Reservation.Mvc.Services
             // 数据库中不存在对应的企业号成员，需要新增成员并持久化User, UserWeChat
             // 如数据库中存在，则同步成员信息，并更新时间戳
             user = SyncUserWithWeChat(userId, deviceId);
-            
+
             // 设置授权Session
             return user != null && SetSession(user.ID);
         }
 
+        public bool AuthorizeEmployee(string userId, string password)
+        {
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            {
+                try
+                {
+                    var user = _repo.Query<User>(x => x.Password == Encrypt.GetMd5Hash(password), trans).Find(x =>
+                        x.IsActive && (x.UserName.Equals(userId, StringComparison.OrdinalIgnoreCase) ||
+                                       x.EmployeeNo.Equals(userId, StringComparison.OrdinalIgnoreCase)));
+
+                    if (user != null)
+                    {
+                        user.LastLoginDate = DateTime.Now;
+
+                        _repo.Update(user, trans);
+
+                        trans.Commit();
+
+                        return SetSession(user.ID);
+                    }
+                }
+                catch
+                {
+                    trans.Rollback();
+                }
+            }
+
+            return false;
+        }
 
         public bool AuthorizeGuest(string openid, string deviceId)
         {
@@ -90,11 +119,10 @@ namespace Shsict.Reservation.Mvc.Services
 
                 if (userWeChat != null)
                 {
-                    // TODO 需要测试
-                    // u = userWeChat.MapTo(u);
+                    u = userWeChat.MapTo(u);
 
-                    u.Avatar = userWeChat.Avatar;
-                    u.Gender = userWeChat.Gender;
+                    //u.Avatar = userWeChat.Avatar;
+                    //u.Gender = userWeChat.Gender;
                 }
 
                 // 设置授权Session
