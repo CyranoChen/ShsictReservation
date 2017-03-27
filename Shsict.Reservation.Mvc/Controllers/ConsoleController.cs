@@ -67,6 +67,10 @@ namespace Shsict.Reservation.Mvc.Controllers
 
                     model.Name = menu.MenuType.ToString();
                     model.Flag = menu.MenuFlag;
+
+                    // 计算该菜单已订餐的有效订单数量，如有则不能修改
+                    // ReSharper disable once RedundantBoolCompare
+                    model.OrderCount = _repo.Count<Order>(x => x.MenuID == id && x.IsActive == true);
                 }
             }
             else
@@ -87,6 +91,14 @@ namespace Shsict.Reservation.Mvc.Controllers
             {
                 try
                 {
+                    // 菜单时间在今天之前的菜单不可更新
+                    if (model.MenuDate < DateTime.Today)
+                    {
+                        ModelState.AddModelError("Error", "此菜单日期早于今天，无法添加或修改");
+
+                        return View(model);
+                    }
+
                     // 如存在同天且相同午餐或晚餐的同套餐则提示重复
                     if (model.ID <= 0 && _repo.Any<Menu>(x =>
                         x.MenuDate == model.MenuDate.Value &&
@@ -96,6 +108,16 @@ namespace Shsict.Reservation.Mvc.Controllers
                         x.MenuFlag == model.Flag && x.IsActive == true))
                     {
                         ModelState.AddModelError("Error", "已存在同一时间段的重复套餐，无法添加");
+
+                        return View(model);
+                    }
+
+                    // 如该菜单已有订单，则不能修改，只能删除
+                    // ReSharper disable once RedundantBoolCompare
+                    // Shsict.Core.ConditionBuilder
+                    if (_repo.Any<Order>(x => x.MenuID == model.ID && x.IsActive == true))
+                    {
+                        ModelState.AddModelError("Error", "此菜单已存在订餐申请，无法修改");
 
                         return View(model);
                     }

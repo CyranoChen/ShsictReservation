@@ -86,6 +86,8 @@ namespace Shsict.Reservation.Mvc.Models
         [Display(Name = "素菜(二)")]
         public string Vegetable2 { get; set; }
 
+        public int OrderCount { get; set; }
+
         #endregion
     }
 }

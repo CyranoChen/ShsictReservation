@@ -49,7 +49,7 @@
     <section class="content-header">
         <h1>
             <b><i class="fa fa-calendar-minus-o"></i> 菜单管理</b>
-            <small>管理每天菜谱，分午餐和夜宵，必有A/B套</small>
+            <small>1.只能维护当日及以后菜单 2.每餐必有A/B套 3.如有订餐记录则不能修改，只能删除</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="@Url.Action("Index","Home")"><i class="fa fa-dashboard"></i> 管理控制台</a></li>
@@ -132,14 +132,21 @@
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary" id="btnMenu">
-                                <i class="fa fa-floppy-o"></i> 保存菜单
-                            </button>
+                            @if (Model == null || Model != null && Model.OrderCount == 0)
+                            {
+                                <button type="submit" class="btn btn-primary" id="btnMenu">
+                                    <i class="fa fa-floppy-o"></i> 保存菜单
+                                </button>
+                            }
 
                             @if (Model != null && Model.ID > 0)
                             {
                                 <button type="button" class="btn btn-danger" id="btnDelete">
                                     <i class="fa fa-trash-o"></i> 删除菜单
+                                    @if (Model.OrderCount > 0)
+                                    {
+                                        @Html.Raw("(" + Model.OrderCount + ")")
+                                    }
                                 </button>
                             }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using Newtonsoft.Json.Linq;
 using Shsict.Core;
@@ -265,9 +266,14 @@ namespace Shsict.Reservation.Mvc.Services
                     {
                         var departments = json["department"].Value<JArray>();
 
-                        if (departments != null && departments.Count > 0 && departments.Last["name"] != null)
+                        if (departments != null && departments.Count > 0)
                         {
-                            return departments.Last["name"].Value<string>();
+                            var d = departments.FirstOrDefault(x => x["id"].Value<int>() == id);
+
+                            if (d != null)
+                            {
+                                return d["name"].Value<string>();
+                            }
                         }
                     }
                 }
