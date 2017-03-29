@@ -23,7 +23,11 @@
             });
 
             $("#btnMenuOrder").click(function () {
-                if ($("#formMenuOrder").valid()) {
+                if ($("select#DeliveryZone").val() === "" || $("select#DeliveryPoint").val() === "") {
+                    alert("请选择送餐区域与送餐点");
+                }
+
+                if ($("#formMenuOrder").valid() && confirm()) {
                     document.forms["formMenuOrder"].submit();
                 }
             });

@@ -15,8 +15,12 @@
                 "lengthChange": false,
                 "searching": true,
                 "ordering": false,
-                "info": true,
+                "info": false,
                 "autoWidth": false
+            });
+
+            $("input.config").change(function () {
+                $.post("@Url.Action("Config","Console")", { key: $(this).prop("id"), value: $(this).val() });
             });
         });
     </script>
@@ -28,7 +32,7 @@
     <section class="content-header">
         <h1>
             <b><i class="fa fa-sliders"></i> 配置管理</b>
-            <small></small>
+            <small>请务必仔细维护配置项，修改后将直接保存入库生效，并刷新配置缓存</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="@Url.Action("Index","Home")"><i class="fa fa-dashboard"></i> 管理控制台</a></li>
@@ -47,7 +51,7 @@
                                 <tr>
                                     <th>配置名</th>
                                     <th>配置值</th>
-                                    <th>操作</th>
+                                    <th>备注</th>
                                 </tr>
                             </thead>
                             @if (Model.Configs != null && Model.Configs.Count > 0)
@@ -56,9 +60,11 @@
                                     @foreach (var m in Model.Configs)
                                     {
                                         <tr>
-                                            <td>@m.ConfigKey</td>
-                                            <td><input type="text" class="form-control" style="width: 500px" value="@m.ConfigValue" id="@m.ConfigKey" /></td>
-                                            <td><a href="#" class="btn btn-info"><i class="fa fa-save"></i> 保存</a></td>
+                                            <td>@m.ConfigKey </td>
+                                            <td>
+                                                <input type="text" class="form-control config" style="width: 500px" value="@m.ConfigValue" id="@m.ConfigKey" />
+                                            </td>
+                                            <td></td>
                                         </tr>
                                     }
                                 </tbody>

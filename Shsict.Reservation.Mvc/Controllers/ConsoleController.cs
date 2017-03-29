@@ -308,5 +308,30 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             return View(model);
         }
+
+
+        // AJAX JsonResult
+        // POST:  Console/Config
+        [HttpPost]
+        public JsonResult Config(string key, string value)
+        {
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(value))
+            {
+                var config = _repo.Single<Config>(x => x.ConfigKey == key && x.ConfigSystem == ConfigSystem.Reservation.ToString());
+
+                if (config != null)
+                {
+                    config.ConfigValue = value;
+
+                    config.Save();
+
+                    Core.Config.Cache.RefreshCache();
+
+                    return Json("Success");
+                }
+            }
+
+            return Json("Failed");
+        }
     }
 }

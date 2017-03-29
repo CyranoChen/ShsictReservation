@@ -14,7 +14,11 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="@Url.Action("MenuManagement","Console")"><i class="fa fa-calendar-minus-o"></i> 菜单管理</a></li>
-                    <li><a href="@Url.Action("OrderManagement","Console")"><i class="fa fa-clipboard"></i> 订餐查询</a></li>
+                    <li>
+                        <a href="@Url.Action("OrderManagement", "Console", new { @date = DateTime.Today.ToString("yyyy-MM-dd") })">
+                            <i class="fa fa-clipboard"></i> 订餐查询
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="treeview">
@@ -28,7 +32,7 @@
                     <li><a href="@Url.Action("UserManagement","Console")"><i class="fa fa-user"></i> 用户管理</a></li>
                     <li><a href="#"><i class="fa fa-map-marker"></i> 地点管理</a></li>
                     <li><a href="@Url.Action("ConfigManagement","Console")"><i class="fa fa-sliders"></i> 配置管理</a></li>
-                    <li><a href="#"><i class="fa fa-tasks"></i> 计划任务</a></li>
+                    @*<li><a href="#"><i class="fa fa-tasks"></i> 计划任务</a></li>*@
                 </ul>
             </li>
             <li><a href="#"><i class="fa fa-question-circle"></i> <span>系统帮助</span></a></li>
@@ -36,4 +40,3 @@
     </section>
     <!-- /.sidebar -->
 </aside>
-

@@ -15,7 +15,7 @@
     @Scripts.Render("~/bundles/icheck")
 
     <script type="text/javascript">
-        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+        $.fn.dataTable.ext.search.push(function (settings, data) {
             var selectedZone = $("#DeliveryZone").val();
             var deliveryZone = data[6];
 
@@ -39,6 +39,7 @@
             var table = $("#tblOrder").DataTable({
                 "paging": true,
                 "lengthChange": false,
+                "searching": true,
                 "ordering": false,
                 "info": true,
                 "autoWidth": true
