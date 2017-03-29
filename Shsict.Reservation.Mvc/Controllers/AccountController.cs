@@ -30,7 +30,9 @@ namespace Shsict.Reservation.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(UserDto model)
         {
-            if (ModelState.IsValid)
+            var authorizedUser = new AuthorizeManager().GetSession();
+
+            if (ModelState.IsValid && authorizedUser.ID == model.ID)
             {
                 try
                 {
@@ -64,6 +66,46 @@ namespace Shsict.Reservation.Mvc.Controllers
             }
 
             return View(model);
+        }
+
+
+        // POST: /Account
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Password(AccountModels.PasswordDto model)
+        {
+            var authorizedUser = new AuthorizeManager().GetSession();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var user = _repo.Single<User>(authorizedUser.ID);
+
+                    if (user != null && user.Password == Encrypt.GetMd5Hash(model.OldPassword))
+                    {
+                        user.Password = Encrypt.GetMd5Hash(model.NewPassword);
+
+                        // 更新用户信息
+                        _repo.Update(user);
+
+                        ModelState.AddModelError("Success", "保存成功");
+
+                        return RedirectToAction("Logout", "Account");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Error", "用户旧密码填写不正确");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Warn", ex.Message);
+                }
+            }
+
+            return RedirectToAction("Index", "Account");
         }
 
 

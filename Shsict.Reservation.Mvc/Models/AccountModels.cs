@@ -4,7 +4,7 @@ namespace Shsict.Reservation.Mvc.Models
 {
     public class AccountModels
     {
-        public class ChangePasswordModel
+        public class PasswordDto
         {
             [Required(ErrorMessage = "请填写{0}")]
             [DataType(DataType.Password, ErrorMessage = "请正确填写{0}")]
