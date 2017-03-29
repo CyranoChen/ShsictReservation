@@ -325,7 +325,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
                     config.Save();
 
-                    Core.Config.Cache.RefreshCache();
+                    ConfigGlobal.Refresh();
 
                     return Json("Success");
                 }

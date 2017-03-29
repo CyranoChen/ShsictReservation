@@ -79,12 +79,13 @@
             </div>
             <!-- /.row -->
         }
-        else if (Model.MenuA != null && Model.MenuB != null && !Model.CanReserveNow)
+        else if (Model.MenuA != null && Model.MenuB != null && !Model.CanReserveNow && Model.MyCurrentOrder != null)
         {
             var tip = new TipDto
             {
                 Title = "当前时间 " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
-                Message = @"您已经成功预订了此时段套餐。",
+                Message = string.Format(@"<p>您已经成功预订了此时段套餐。</p>
+                                     <p>{0}</p>", Model.MyCurrentOrder.ToString()),
                 HyperLinkText = "<i class=\"fa fa-eye\"></i> 查看订餐记录",
                 HyperLinkHref = Url.Action("History", "Reservation")
             };

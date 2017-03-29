@@ -26,7 +26,7 @@ namespace Shsict.Reservation.Mvc.Scheduler
 
                 Config.UpdateAssemblyInfo(Assembly.GetExecutingAssembly(), ConfigSystem.Reservation);
 
-                Config.Cache.RefreshCache();
+                ConfigGlobal.Refresh();
 
                 Delivery.Cache.RefreshCache();
                 Menu.Cache.RefreshCache();

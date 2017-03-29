@@ -23,27 +23,27 @@ namespace Shsict.Reservation.Mvc.Models
                             return string.Empty;
                     }
                 }))
-                .ForMember(d => d.Duration, opt => opt.ResolveUsing(s =>
-                {
-                    // TODO 从配置中取值
-                    //var duration = ConfigGlobal.MenuDuration;
-
-                    switch (s.MenuType)
-                    {
-                        case MenuTypeEnum.Lunch:
-                            return $"7:00~9:00";
-                        case MenuTypeEnum.Supper:
-                            return $"18:00~20:00";
-                        default:
-                            return string.Empty;
-                    }
-                }))
+                .ForMember(d => d.Duration, opt => opt.MapFrom(s => GetDurationInfo(s.MenuType)))
                 .ForMember(d => d.Flag, opt => opt.MapFrom(s => $" {s.MenuFlag} 套餐"))
                 );
 
             return config;
         }
 
+        private static string GetDurationInfo(MenuTypeEnum mt)
+        {
+            var duration = ConfigGlobal.MenuDuration;
+
+            switch (mt)
+            {
+                case MenuTypeEnum.Lunch:
+                    return $"{duration[0]}:00~{duration[1]}:00";
+                case MenuTypeEnum.Supper:
+                    return $"{duration[2]}:00~{duration[3]}:00";
+                default:
+                    return string.Empty;
+            }
+        }
 
         #region Members and Properties
 

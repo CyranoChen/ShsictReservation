@@ -77,6 +77,12 @@ namespace Shsict.Reservation.Mvc.Controllers
                 model.CanReserveNow = false;
             }
 
+            // 获取今天最新订餐记录
+            if (menuA != null && menuB != null)
+            {
+                model.MyCurrentOrder = GetMyCurrentOrder(new[] {menuA.ID, menuB.ID});
+            }
+
             return View(model);
         }
 
@@ -235,6 +241,32 @@ namespace Shsict.Reservation.Mvc.Controllers
             }
 
             return false;
+        }
+
+        private OrderDto GetMyCurrentOrder(int[] ids)
+        {
+            if (GetMenuLunchOrSupper() != MenuTypeEnum.None)
+            {
+                // 获得预订了对应的套餐
+                var factory = new OrderViewFactory();
+
+                var critria = new Criteria
+                {
+                    WhereClause = $"UserGuid = '{_authorizedUser.ID}'",
+                    OrderClause = "PlaceTime DESC"
+                };
+
+                var order = factory.Query(critria).Find(x => ids.Any(id => id == x.Menu.ID));
+
+                if (order != null)
+                {
+                    var mapper = OrderDto.ConfigMapper().CreateMapper();
+
+                    return mapper.Map<OrderDto>(order);
+                }
+            }
+
+            return null;
         }
     }
 }

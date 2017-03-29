@@ -50,6 +50,13 @@ namespace Shsict.Reservation.Mvc.Models
             return config;
         }
 
+        public override string ToString()
+        {
+            var extra = ExtraFood ? "(加饭)" : string.Empty;
+            return $@"{MenuDate.ToString("2017年3月29日")}，{MenuName}{Flag}，
+                            主食：{StapleFood}{extra}，送餐点：{DeliveryZone}-{DeliveryPoint}";
+        }
+
         #region Members and Properties
 
         public int ID { get; set; }
