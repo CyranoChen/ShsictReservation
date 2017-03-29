@@ -1,40 +1,52 @@
-﻿<!-- Left side column. contains the logo and sidebar -->
+﻿@using Shsict.Reservation.Mvc.Entities
+@using Shsict.Reservation.Mvc.Services
+@{
+    var auth = new AuthorizeManager();
+    var authorizedUser = auth.GetSession();
+}
+<!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header">导航栏</li>
-            <li class="active treeview">
-                <a href="#">
-                    <i class="fa fa-cutlery"></i> <span>订餐管理</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="@Url.Action("MenuManagement","Console")"><i class="fa fa-calendar-minus-o"></i> 菜单管理</a></li>
-                    <li>
-                        <a href="@Url.Action("OrderManagement", "Console", new { @date = DateTime.Today.ToString("yyyy-MM-dd") })">
-                            <i class="fa fa-clipboard"></i> 订餐查询
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-cogs"></i> <span>系统管理</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="@Url.Action("UserManagement","Console")"><i class="fa fa-user"></i> 用户管理</a></li>
-                    <li><a href="#"><i class="fa fa-map-marker"></i> 地点管理</a></li>
-                    <li><a href="@Url.Action("ConfigManagement","Console")"><i class="fa fa-sliders"></i> 配置管理</a></li>
-                    @*<li><a href="#"><i class="fa fa-tasks"></i> 计划任务</a></li>*@
-                </ul>
-            </li>
+            @if (authorizedUser.Role >= UserRoleEnum.Canteen)
+            {
+                <li class="active treeview">
+                    <a href="#">
+                        <i class="fa fa-cutlery"></i> <span>订餐管理</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="@Url.Action("MenuManagement", "Console")"><i class="fa fa-calendar-minus-o"></i> 菜单管理</a></li>
+                        <li>
+                            <a href="@Url.Action("OrderManagement", "Console", new {@date = DateTime.Today.ToString("yyyy-MM-dd")})">
+                                <i class="fa fa-clipboard"></i> 订餐查询
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            }
+            @if (authorizedUser.Role == UserRoleEnum.Admin)
+            {
+                <li class="active treeview">
+                    <a href="#">
+                        <i class="fa fa-cogs"></i> <span>系统管理</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="@Url.Action("UserManagement", "Console")"><i class="fa fa-user"></i> 用户管理</a></li>
+                        <li><a href="#"><i class="fa fa-map-marker"></i> 地点管理</a></li>
+                        <li><a href="@Url.Action("ConfigManagement", "Console")"><i class="fa fa-sliders"></i> 配置管理</a></li>
+                        @*<li><a href="#"><i class="fa fa-tasks"></i> 计划任务</a></li>*@
+                    </ul>
+                </li>
+            }
             <li><a href="#"><i class="fa fa-question-circle"></i> <span>系统帮助</span></a></li>
         </ul>
     </section>

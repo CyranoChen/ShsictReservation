@@ -57,6 +57,9 @@ namespace Shsict.Reservation.Mvc.Entities
         [DbColumn("Mobile")]
         public string Mobile { get; set; }
 
+        [DbColumn("Role")]
+        public UserRoleEnum Role { get; set; }
+
         [DbColumn("IsApproved")]
         public bool IsApproved { get; set; }
 
@@ -73,5 +76,13 @@ namespace Shsict.Reservation.Mvc.Entities
         public string Remark { get; set; }
 
         #endregion
+    }
+
+    public enum UserRoleEnum
+    {
+        Employee = 0,
+        Manager = 1,
+        Canteen = 2,
+        Admin = 3
     }
 }

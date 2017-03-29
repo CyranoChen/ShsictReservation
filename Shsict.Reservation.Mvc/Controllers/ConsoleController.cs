@@ -5,12 +5,14 @@ using System.Web.Mvc;
 using Shsict.Core;
 using Shsict.Reservation.Mvc.Entities;
 using Shsict.Reservation.Mvc.Entities.Viewer;
+using Shsict.Reservation.Mvc.Filter;
 using Shsict.Reservation.Mvc.Models;
 using Shsict.Reservation.Mvc.Services;
 
 namespace Shsict.Reservation.Mvc.Controllers
 {
     [Authorize]
+    [CanteenRole]
     public class ConsoleController : Controller
     {
         private readonly IRepository _repo = new Repository();
@@ -24,7 +26,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
 
         // GET: Console/MenuManagement
-
+        
         public ActionResult MenuManagement(string date)
         {
             var model = new ConsoleModels.MenuManagementDto();
@@ -270,7 +272,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
 
         // GET: Console/UserManagement
-
+        [AdminRole]
         public ActionResult UserManagement()
         {
             var model = new ConsoleModels.UserManagementDto();
@@ -297,7 +299,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
 
         // GET: Console/ConfigManagement
-
+        [AdminRole]
         public ActionResult ConfigManagement()
         {
             var model = new ConsoleModels.ConfigManagementDto
@@ -312,6 +314,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         // AJAX JsonResult
         // POST:  Console/Config
+        [AdminRole]
         [HttpPost]
         public JsonResult Config(string key, string value)
         {

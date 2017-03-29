@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Shsict.Reservation.Mvc.Entities;
 
 namespace Shsict.Reservation.Mvc.Models
 {
@@ -40,6 +41,8 @@ namespace Shsict.Reservation.Mvc.Models
         [DataType(DataType.PhoneNumber, ErrorMessage = "请正确填写{0}")]
         [Display(Name = "手机")]
         public string Mobile { get; set; }
+
+        public UserRoleEnum Role { get; set; }
 
         public string Avatar { get; set; }
 

@@ -134,6 +134,7 @@
     <Compile Include="Entities\UserWeChat.cs" />
     <Compile Include="Entities\Viewer\OrderView.cs" />
     <Compile Include="Entities\Viewer\OrderViewFactory.cs" />
+    <Compile Include="Filter\RoleFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

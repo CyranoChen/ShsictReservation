@@ -146,15 +146,16 @@ namespace Shsict.Reservation.Mvc.Controllers
 
                     if (Url.IsLocalUrl(returnUrl)) { return Redirect(returnUrl); }
 
-                    if (ConfigGlobal.IsSystemAdmin(u.UserId))
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Reservation");
-                    }
+                    //if (ConfigGlobal.IsSystemAdmin(u.UserId))
+                    //{
+                    //    return RedirectToAction("Index", "Home");
+                    //}
+                    //else
+                    //{
+                    //    return RedirectToAction("Index", "Reservation");
+                    //}
 
+                    return RedirectToAction("Index", "Reservation");
                 }
                 else
                 {

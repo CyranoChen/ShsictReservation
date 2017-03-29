@@ -148,7 +148,7 @@ namespace Shsict.Reservation.Mvc.Services
                 if (json["errcode"] != null && json["errmsg"] != null &&
                     json["errcode"].Value<int>() == 0 && json["errmsg"].Value<string>() == "ok")
                 {
-                    var user = new User();
+                    var user = new User { Role = UserRoleEnum.Employee };
                     var userWeChat = new UserWeChat();
 
                     // user: { "errcode":0,"errmsg":"ok","userid":"cyrano","name":"陈继麟","department":[17],"position":"技术工程师","mobile":"13818059707",
