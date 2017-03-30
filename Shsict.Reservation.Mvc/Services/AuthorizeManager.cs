@@ -148,7 +148,15 @@ namespace Shsict.Reservation.Mvc.Services
                 if (json["errcode"] != null && json["errmsg"] != null &&
                     json["errcode"].Value<int>() == 0 && json["errmsg"].Value<string>() == "ok")
                 {
-                    var user = new User { Role = UserRoleEnum.Employee };
+                    var user = new User
+                    {
+                        Password = Encrypt.GetMd5Hash("shsict"),
+                        Email = string.Empty,
+                        Role = UserRoleEnum.Employee,
+                        CreateDate = DateTime.Now,
+                        IsActive = true
+                    };
+
                     var userWeChat = new UserWeChat();
 
                     // user: { "errcode":0,"errmsg":"ok","userid":"cyrano","name":"陈继麟","department":[17],"position":"技术工程师","mobile":"13818059707",
@@ -186,7 +194,6 @@ namespace Shsict.Reservation.Mvc.Services
                             #region 封装 User 实例
 
                             user.UserName = json["userid"] != null ? json["userid"].Value<string>() : string.Empty;
-                            user.Password = Encrypt.GetMd5Hash("shsict");
                             user.EmployeeName = json["name"] != null ? json["name"].Value<string>() : string.Empty;
                             user.EmployeeNo = userdict.ContainsKey("工号") && userdict["工号"] != null ? userdict["工号"] : string.Empty;
 
@@ -201,12 +208,10 @@ namespace Shsict.Reservation.Mvc.Services
 
                             user.Team = userdict.ContainsKey("班组") && userdict["班组"] != null ? userdict["班组"] : string.Empty;
                             user.Position = json["position"] != null ? json["position"].Value<string>() : string.Empty;
-                            user.Email = string.Empty; // TODO
                             user.Mobile = json["mobile"] != null ? json["mobile"].Value<string>() : string.Empty;
                             user.IsApproved = json["status"]?.Value<bool>() ?? true;
                             user.LastLoginDate = DateTime.Now;
-                            user.CreateDate = DateTime.Now;
-                            user.IsActive = true;
+
                             user.Remark = json.ToString();
 
                             object key;

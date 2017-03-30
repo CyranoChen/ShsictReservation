@@ -270,7 +270,6 @@ namespace Shsict.Reservation.Mvc.Controllers
         }
 
 
-
         // GET: Console/UserManagement
         [AdminRole]
         public ActionResult UserManagement()
@@ -296,6 +295,36 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             return View(model);
         }
+
+
+        // AJAX JsonResult
+        // POST:  Console/SyncUser
+        [AdminRole]
+        [HttpPost]
+        public JsonResult SyncUser(string id)
+        {
+            Guid guid;
+
+            if (!string.IsNullOrEmpty(id) && Guid.TryParse(id, out guid))
+            {
+                var uw = _repo.Single<UserWeChat>(guid);
+
+                if (uw != null)
+                {
+                    var auth = new AuthorizeManager();
+
+                    var user = auth.SyncUserWithWeChat(uw.UserName);
+
+                    if (user.ID.Equals(guid))
+                    {
+                        return Json("Success");
+                    }
+                }
+            }
+
+            return Json("Failed");
+        }
+
 
 
         // GET: Console/ConfigManagement

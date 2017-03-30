@@ -9,7 +9,7 @@
     <script src="~/Scripts/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/datatables/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
-        $(function () {
+        $(function() {
             $("#tblUser").DataTable({
                 "paging": true,
                 "lengthChange": false,
@@ -17,6 +17,20 @@
                 "ordering": false,
                 "info": true,
                 "autoWidth": true
+            });
+
+            $("button.sync-user").click(function() {
+                $.post("@Url.Action("SyncUser", "Console")", { id: $(this).prop("id") }, function(data, status) {
+                    if (status === "success" && data != null) {
+                        if (JSON.stringify(data) !== "Success") {
+                            alert("通过微信通讯录接口，更新用户信息成功");
+                        } else {
+                            alert("通过微信通讯录接口，更新用户信息失败");
+                        }
+                    } else {
+                        alert("调用数据接口失败(SyncUser)");
+                    }
+                });
             });
         });
     </script>
@@ -68,7 +82,11 @@
                                             <td>@m.Team</td>
                                             <td>@m.Position</td>
                                             <td>@m.Mobile</td>
-                                            <td><a href="#" class="btn btn-info btn-xs"><i class="fa fa-refresh"></i> 更新信息</a></td>
+                                            <td>
+                                                <button type="button" class="btn btn-info btn-xs sync-user" id="@m.ID">
+                                                    <i class="fa fa-refresh"></i> 更新信息
+                                                </button>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>
