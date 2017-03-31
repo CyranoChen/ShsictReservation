@@ -42,6 +42,24 @@ namespace Shsict.Reservation.Mvc.Entities
         public string Remark { get; set; }
 
         #endregion
+
+        public static void Clean(int dateDiff)
+        {
+            IRepository repo = new Repository();
+
+            var criteria = new Criteria
+            {
+                WhereClause = $"CreateTime < '{DateTime.Today.AddDays(dateDiff)}' AND IsActive = 0",
+                OrderClause = "CreateTime DESC"
+            };
+
+            var list = repo.Query<Order>(criteria);
+
+            if (list != null && list.Count > 0)
+            {
+                list.Delete();
+            }
+        }
     }
 
     public enum StapleFoodEnum

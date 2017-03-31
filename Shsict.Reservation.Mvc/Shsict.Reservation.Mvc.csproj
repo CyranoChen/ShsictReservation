@@ -271,6 +271,7 @@
     <Content Include="Content\iCheck\square\_all.css" />
     <Content Include="Content\images\img-lunch.jpg" />
     <Content Include="Content\images\img-supper.jpg" />
+    <Content Include="Content\images\login-bg.png" />
     <Content Include="Content\skins\skin-black-light.css" />
     <Content Include="Content\skins\skin-black-light.min.css" />
     <Content Include="Content\skins\skin-black.css" />
@@ -466,8 +467,8 @@
     <Content Include="Views\Console\UserManagement.cshtml" />
     <Content Include="Views\Console\Menu.cshtml" />
     <Content Include="Views\Console\ConfigManagement.cshtml" />
-    <Content Include="Views\Console\Order.cshtml" />
     <Content Include="Views\Shared\_PasswordPartial.cshtml" />
+    <Content Include="Views\Console\Order.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

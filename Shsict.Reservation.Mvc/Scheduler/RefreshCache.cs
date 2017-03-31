@@ -31,6 +31,9 @@ namespace Shsict.Reservation.Mvc.Scheduler
                 Delivery.Cache.RefreshCache();
                 Menu.Cache.RefreshCache();
 
+                // 删除30天前的无效订单记录
+                Order.Clean(-30);
+
                 _log.Info("Scheduler End: (RefreshCache)", logInfo);
             }
             catch (Exception ex)

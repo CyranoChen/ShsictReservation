@@ -1,7 +1,205 @@
-﻿
+﻿@using Shsict.Reservation.Mvc.Entities
+@model Shsict.Reservation.Mvc.Models.OrderDto
 @{
-    ViewBag.Title = "Order";
+    ViewBag.Title = "订餐维护";
+
+    var zone = Model != null && Model.DeliveryPointGuid.HasValue ?
+        Delivery.Cache.GetParentZone(Model.DeliveryPointGuid.Value) : null;
 }
 
-<h2>Order</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/Scripts/datepicker/datepicker3.css">
+    @Styles.Render("~/Content/iCheck/css")
+}
 
+@section Scripts {
+    <script src="~/Scripts/datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
+    @Scripts.Render("~/bundles/icheck")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("#MenuDate").datepicker({
+                autoclose: true,
+                language: "zh-CN",
+                todayHighlight: true
+            });
+
+            //Flat color scheme for iCheck
+            $('input[type="radio"]').iCheck({
+                radioClass: 'iradio_flat-blue'
+            });
+
+            $("select#DeliveryZone").change(function () {
+                bindDeliveryPointByZone($(this).val());
+            });
+
+            $("#btnOrder").click(function () {
+                if ($("select#DeliveryZone").val() === "" || $("select#DeliveryPoint").val() === "") {
+                    alert("请选择送餐区域与送餐点");
+                }
+
+                if ($("#formOrder").valid()) {
+                    document.forms["formOrder"].submit();
+                }
+            });
+
+            $("#btnDelete").click(function () {
+                if (confirm("确认删除此订餐记录吗？") && $("#formOrder").valid()) {
+                    //TODO
+                    @*$("#formOrder").attr("action", "@Url.Action("OrderDelete", "Console")");*@
+
+                    document.forms["formOrder"].submit();
+                }
+            });
+        });
+
+        function bindDeliveryPointByZone(zid) {
+            if (zid !== "") {
+                $.getJSON("@Url.Action("GetDeliveryPointByZone","Reservation")", { zid }, function (data, status) {
+                    if (status === "success" && data != null) {
+                        if (JSON.stringify(data) !== "[]") {
+                            $("select#DeliveryPoint").empty();
+                            $.each(data, function (i, entry) {
+                                $("select#DeliveryPoint").append($("<option>", { value: entry.ID })
+                                    .text(entry.DeliveryName));
+                            });
+                        } else {
+                            $("select#DeliveryPoint").empty();
+                            $("select#DeliveryPoint").append($("<option>", { value: zid }).prop("selected", "selected")
+                                // 如果对应订餐区域无订餐点，则显示订餐区域信息
+                                .text($('select#DeliveryZone>option[selected=" selected"]').text()));
+                        }
+                    } else {
+                        alert("调用数据接口失败(GetDeliveryPointByZone)");
+                    }
+                });
+            } else {
+                $("select#DeliveryPoint").empty();
+                $("select#DeliveryPoint").append($("<option>", { value: "" }).text("-- 送餐点 --"));
+            }
+        }
+    </script>
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <b><i class="fa fa-calendar-minus-o"></i> 订餐维护</b>
+            <small>新增、修改和删除订单记录</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="@Url.Action("Index","Home")"><i class="fa fa-dashboard"></i> 管理控制台</a></li>
+            <li><a href="#">订餐管理</a></li>
+            <li class="active">订餐查询</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row col-md-12">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        <i class="fa fa-info-circle"></i> 订餐详情与维护<b>开发中，请勿使用</b>
+                        @if (Model != null && Model.ID > 0)
+                        {
+                            @Html.Raw("【ID：" + Model.ID + "】")
+                        }
+                    </h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                @using (Html.BeginForm("Order", "Console", FormMethod.Post, new { id = "formOrder", @class = "form-horizontal" }))
+                {
+                    <div class="box-body">
+                        <!-- Date -->
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.MenuDate, new { @class = "col-sm-2 control-label" })
+
+                            <div class="input-group date col-sm-5" style="margin: 0 15px">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" value="@((Model != null && Model.ID > 0 ? Model.MenuDate : DateTime.Today).ToString("yyyy年MM月dd日"))"
+                                       class="form-control" id="MenuDate" name="MenuDate">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <!-- /.form group -->
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.UserName, new { @class = "col-sm-2 control-label" })
+                            <div class="col-sm-3">
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.MenuName, new { @class = "col-sm-2 control-label" })
+                            <div class="col-sm-10">
+                                @Html.RadioButtonFor(m => m.MenuName, "Lunch") 午餐
+                                @Html.RadioButtonFor(m => m.MenuName, "Supper") 夜宵
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Flag, new { @class = "col-sm-2 control-label" })
+                            <div class="col-sm-10">
+                                @Html.RadioButtonFor(m => m.Flag, "A") A 套餐
+                                @Html.RadioButtonFor(m => m.Flag, "B") B 套餐
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.DeliveryPoint, new { @class = "col-sm-2 control-label" })
+                            <div class="col-sm-5">
+                                <select name="DeliveryZone" id="DeliveryZone" class="form-control" style="width: 49%; display: inline">
+                                    <option value="">-- 送餐区域 --</option>
+                                    @foreach (var m in Delivery.Cache.DeliveryZoneList)
+                                    {
+                                        <option value="@m.ID" @(zone != null && m.ID.Equals(zone.ID) ? "selected=\" selected\"" : string.Empty)>
+                                            @m.DeliveryName
+                                        </option>
+                                    }
+                                </select>
+                                <select name="DeliveryPoint" id="DeliveryPoint" class="form-control" style="width: 49%; display: inline">
+                                    <option value="">-- 送餐点 --</option>
+                                    @if (zone != null)
+                                    {
+                                        foreach (var m in Delivery.Cache.GetDeliveryPointsByZone(zone.ID))
+                                        {
+                                            <option value="@m.ID" @(Model != null && Model.DeliveryPointGuid != null && m.ID.Equals(Model.DeliveryPointGuid) ? "selected=\" selected\"" : string.Empty)>
+                                                @m.DeliveryName
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10">
+                            @Html.HiddenFor(m => m.ID)
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary()
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary" id="btnMenu">
+                                <i class="fa fa-floppy-o"></i> 保存记录
+                            </button>
+                            <button type="button" class="btn btn-danger" id="btnDelete">
+                                <i class="fa fa-trash-o"></i> 删除记录
+                            </button>
+                            <a href="@Url.Action("OrderManagement", "Console")" class="btn btn-default">返回列表</a>
+                        </div>
+                    </div>
+                }
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

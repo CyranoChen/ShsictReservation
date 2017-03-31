@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using AutoMapper;
+using Shsict.Core;
 using Shsict.Reservation.Mvc.Entities;
 using Shsict.Reservation.Mvc.Entities.Viewer;
 
@@ -24,8 +26,9 @@ namespace Shsict.Reservation.Mvc.Models
                     MeatSmall = s.Menu.MeatSmall,
                     Vegetable1 = s.Menu.Vegetable1,
                     Vegetable2 = s.Menu.Vegetable2,
-                    DeliveryZone = s.Delivery?.ParentID != null ?
-                        Delivery.Cache.GetParentZone(s.Delivery.ParentID.Value).DeliveryName : null,
+                    DeliveryZone = s.Delivery != null ?
+                        Delivery.Cache.GetParentZone(s.Delivery.ID).DeliveryName : string.Empty,
+                    DeliveryPointGuid = s.Delivery?.ID,
                     DeliveryPoint = s.Delivery?.DeliveryName,
                     ExtraFood = s.ExtraFood,
                     CreateTime = s.PlaceTime,
@@ -63,18 +66,28 @@ namespace Shsict.Reservation.Mvc.Models
 
         public Guid UserGuid { get; set; }
 
+        [Display(Name = "用餐人")]
         public string UserName { get; set; }
 
         public string EmployeeNo { get; set; }
 
         public int MenuID { get; set; }
 
+        [Required(ErrorMessage = "请填写{0}")]
+        [DataType(DataType.DateTime, ErrorMessage = "请正确填写{0}")]
+        [Display(Name = "日期")]
         public DateTime MenuDate { get; set; }
 
         public MenuTypeEnum MenuType { get; set; }
 
+        [Required(ErrorMessage = "请填写{0}")]
+        [Domain("Lunch", "Supper")]
+        [Display(Name = "时段")]
         public string MenuName { get; set; }
 
+        [Required(ErrorMessage = "请填写{0}")]
+        [Domain("A", "B")]
+        [Display(Name = "类型")]
         public string Flag { get; set; }
 
         public string Meat { get; set; }
@@ -85,12 +98,22 @@ namespace Shsict.Reservation.Mvc.Models
 
         public string Vegetable2 { get; set; }
 
+        [Required(ErrorMessage = "请选择{0}")]
+        [Display(Name = "送餐区域")]
         public string DeliveryZone { get; set; }
 
+        public Guid? DeliveryPointGuid { get; set; }
+
+        [Required(ErrorMessage = "请选择{0}")]
+        [Display(Name = "送餐点")]
         public string DeliveryPoint { get; set; }
 
+        [Required(ErrorMessage = "请选择{0}")]
+        [Domain("Rice", "Bun")]
+        [Display(Name = "主食")]
         public string StapleFood { get; set; }
 
+        [Display(Name = "加饭")]
         public bool ExtraFood { get; set; }
 
         public DateTime CreateTime { get; set; }

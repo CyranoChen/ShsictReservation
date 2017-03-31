@@ -26,7 +26,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
 
         // GET: Console/MenuManagement
-        
+
         public ActionResult MenuManagement(string date)
         {
             var model = new ConsoleModels.MenuManagementDto();
@@ -254,11 +254,18 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             if (id > 0)
             {
-                var order = _repo.Single<Order>(id);
+               var factory = new OrderViewFactory();
+
+                var order = factory.Single(id);
 
                 if (order != null)
                 {
-                    model = order.MapTo<Order, OrderDto>();
+                    var mapper = OrderDto.ConfigMapper().CreateMapper();
+
+                    model = mapper.Map<OrderDto>(order);
+
+                    model.MenuName = order.Menu.MenuType.ToString();
+                    model.Flag = order.Menu.MenuFlag;
                 }
             }
             else
@@ -333,7 +340,7 @@ namespace Shsict.Reservation.Mvc.Controllers
         {
             var model = new ConsoleModels.ConfigManagementDto
             {
-                Configs = _repo.All<Config>().FindAll(x => 
+                Configs = _repo.All<Config>().FindAll(x =>
                     x.ConfigSystemInfo == ConfigSystem.Reservation && !x.ConfigKey.Contains("Assembly"))
             };
 

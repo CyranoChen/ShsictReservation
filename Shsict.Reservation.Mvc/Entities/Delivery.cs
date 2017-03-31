@@ -69,9 +69,13 @@ namespace Shsict.Reservation.Mvc.Entities
                 return DeliveryListActive.Find(x => x.ID.Equals(guid));
             }
 
-            public static Delivery GetParentZone(Guid parentId)
+            public static Delivery GetParentZone(Guid guid)
             {
-                return DeliveryZoneList.Find(x => x.ID == parentId);
+                return DeliveryZoneList.Find(x =>
+                {
+                    var parentId = Load(guid).ParentID;
+                    return parentId != null && x.ID == parentId.Value;
+                });
             }
 
             public static List<Delivery> GetDeliveryPointsByZone(Guid guid)
