@@ -1,4 +1,9 @@
 ﻿@using Shsict.Reservation.Mvc.Entities
+@using Shsict.Reservation.Mvc.Services
+@{
+    var auth = new AuthorizeManager();
+    var authorizedUser = auth.GetSession();
+}
 
 <!DOCTYPE html>
 <html>
@@ -30,8 +35,12 @@
                 <ul class="sidebar-menu">
                     <li class="header">导航栏</li>
                     <li><a href="@Url.Action("Index", "Reservation")"><i class="fa fa fa-cutlery"></i> <span>今日自助订餐</span></a></li>
-                    <li><a href="@Url.Action("History", "Reservation")"><i class="fa fa-book"></i> <span>订餐历史记录</span></a></li>
+                    <li><a href="@Url.Action("History", "Reservation")"><i class="fa fa-book"></i> <span>我的订餐记录</span></a></li>
                     <li><a href="@Url.Action("Index", "Account")"><i class="fa fa-user"></i> <span>我的员工信息</span></a></li>
+                    @if (authorizedUser.Role == UserRoleEnum.Manager || authorizedUser.Role == UserRoleEnum.Admin)
+                    {
+                        <li><a href="@Url.Action("TodayOrders", "Reservation")"><i class="fa fa-clipboard"></i> <span>今日订餐记录</span></a></li>
+                    }
                 </ul>
             </section>
             <!-- /.sidebar -->

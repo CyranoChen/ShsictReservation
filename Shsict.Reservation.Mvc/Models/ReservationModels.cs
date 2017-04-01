@@ -60,5 +60,12 @@ namespace Shsict.Reservation.Mvc.Models
 
             public List<OrderDto> MyHistroyOrders { get; set; }
         }
+
+        public class TodayOrdersDto
+        {
+            public List<Delivery> DeliveryZones { get; set; }
+
+            public List<OrderDto> Orders { get; set; }
+        }
     }
 }

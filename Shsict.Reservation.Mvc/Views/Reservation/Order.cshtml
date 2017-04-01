@@ -1,6 +1,7 @@
 ﻿@using Shsict.Reservation.Mvc.Entities
 @model Shsict.Reservation.Mvc.Models.OrderDto
 @{
+    Layout = "~/Views/Shared/_LayoutMobile.cshtml";
     ViewBag.Title = "订餐维护";
 }
 
@@ -44,7 +45,7 @@
 
             $("#btnDelete").click(function () {
                 if (confirm("确认删除此订餐记录吗？") && $("#formOrder").valid()) {
-                    $("#formOrder").attr("action", "@Url.Action("OrderDelete", "Console")");
+                    $("#formOrder").attr("action", "@Url.Action("OrderDelete", "Reservation")");
 
                     document.forms["formOrder"].submit();
                 }
@@ -81,18 +82,6 @@
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            <b><i class="fa fa-calendar-minus-o"></i> 订餐维护</b>
-            <small>新增、修改和删除订单记录</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="@Url.Action("Index","Home")"><i class="fa fa-dashboard"></i> 管理控制台</a></li>
-            <li><a href="#">订餐管理</a></li>
-            <li class="active">订餐查询</li>
-        </ol>
-    </section>
     <!-- Main content -->
     <section class="content">
         <div class="row col-md-12">
@@ -200,7 +189,7 @@
                                     <i class="fa fa-trash-o"></i> 删除记录
                                 </button>
                             }
-                            <a href="@Url.Action("OrderManagement", "Console")" class="btn btn-default">返回列表</a>
+                            <a href="@Url.Action("TodayOrders", "Reservation")" class="btn btn-default">返回列表</a>
                         </div>
                     </div>
                 }

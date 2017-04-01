@@ -84,7 +84,7 @@ namespace Shsict.Reservation.Mvc.Controllers
         }
 
 
-        // POST: /Menu
+        // POST: Console/Menu
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Menu(MenuDto model)
@@ -161,7 +161,7 @@ namespace Shsict.Reservation.Mvc.Controllers
         }
 
 
-        // Post: /MenuDelete
+        // Post: Console/MenuDelete
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult MenuDelete(MenuDto model)
@@ -254,7 +254,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             if (id > 0)
             {
-               var factory = new OrderViewFactory();
+                var factory = new OrderViewFactory();
 
                 var order = factory.Single(id);
 
@@ -266,6 +266,13 @@ namespace Shsict.Reservation.Mvc.Controllers
 
                     model.MenuName = order.Menu.MenuType.ToString();
                     model.Flag = order.Menu.MenuFlag;
+                    model.StapleFood = order.StapleFood.ToString();
+
+                    if (model.DeliveryGuid.HasValue)
+                    {
+                        model.DeliveryPoint = model.DeliveryGuid.Value.ToString();
+                        model.DeliveryZone = Delivery.Cache.GetParentZone(model.DeliveryGuid.Value).ID.ToString();
+                    }
                 }
             }
             else
@@ -274,6 +281,95 @@ namespace Shsict.Reservation.Mvc.Controllers
             }
 
             return View(model);
+        }
+
+
+        // POST: Console/Order
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Order(OrderDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // 选择日期的对应类型与套餐是否存在
+                    var menu = _repo.Single<Menu>(x => x.MenuDate == model.MenuDate &&
+                                                       x.MenuType == (MenuTypeEnum)Enum.Parse(typeof(MenuTypeEnum), model.MenuName) &&
+                                                       // ReSharper disable once RedundantBoolCompare
+                                                       // Shsict.Core.ConditionBuilder
+                                                       x.MenuFlag == model.Flag && x.IsActive == true);
+                    if (menu == null)
+                    {
+                        ModelState.AddModelError("Error", "所选日期不存在对应类型的套餐，无法添加或修改");
+
+                        return View(model);
+                    }
+
+                    var order = _repo.Single<Order>(model.ID);
+
+                    if (order == null)
+                    {
+                        // 新增订餐记录
+                        order = model.MapTo<OrderDto, Order>();
+                        order.CreateUser = _authorizedUser.UserId;
+                        order.CreateTime = DateTime.Now;
+                        order.IsActive = true;
+                        order.Remark = string.Empty;
+                    }
+
+                    order.MenuID = menu.ID;
+                    order.DeliveryGuid = new Guid(model.DeliveryPoint);
+                    order.StapleFood = (StapleFoodEnum)Enum.Parse(typeof(StapleFoodEnum), model.StapleFood);
+                    order.ExtraFood = model.ExtraFood;
+
+                    // 更新菜单信息
+                    object key;
+
+                    _repo.Save(order, out key);
+
+                    ModelState.AddModelError("Success", "保存成功");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Warn", ex.Message);
+                }
+            }
+
+            return View(model);
+        }
+
+
+        // Post: Console/OrderDelete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult OrderDelete(OrderDto model)
+        {
+            if (ModelState.IsValid)
+            {
+
+                try
+                {
+                    if (model.ID > 0)
+                    {
+                        var order = _repo.Single<Order>(model.ID);
+
+                        if (order != null)
+                        {
+                            order.IsActive = false;
+                            _repo.Update(order);
+
+                            return RedirectToAction("OrderManagement", "Console");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Warn", ex.Message);
+                }
+            }
+
+            return RedirectToAction("Order", "Console", new { model.ID });
         }
 
 

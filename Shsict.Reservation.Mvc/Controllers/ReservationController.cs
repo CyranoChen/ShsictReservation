@@ -80,7 +80,7 @@ namespace Shsict.Reservation.Mvc.Controllers
             // 获取今天最新订餐记录
             if (menuA != null && menuB != null)
             {
-                model.MyCurrentOrder = GetMyCurrentOrder(new[] {menuA.ID, menuB.ID});
+                model.MyCurrentOrder = GetMyCurrentOrder(new[] { menuA.ID, menuB.ID });
             }
 
             return View(model);
@@ -194,6 +194,157 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             return RedirectToAction("History", "Reservation");
         }
+
+
+        // GET: Reservation/TodayOrders
+
+        public ActionResult TodayOrders()
+        {
+            var model = new ReservationModels.TodayOrdersDto();
+
+            IViewerFactory<OrderView> factory = new OrderViewFactory();
+
+            var list = factory.Query(new Criteria(new { MenuDate = DateTime.Today }));
+
+            if (list != null && list.Count > 0)
+            {
+                var mapper = OrderDto.ConfigMapper().CreateMapper();
+
+                model.Orders = mapper.Map<IEnumerable<OrderDto>>(list.AsEnumerable()).ToList();
+            }
+
+            model.DeliveryZones = Delivery.Cache.DeliveryZoneList;
+
+            return View(model);
+        }
+
+
+        // GET: Reservation/Order
+
+        public ActionResult Order(int id = 0)
+        {
+            var model = new OrderDto();
+
+            if (id > 0)
+            {
+                var factory = new OrderViewFactory();
+
+                var order = factory.Single(id);
+
+                if (order != null)
+                {
+                    var mapper = OrderDto.ConfigMapper().CreateMapper();
+
+                    model = mapper.Map<OrderDto>(order);
+
+                    model.MenuName = order.Menu.MenuType.ToString();
+                    model.Flag = order.Menu.MenuFlag;
+                    model.StapleFood = order.StapleFood.ToString();
+
+                    if (model.DeliveryGuid.HasValue)
+                    {
+                        model.DeliveryPoint = model.DeliveryGuid.Value.ToString();
+                        model.DeliveryZone = Delivery.Cache.GetParentZone(model.DeliveryGuid.Value).ID.ToString();
+                    }
+                }
+            }
+            else
+            {
+                model.ID = id;
+            }
+
+            return View(model);
+        }
+
+
+        // POST: Reservation/Order
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Order(OrderDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // 选择日期的对应类型与套餐是否存在
+                    var menu = _repo.Single<Menu>(x => x.MenuDate == model.MenuDate &&
+                                                       x.MenuType == (MenuTypeEnum)Enum.Parse(typeof(MenuTypeEnum), model.MenuName) &&
+                                                       // ReSharper disable once RedundantBoolCompare
+                                                       // Shsict.Core.ConditionBuilder
+                                                       x.MenuFlag == model.Flag && x.IsActive == true);
+                    if (menu == null)
+                    {
+                        ModelState.AddModelError("Error", "所选日期不存在对应类型的套餐，无法添加或修改");
+
+                        return View(model);
+                    }
+
+                    var order = _repo.Single<Order>(model.ID);
+
+                    if (order == null)
+                    {
+                        // 新增订餐记录
+                        order = model.MapTo<OrderDto, Order>();
+                        order.CreateUser = _authorizedUser.UserId;
+                        order.CreateTime = DateTime.Now;
+                        order.IsActive = true;
+                        order.Remark = string.Empty;
+                    }
+
+                    order.MenuID = menu.ID;
+                    order.DeliveryGuid = new Guid(model.DeliveryPoint);
+                    order.StapleFood = (StapleFoodEnum)Enum.Parse(typeof(StapleFoodEnum), model.StapleFood);
+                    order.ExtraFood = model.ExtraFood;
+
+                    // 更新菜单信息
+                    object key;
+
+                    _repo.Save(order, out key);
+
+                    ModelState.AddModelError("Success", "保存成功");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Warn", ex.Message);
+                }
+            }
+
+            return View(model);
+        }
+
+
+        // Post: Reservation/OrderDelete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult OrderDelete(OrderDto model)
+        {
+            if (ModelState.IsValid)
+            {
+
+                try
+                {
+                    if (model.ID > 0)
+                    {
+                        var order = _repo.Single<Order>(model.ID);
+
+                        if (order != null)
+                        {
+                            order.IsActive = false;
+                            _repo.Update(order);
+
+                            return RedirectToAction("TodayOrders", "Reservation");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Warn", ex.Message);
+                }
+            }
+
+            return RedirectToAction("Order", "Reservation", new { model.ID });
+        }
+
 
         private MenuTypeEnum GetMenuLunchOrSupper(int deadlineOffset = 0)
         {

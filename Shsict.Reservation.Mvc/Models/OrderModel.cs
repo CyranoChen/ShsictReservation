@@ -28,7 +28,7 @@ namespace Shsict.Reservation.Mvc.Models
                     Vegetable2 = s.Menu.Vegetable2,
                     DeliveryZone = s.Delivery != null ?
                         Delivery.Cache.GetParentZone(s.Delivery.ID).DeliveryName : string.Empty,
-                    DeliveryPointGuid = s.Delivery?.ID,
+                    DeliveryGuid = s.Delivery?.ID,
                     DeliveryPoint = s.Delivery?.DeliveryName,
                     ExtraFood = s.ExtraFood,
                     CreateTime = s.PlaceTime,
@@ -102,7 +102,7 @@ namespace Shsict.Reservation.Mvc.Models
         [Display(Name = "送餐区域")]
         public string DeliveryZone { get; set; }
 
-        public Guid? DeliveryPointGuid { get; set; }
+        public Guid? DeliveryGuid { get; set; }
 
         [Required(ErrorMessage = "请选择{0}")]
         [Display(Name = "送餐点")]

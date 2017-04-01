@@ -469,6 +469,8 @@
     <Content Include="Views\Console\ConfigManagement.cshtml" />
     <Content Include="Views\Shared\_PasswordPartial.cshtml" />
     <Content Include="Views\Console\Order.cshtml" />
+    <Content Include="Views\Reservation\TodayOrders.cshtml" />
+    <Content Include="Views\Reservation\Order.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -23,12 +23,12 @@
             });
 
             $("#btnMenuOrder").click(function () {
-                if ($("select#DeliveryZone").val() === "" || $("select#DeliveryPoint").val() === "") {
+                if ($("select#DeliveryZone").val() !== "" || $("select#DeliveryPoint").val() !== "") {
+                    if ($("#formMenuOrder").valid() && confirm("确认订餐信息为 //TODO")) {
+                        document.forms["formMenuOrder"].submit();
+                    }
+                } else {
                     alert("请选择送餐区域与送餐点");
-                }
-
-                if ($("#formMenuOrder").valid() && confirm("确认订餐信息为 //TODO")) {
-                    document.forms["formMenuOrder"].submit();
                 }
             });
 
