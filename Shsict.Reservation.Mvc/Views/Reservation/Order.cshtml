@@ -1,26 +1,38 @@
-﻿@using Shsict.Reservation.Mvc.Entities
+﻿@using Shsict.Core
+@using Shsict.Reservation.Mvc.Entities
+@using Shsict.Reservation.Mvc.Entities
 @model Shsict.Reservation.Mvc.Models.OrderDto
 @{
     Layout = "~/Views/Shared/_LayoutMobile.cshtml";
     ViewBag.Title = "订餐维护";
+
+    IRepository repo = new Repository();
+    var employees = repo.All<User>().FindAll(x => x.IsActive);
+    employees.Sort((x1, x2) => String.Compare(x1.EmployeeNo, x2.EmployeeNo, StringComparison.OrdinalIgnoreCase));
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/Scripts/datepicker/datepicker3.css">
+    <link rel="stylesheet" href="~/Scripts/select2/select2.min.css">
     @Styles.Render("~/Content/iCheck/css")
 }
 
 @section Scripts {
-    <script src="~/Scripts/datepicker/bootstrap-datepicker.js"></script>
-    <script src="~/Scripts/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
+    <script src="~/Scripts/select2/select2.full.min.js"></script>
+    <script src="~/Scripts/select2/i18n/zh-CN.js"></script>
     @Scripts.Render("~/bundles/icheck")
     @Scripts.Render("~/bundles/jqueryval")
+
     <script type="text/javascript">
         $(function () {
-            $("#MenuDate").datepicker({
-                autoclose: true,
-                language: "zh-CN",
-                todayHighlight: true
+            //$("#MenuDate").datepicker({
+            //    autoclose: true,
+            //    language: "zh-CN",
+            //    todayHighlight: true
+            //});
+
+            //Initialize Select2 Elements
+            $("select#UserName").select2({
+                language: "zh-CN"
             });
 
             //Flat color scheme for iCheck
@@ -54,7 +66,7 @@
 
         function bindDeliveryPointByZone(zid) {
             if (zid !== "") {
-                $.getJSON("@Url.Action("GetDeliveryPointByZone","Reservation")", { zid }, function (data, status) {
+                $.getJSON("@Url.Action("GetDeliveryPointByZone", "Reservation")", { zid }, function(data, status) {
                     if (status === "success" && data != null) {
                         if (JSON.stringify(data) !== "[]") {
                             $("select#DeliveryPoint").empty();
@@ -89,7 +101,7 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">
-                        <i class="fa fa-info-circle"></i> 订餐详情与维护
+                        <i class="fa fa-info-circle"></i> 今天订餐记录维护
                         @if (Model != null && Model.ID > 0)
                         {
                             @Html.Raw("【ID：" + Model.ID + "】")
@@ -110,16 +122,26 @@
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <input type="text" value="@((Model != null && Model.ID > 0 ? Model.MenuDate : DateTime.Today).ToString("yyyy年MM月dd日"))"
-                                       class="form-control" id="MenuDate" name="MenuDate">
+                                       class="form-control" id="MenuDate" name="MenuDate" disabled="disabled">
                             </div>
                             <!-- /.input group -->
                         </div>
                         <!-- /.form group -->
                         <div class="form-group">
-                            @*TODO*@
                             @Html.LabelFor(m => m.UserName, new { @class = "col-sm-2 control-label" })
                             <div class="col-sm-3">
-                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @disabled = "disabled" })
+                                <select class="form-control" id="UserName" name="UserName">
+                                    <option value="">-- 用餐人 --</option>
+                                    @if (employees.Count > 0)
+                                    {
+                                        foreach (var m in employees)
+                                        {
+                                            <option value="@m.ID" @(Model != null && m.ID.Equals(Model.UserGuid) ? "selected=\" selected\"" : string.Empty)>
+                                                @(m.EmployeeName + " (" + m.UserName + ")")
+                                            </option>
+                                        }
+                                    }
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -180,7 +202,7 @@
 
                     <div class="box-footer">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary" id="btnMenu">
+                            <button type="button" class="btn btn-primary" id="btnOrder">
                                 <i class="fa fa-floppy-o"></i> 保存记录
                             </button>
                             @if (Model != null && Model.ID > 0)

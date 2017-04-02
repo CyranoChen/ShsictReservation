@@ -4,6 +4,11 @@
     <link rel="stylesheet" href="~/Scripts/datepicker/datepicker3.css">
     <link rel="stylesheet" href="~/Scripts/datatables/dataTables.bootstrap.css">
     @Styles.Render("~/Content/iCheck/css")
+    <style type="text/css">
+        #tblOrder_filter {
+            display: none;
+        }
+    </style>
 }
 
 @section Scripts {
@@ -42,7 +47,10 @@
                 "searching": true,
                 "ordering": false,
                 "info": true,
-                "autoWidth": true
+                "autoWidth": true,
+                "language": {
+                    "url": "/Scripts/datatables/zh-CN.json"
+                }
             });
 
             $("#tblOrder_filter").hide();
@@ -166,10 +174,14 @@
                                             <td>@m.MenuDate.ToString("yyyy-MM-dd")</td>
                                             <td>@m.MenuName</td>
                                             <td>@m.Flag</td>
-                                            <td>@m.StapleFood @if (m.ExtraFood)
-                                            { @Html.Raw("(+)") }</td>
-                                            <td>@m.UserName @if (!string.IsNullOrEmpty(m.EmployeeNo))
-                                            { @Html.Raw("(" + m.EmployeeNo + ")")}</td>
+                                            <td>
+                                                @m.StapleFood @if (m.ExtraFood)
+                                                { @Html.Raw("(+)") }
+                                            </td>
+                                            <td>
+                                                @m.UserName @if (!string.IsNullOrEmpty(m.EmployeeNo))
+                                                { @Html.Raw("(" + m.EmployeeNo + ")")}
+                                            </td>
                                             <td>@m.DeliveryZone -> @m.DeliveryPoint</td>
                                             <td>@m.CreateTime.ToString("yyyyMMdd HH:mm")</td>
                                             <td>

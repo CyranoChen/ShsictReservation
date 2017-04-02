@@ -7,6 +7,11 @@
 @section Styles {
     <link rel="stylesheet" href="~/Scripts/datatables/dataTables.bootstrap.css">
     @Styles.Render("~/Content/iCheck/css")
+    <style type="text/css">
+        #tblOrder_filter {
+            display: none;
+        }
+    </style>
 }
 
 @section Scripts {
@@ -33,10 +38,11 @@
                 "searching": true,
                 "ordering": false,
                 "info": true,
-                "autoWidth": true
+                "autoWidth": true,
+                "language": {
+                    "url": "/Scripts/datatables/zh-CN.json"
+                }
             });
-
-            $("#tblOrder_filter").hide();
 
             $("#DeliveryZone").change(function () {
                 table.draw();

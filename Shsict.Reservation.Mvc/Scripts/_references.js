@@ -68,3 +68,5 @@
 /// <reference path="jquery-3.1.1.min.js" />
 /// <reference path="jquery-3.1.1.slim.min.js" />
 /// <reference path="modernizr-2.8.3.js" />
+/// <reference path="select2/select2.full.js" />
+/// <reference path="select2/select2.js" />

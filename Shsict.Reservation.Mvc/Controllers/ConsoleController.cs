@@ -299,6 +299,7 @@ namespace Shsict.Reservation.Mvc.Controllers
                                                        // ReSharper disable once RedundantBoolCompare
                                                        // Shsict.Core.ConditionBuilder
                                                        x.MenuFlag == model.Flag && x.IsActive == true);
+
                     if (menu == null)
                     {
                         ModelState.AddModelError("Error", "所选日期不存在对应类型的套餐，无法添加或修改");
@@ -312,16 +313,41 @@ namespace Shsict.Reservation.Mvc.Controllers
                     {
                         // 新增订餐记录
                         order = model.MapTo<OrderDto, Order>();
-                        order.CreateUser = _authorizedUser.UserId;
-                        order.CreateTime = DateTime.Now;
                         order.IsActive = true;
-                        order.Remark = string.Empty;
+                        order.Remark = "后台补订";
                     }
+                    else
+                    {
+                        // 修改订餐记录
+                        order.Remark = "后台修改";
+                    }
+
+                    #region 设置用餐人信息 在UserName中传递UserGuid
+                    model.UserGuid = new Guid(model.UserName);
+
+                    var user = _repo.Single<User>(model.UserGuid);
+
+                    if (user != null)
+                    {
+                        order.UserGuid = user.ID;
+                        order.UserName = user.EmployeeName;
+                        order.EmployeeNo = user.EmployeeNo;
+                    }
+                    else
+                    {
+                        order.UserGuid = Guid.Empty;
+                        order.UserName = string.Empty;
+                        order.EmployeeNo = string.Empty;
+                    }
+                    #endregion
 
                     order.MenuID = menu.ID;
                     order.DeliveryGuid = new Guid(model.DeliveryPoint);
                     order.StapleFood = (StapleFoodEnum)Enum.Parse(typeof(StapleFoodEnum), model.StapleFood);
                     order.ExtraFood = model.ExtraFood;
+
+                    order.CreateUser = _authorizedUser.UserId;
+                    order.CreateTime = DateTime.Now;
 
                     // 更新菜单信息
                     object key;

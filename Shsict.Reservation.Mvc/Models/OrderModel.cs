@@ -15,9 +15,9 @@ namespace Shsict.Reservation.Mvc.Models
                 .ConstructUsing(s => new OrderDto
                 {
                     ID = s.OrderID,
-                    UserGuid = s.User.ID,
-                    UserName = s.User.EmployeeName,
-                    EmployeeNo = s.User.EmployeeNo,
+                    UserGuid = s.User?.ID,
+                    UserName = s.User?.EmployeeName,
+                    EmployeeNo = s.User?.EmployeeNo,
                     MenuID = s.Menu.ID,
                     MenuDate = s.Menu.MenuDate,
                     MenuType = s.Menu.MenuType,
@@ -64,8 +64,9 @@ namespace Shsict.Reservation.Mvc.Models
 
         public int ID { get; set; }
 
-        public Guid UserGuid { get; set; }
+        public Guid? UserGuid { get; set; }
 
+        [Required(ErrorMessage = "请填写{0}")]
         [Display(Name = "用餐人")]
         public string UserName { get; set; }
 
