@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Shsict.Core;
@@ -231,6 +232,7 @@ namespace Shsict.Reservation.Mvc.Controllers
             else
             {
                 list = factory.All();
+                list.Sort((x1, x2) => x2.Menu.MenuDate.CompareTo(x1.Menu.MenuDate));
             }
 
             if (list != null && list.Count > 0)
@@ -396,6 +398,52 @@ namespace Shsict.Reservation.Mvc.Controllers
             }
 
             return RedirectToAction("Order", "Console", new { model.ID });
+        }
+
+
+        // GET: Console/ExportOrders
+
+        public ActionResult ExportOrders(string date)
+        {
+            IViewerFactory<OrderView> factory = new OrderViewFactory();
+
+            DateTime menuDate;
+            List<OrderView> list;
+
+            if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out menuDate))
+            {
+                var criteria = new Criteria
+                {
+                    WhereClause = $"MenuDate = '{menuDate}'"
+                };
+
+                list = factory.Query(criteria);
+            }
+            else
+            {
+                list = factory.All();
+                list.Sort((x1, x2) => x2.Menu.MenuDate.CompareTo(x1.Menu.MenuDate));
+            }
+
+            if (list != null && list.Count > 0)
+            {
+                var mapper = OrderDto.ConfigMapper().CreateMapper();
+                var orders = mapper.Map<IEnumerable<OrderDto>>(list.AsEnumerable()).ToList();
+
+                var book = ExcelManager.BuilderOrderWorkbook(orders);
+
+                byte[] file;
+                using (var ms = new MemoryStream())
+                {
+                    book.Write(ms);
+                    file = ms.GetBuffer();
+                }
+
+                return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    $"订餐记录表-{ DateTime.Today.ToString("yyyyMMdd")}.xlsx");
+            }
+
+            return RedirectToAction("OrderManagement", "Console", new { date });
         }
 
 

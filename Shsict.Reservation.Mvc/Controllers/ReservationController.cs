@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Shsict.Core;
 using Shsict.Reservation.Mvc.Entities;
 using Shsict.Reservation.Mvc.Entities.Relation;
 using Shsict.Reservation.Mvc.Entities.Viewer;
+using Shsict.Reservation.Mvc.Filter;
 using Shsict.Reservation.Mvc.Models;
 using Shsict.Reservation.Mvc.Services;
 using Menu = Shsict.Reservation.Mvc.Entities.Menu;
@@ -197,7 +199,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
 
         // GET: Reservation/TodayOrders
-
+        [ManagerRole]
         public ActionResult TodayOrders()
         {
             var model = new ReservationModels.TodayOrdersDto();
@@ -220,7 +222,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
 
         // GET: Reservation/Order
-
+        [ManagerRole]
         public ActionResult Order(int id = 0)
         {
             var model = new OrderDto();
@@ -259,6 +261,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         // POST: Reservation/Order
         [HttpPost]
+        [ManagerRole]
         [ValidateAntiForgeryToken]
         public ActionResult Order(OrderDto model)
         {
@@ -341,6 +344,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         // Post: Reservation/OrderDelete
         [HttpPost]
+        [ManagerRole]
         [ValidateAntiForgeryToken]
         public ActionResult OrderDelete(OrderDto model)
         {
@@ -370,6 +374,37 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             return RedirectToAction("Order", "Reservation", new { model.ID });
         }
+
+
+        // GET: Reservation/ExportOrders
+        [ManagerRole]
+        public ActionResult ExportOrders()
+        {
+            IViewerFactory<OrderView> factory = new OrderViewFactory();
+
+            var list = factory.Query(new Criteria(new { MenuDate = DateTime.Today }));
+
+            if (list != null && list.Count > 0)
+            {
+                var mapper = OrderDto.ConfigMapper().CreateMapper();
+                var orders = mapper.Map<IEnumerable<OrderDto>>(list.AsEnumerable()).ToList();
+
+                var book = ExcelManager.BuilderOrderWorkbook(orders);
+
+                byte[] file;
+                using (var ms = new MemoryStream())
+                {
+                    book.Write(ms);
+                    file = ms.GetBuffer();
+                }
+
+                return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
+                    $"今日订餐记录表-{DateTime.Today.ToString("yyyyMMdd")}.xlsx");
+            }
+
+            return RedirectToAction("TodayOrders", "Reservation");
+        }
+
 
 
         private MenuTypeEnum GetMenuLunchOrSupper(int deadlineOffset = 0)
