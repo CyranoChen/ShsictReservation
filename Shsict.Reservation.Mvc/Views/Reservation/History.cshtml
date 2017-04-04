@@ -1,16 +1,8 @@
 ﻿@model Shsict.Reservation.Mvc.Models.ReservationModels.HistoryDto
-
 @{
     Layout = "~/Views/Shared/_LayoutMobile.cshtml";
     ViewBag.Title = "我的订餐记录";
 }
-
-@*TODO*@
-<style type="text/css">
-    .panel-history p {
-        font-size: 16px !important;
-    }
-</style>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -52,11 +44,20 @@
                                         <h3 class="timeline-header">
                                             <b>您今天没有订餐记录</b>
                                         </h3>
-                                        <div class="timeline-footer">
-                                            <a href="@Url.Action("Index", "Reservation")" class="btn btn-primary">
-                                                <i class="fa fa-cutlery"></i> 开始预订
-                                            </a>
-                                        </div>
+                                        @if (Model.CanReserveNow)
+                                        {
+                                            <div class="timeline-footer">
+                                                <a href="@Url.Action("Index", "Reservation")" class="btn btn-primary">
+                                                    <i class="fa fa-cutlery"></i> 开始预订
+                                                </a>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="timeline-footer">
+                                                <i class="fa fa-info-circle"></i> 当前不在订餐时间段内
+                                            </div>
+                                        }
                                     </div>
                                 </li>
                             }

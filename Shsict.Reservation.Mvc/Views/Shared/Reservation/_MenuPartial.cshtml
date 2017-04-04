@@ -24,7 +24,7 @@
                     <img class="img-circle" src="/Content/images/img-lunch.jpg" alt="Lunch">
                 </div>
                 <!-- /.widget-user-image -->
-                <h3 class="widget-user-username">
+                <h3 class="widget-user-username" id="menu-info">
                     @Model.MenuDate.ToString("yyyy-MM-dd") @Model.MenuA.Name
                 </h3>
                 <h5 class="widget-user-desc">预订时间 @Model.MenuA.Duration</h5>
@@ -37,27 +37,30 @@
                             <b>@Model.MenuA.Flag</b>
                         </a>
                     </li>
-                    <li><a><i class="fa fa-circle-o text-red"></i> 荤菜： @Model.MenuA.Meat @Model.MenuA.MeatSmall</a></li>
-                    <li><a><i class="fa fa-circle-o text-green"></i> 素菜： @Model.MenuA.Vegetable1 @Model.MenuA.Vegetable2</a></li>
+                    <li><a>荤菜： @Model.MenuA.Meat @Model.MenuA.MeatSmall</a></li>
+                    <li><a>素菜： @Model.MenuA.Vegetable1 @Model.MenuA.Vegetable2</a></li>
                     <li class="bg-gray-light">
                         <a>
                             <input type="radio" name="MenuID" id="menuB" value="@Model.MenuB.ID" class="flat-@Model.MenuStyle">
                             <b>@Model.MenuB.Flag</b>
                         </a>
                     </li>
-                    <li><a><i class="fa fa-circle-o text-red"></i> 荤菜： @Model.MenuB.Meat @Model.MenuB.MeatSmall</a></li>
-                    <li><a><i class="fa fa-circle-o text-green"></i> 素菜： @Model.MenuB.Vegetable1 @Model.MenuB.Vegetable2</a></li>
+                    <li><a>荤菜： @Model.MenuB.Meat @Model.MenuB.MeatSmall</a></li>
+                    <li><a>素菜： @Model.MenuB.Vegetable1 @Model.MenuB.Vegetable2</a></li>
                     <li id="extra-option">
                         <!-- Minimal green style -->
                         <div class="form-group">
                             <label class="col-xs-4">
-                                <input type="radio" name="StapleFood" id="rice" value="Rice" class="flat-@Model.MenuStyle" checked="checked"> 米饭
+                                <input type="radio" name="StapleFood" id="rice" value="Rice" class="flat-@Model.MenuStyle" checked="checked">
+                                <b>米饭</b>
                             </label>
                             <label class="col-xs-4">
-                                <input type="radio" name="StapleFood" id="bun" value="Bun" class="flat-@Model.MenuStyle"> 馒头
+                                <input type="radio" name="StapleFood" id="bun" value="Bun" class="flat-@Model.MenuStyle">
+                                <b>馒头</b>
                             </label>
                             <label class="col-xs-4">
-                                <input type="checkbox" name="ExtraFood" id="ExtraFood" class="flat-@Model.MenuStyle"> 加饭
+                                <input type="checkbox" name="ExtraFood" id="ExtraFood" class="flat-@Model.MenuStyle">
+                                <b>加饭</b>
                             </label>
                         </div>
                     </li>

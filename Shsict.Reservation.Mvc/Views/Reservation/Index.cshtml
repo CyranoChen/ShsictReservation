@@ -24,7 +24,7 @@
 
             $("#btnMenuOrder").click(function () {
                 if ($("select#DeliveryZone").val() !== "" || $("select#DeliveryPoint").val() !== "") {
-                    if ($("#formMenuOrder").valid() && confirm("确认订餐信息为 //TODO")) {
+                    if ($("#formMenuOrder").valid() && confirm("确认您本次的订餐信息如下：\r" + orderToString())) {
                         document.forms["formMenuOrder"].submit();
                     }
                 } else {
@@ -32,12 +32,29 @@
                 }
             });
 
-            bindDeliveryPointByZone($("select#DeliveryZone").val());
+            if ($("select#DeliveryZone").val() !== undefined && $("select#DeliveryZone").val() !== "") {
+                bindDeliveryPointByZone($("select#DeliveryZone").val());                
+            }
 
             $("select#DeliveryZone").change(function () {
                 bindDeliveryPointByZone($(this).val());
             });
         });
+
+        function orderToString() {
+            var menuInfo = $("#menu-info").text().trim() + " " +
+                $('input[type="radio"][name="MenuID"]').parent("div.checked").next("b").text().trim();
+
+            var orderInfo = "主食：" + $('input[type="radio"][name="StapleFood"]').parent("div.checked").next("b").text();
+            if ($('input[type="checkbox"][name="ExtraFood"]').is(":checked")) {
+                orderInfo += " (加饭)";
+            }
+
+            var deliveryInfo = "送餐点：" + $("#DeliveryZone").find("option:selected").text().trim() + " -> " +
+                $("#DeliveryPoint").find("option:selected").text().trim();
+
+            return "-- " + menuInfo + "\r" + "-- " + orderInfo + "\r" + "-- " + deliveryInfo;
+        }
 
         function bindDeliveryPointByZone(zid) {
             if (zid !== "") {

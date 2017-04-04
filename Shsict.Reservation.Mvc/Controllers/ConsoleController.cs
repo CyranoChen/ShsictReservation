@@ -439,8 +439,12 @@ namespace Shsict.Reservation.Mvc.Controllers
                     file = ms.GetBuffer();
                 }
 
+                var timestamp = !string.IsNullOrEmpty(date)
+                    ? Convert.ToDateTime(date).ToString("yyyyMMdd")
+                    : string.Empty;
+
                 return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    $"订餐记录表-{ DateTime.Today.ToString("yyyyMMdd")}.xlsx");
+                    $@"订餐记录表-{timestamp}.xlsx");
             }
 
             return RedirectToAction("OrderManagement", "Console", new { date });

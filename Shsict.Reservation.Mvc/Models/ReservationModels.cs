@@ -59,6 +59,8 @@ namespace Shsict.Reservation.Mvc.Models
             public OrderDto MyOrderSupper { get; set; }
 
             public List<OrderDto> MyHistroyOrders { get; set; }
+
+            public bool CanReserveNow { get; set; }
         }
 
         public class TodayOrdersDto

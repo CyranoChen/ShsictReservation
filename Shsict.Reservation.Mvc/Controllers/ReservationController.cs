@@ -141,7 +141,13 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         public ActionResult History()
         {
-            var model = new ReservationModels.HistoryDto { MenuDate = DateTime.Today };
+            var model = new ReservationModels.HistoryDto
+            {
+                MenuDate = DateTime.Today,
+                // 设置当前是否在订餐时间内，不判断是否有菜单
+                CanReserveNow = GetMenuLunchOrSupper() != MenuTypeEnum.None
+            };
+
 
             // 获取所有历史订单 （7天内）
             IViewerFactory<OrderView> factory = new OrderViewFactory();
