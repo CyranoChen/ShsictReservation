@@ -461,6 +461,9 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             if (list.Count > 0)
             {
+                // 按工号升序排列
+                list.Sort((x1, x2) => String.Compare(x1.EmployeeNo, x2.EmployeeNo, StringComparison.OrdinalIgnoreCase));
+
                 var users = new List<UserDto>();
 
                 foreach (var user in list)

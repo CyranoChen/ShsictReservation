@@ -118,5 +118,62 @@ namespace Shsict.Reservation.Tests
                 }
             }
         }
+
+        [Ignore]
+        [TestMethod]
+        public void Test_BatchAddUser()
+        {
+            var usernames = new[]
+            {
+                "yehong116", "zhangwei178", "xiezhaqin321", "xujianming325",
+                "jiangfeng552", "gewenjun598", "luozhenhua631", "xieshendong635"
+            };
+
+            IRepository repo = new Repository();
+
+            foreach (var name in usernames)
+            {
+                var userWeChat = new UserWeChat
+                {
+                    UserName = name,
+                    LastAuthorizeDate = DateTime.Now,
+                    Gender = 1,
+                    Avatar = string.Empty,
+                    DeviceId = string.Empty
+                };
+
+                object uid;
+
+                repo.Insert(userWeChat, out uid);
+
+                if (uid != null)
+                {
+                    var user = new User
+                    {
+                        ID = (Guid)uid,
+                        UserName = name,
+                        Password = Encrypt.GetMd5Hash("shsict"),
+                        WeChatOpenId = string.Empty,
+                        WeChatNickName = string.Empty,
+                        EmployeeName = string.Empty,
+                        EmployeeNo = string.Empty,
+                        Department = string.Empty,
+                        Team = string.Empty,
+                        Position = string.Empty,
+                        Email = string.Empty,
+                        Mobile = string.Empty,
+                        // important: role
+                        Role = UserRoleEnum.Manager,
+                        IsApproved = true,
+                        LastLoginDate = DateTime.Now,
+                        CreateDate = DateTime.Now,
+                        IsActive = true,
+                        Remark = string.Empty
+                    };
+
+                    repo.Insert(user);
+                }
+            }
+        }
     }
 }

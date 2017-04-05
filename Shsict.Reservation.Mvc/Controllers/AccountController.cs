@@ -144,16 +144,13 @@ namespace Shsict.Reservation.Mvc.Controllers
                     // Sign in
                     FormsAuthentication.SetAuthCookie(u.UserId, !string.IsNullOrEmpty(model.RememberMe));
 
-                    if (Url.IsLocalUrl(returnUrl)) { return Redirect(returnUrl); }
+                    // 食堂管理员和系统管理员跳后台管理界面
+                    if (u.Role >= UserRoleEnum.Canteen)
+                    {
+                        if (Url.IsLocalUrl(returnUrl)) { return Redirect(returnUrl); }
 
-                    //if (ConfigGlobal.IsSystemAdmin(u.UserId))
-                    //{
-                    //    return RedirectToAction("Index", "Home");
-                    //}
-                    //else
-                    //{
-                    //    return RedirectToAction("Index", "Reservation");
-                    //}
+                        return RedirectToAction("Index", "Home");
+                    }
 
                     return RedirectToAction("Index", "Reservation");
                 }
