@@ -52,7 +52,8 @@ namespace Shsict.Reservation.Tests
 
             var criteria = new Criteria
             {
-                WhereClause = $"(PlaceTime < '{DateTime.Now}')"
+                WhereClause = $"(PlaceTime < '{DateTime.Now}')",
+                PagingSize = 0
             };
 
             var query = factory.Query(criteria);

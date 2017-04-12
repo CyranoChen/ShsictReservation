@@ -220,12 +220,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out menuDate))
             {
-                var criteria = new Criteria
-                {
-                    WhereClause = $"MenuDate = '{menuDate}'"
-                };
-
-                list = factory.Query(criteria);
+                list = factory.Query(new Criteria(new { MenuDate = menuDate }));
 
                 model.MenuDate = menuDate;
             }
@@ -412,12 +407,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out menuDate))
             {
-                var criteria = new Criteria
-                {
-                    WhereClause = $"MenuDate = '{menuDate}'"
-                };
-
-                list = factory.Query(criteria);
+                list = factory.Query(new Criteria(new { MenuDate = menuDate }));
             }
             else
             {

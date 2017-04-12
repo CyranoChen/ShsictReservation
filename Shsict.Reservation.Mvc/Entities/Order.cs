@@ -50,7 +50,8 @@ namespace Shsict.Reservation.Mvc.Entities
             var criteria = new Criteria
             {
                 WhereClause = $"CreateTime < '{DateTime.Today.AddDays(dateDiff)}' AND IsActive = 0",
-                OrderClause = "CreateTime DESC"
+                OrderClause = "CreateTime DESC",
+                PagingSize = 0
             };
 
             var list = repo.Query<Order>(criteria);

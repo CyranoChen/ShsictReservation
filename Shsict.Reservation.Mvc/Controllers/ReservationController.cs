@@ -155,7 +155,8 @@ namespace Shsict.Reservation.Mvc.Controllers
             var criteria = new Criteria
             {
                 WhereClause = $@"(PlaceTime >= '{DateTime.Today.AddDays(-7)}')  AND 
-                        UserGuid = '{_authorizedUser.ID}'"
+                        UserGuid = '{_authorizedUser.ID}'",
+                PagingSize = 0
             };
 
             var query = factory.Query(criteria);
@@ -471,7 +472,8 @@ namespace Shsict.Reservation.Mvc.Controllers
                 var critria = new Criteria
                 {
                     WhereClause = $"UserGuid = '{_authorizedUser.ID}'",
-                    OrderClause = "PlaceTime DESC"
+                    OrderClause = "PlaceTime DESC",
+                    PagingSize = 0
                 };
 
                 var order = factory.Query(critria).Find(x => ids.Any(id => id == x.Menu.ID));
