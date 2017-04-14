@@ -1,11 +1,22 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Shsict.Reservation.Mvc.Entities;
 
 namespace Shsict.Reservation.Mvc.Models
 {
     public class UserDto
     {
+        public static MapperConfiguration ConfigMapper()
+        {
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDto>()
+                .ForMember(d => d.UserId, opt => opt.MapFrom(s => s.UserName))
+                );
+
+            return config;
+        }
+
+
         #region Members and Properties
 
         public Guid ID { get; set; }

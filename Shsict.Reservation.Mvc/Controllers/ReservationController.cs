@@ -357,7 +357,6 @@ namespace Shsict.Reservation.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 try
                 {
                     if (model.ID > 0)
@@ -405,13 +404,14 @@ namespace Shsict.Reservation.Mvc.Controllers
                     file = ms.GetBuffer();
                 }
 
-                return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
-                    $"今日订餐记录表-{DateTime.Today.ToString("yyyyMMdd")}.xlsx");
+                return File(file, "application/vnd.ms-excel", $@"今日订餐记录表-{DateTime.Today.ToString("yyyyMMdd")}.xls");
+
+                //return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
+                //    $"今日订餐记录表-{DateTime.Today.ToString("yyyyMMdd")}.xlsx");
             }
 
             return RedirectToAction("TodayOrders", "Reservation");
         }
-
 
 
         private MenuTypeEnum GetMenuLunchOrSupper(int deadlineOffset = 0)

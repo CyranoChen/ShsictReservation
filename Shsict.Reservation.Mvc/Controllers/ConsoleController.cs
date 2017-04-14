@@ -433,8 +433,10 @@ namespace Shsict.Reservation.Mvc.Controllers
                     ? Convert.ToDateTime(date).ToString("yyyyMMdd")
                     : string.Empty;
 
-                return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    $@"订餐记录表-{timestamp}.xlsx");
+                return File(file, "application/vnd.ms-excel", $@"订餐记录表-{timestamp}.xls");
+
+                //return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                //    $@"订餐记录表-{timestamp}.xlsx");
             }
 
             return RedirectToAction("OrderManagement", "Console", new { date });
@@ -451,15 +453,8 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             if (list.Count > 0)
             {
-                var users = new List<UserDto>();
-
-                foreach (var user in list)
-                {
-                    var u = user.MapTo<User, UserDto>();
-                    u.UserId = user.UserName;
-
-                    users.Add(u);
-                }
+                var mapper = UserDto.ConfigMapper().CreateMapper();
+                var users = mapper.Map<IEnumerable<UserDto>>(list.AsEnumerable()).ToList();
 
                 // 按工号升序排列
                 int no;

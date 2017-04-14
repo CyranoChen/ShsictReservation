@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
 using Shsict.Core;
 using Shsict.Reservation.Mvc.Models;
 
@@ -12,9 +12,9 @@ namespace Shsict.Reservation.Mvc.Services
 {
     public static class ExcelManager
     {
-        public static XSSFWorkbook BuilderOrderWorkbook(List<OrderDto> list)
+        public static HSSFWorkbook BuilderOrderWorkbook(List<OrderDto> list)
         {
-            var book = new XSSFWorkbook();
+            var book = new HSSFWorkbook();
 
             var title = new[] { "序号", "送餐点", "用餐人", "工号", "时段", "套餐", "主食", "加饭", "创建时间", "创建人" };
 
@@ -44,7 +44,7 @@ namespace Shsict.Reservation.Mvc.Services
             return book;
         }
 
-        private static void BuilderSheet(XSSFWorkbook book, string name, DataTable dt, string[] title = null)
+        private static void BuilderSheet(HSSFWorkbook book, string name, DataTable dt, string[] title = null)
         {
             ISheet sheet = book.CreateSheet(name);
 
