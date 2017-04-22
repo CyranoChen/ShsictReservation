@@ -51,11 +51,11 @@ namespace Shsict.Reservation.Mvc.Controllers
                 model.MenuDate = DateTime.Today;
                 model.DeliveryZones = Delivery.Cache.DeliveryZoneList;
 
-                // 设置当前用户的默认送餐区域
+                // 设置当前用户的默认送餐区域，先判断用户的职务，再判断用户的班组
                 if (_authorizedUser != null)
                 {
-                    var rela = _repo.Single<RelationTeamPositionDelivery>(x =>
-                        x.Team == _authorizedUser.Team || x.Position == _authorizedUser.Position);
+                    var rela = _repo.Single<RelationTeamPositionDelivery>(x => x.Position == _authorizedUser.Position) ??
+                               _repo.Single<RelationTeamPositionDelivery>(x => x.Team == _authorizedUser.Team);
 
                     if (rela != null)
                     {
