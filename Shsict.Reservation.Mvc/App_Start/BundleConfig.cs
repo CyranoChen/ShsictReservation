@@ -26,6 +26,9 @@ namespace Shsict.Reservation.Mvc
             bundles.Add(new ScriptBundle("~/bundles/icheck").Include(
                 "~/Scripts/jquery.icheck.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/json2").Include(
+                "~/Scripts/json2.min.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.min.css",
                 "~/Content/bootstrap-theme.min.css",
