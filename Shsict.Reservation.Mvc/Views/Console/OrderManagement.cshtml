@@ -80,6 +80,27 @@
                 }
                 $(this).data("clicks", !clicks);
             });
+
+            $("#btnDelete").click(function () {
+                if ($("#tblOrder input[type='checkbox']:checked").length > 0) {
+                    var ids = new Array();
+
+                    $("#tblOrder input[type='checkbox']:checked").each(function () {
+                        ids.push($(this).val());
+                    });
+
+                    if (confirm("确认批量删除【" + ids.length + "】条订餐记录吗？")) {
+                        $.post("@Url.Action("BatchOrdersDelete", "Console")", { ids }, function(data, status) {
+                            if (status === "success" && data != null) {
+                                alert("删除了【" + data + "】条订餐记录");
+                                window.location.href = window.location.href;
+                            } else {
+                                alert("调用数据接口失败(BatchOrdersDelete)");
+                            }
+                        });
+                    }
+                }
+            });
         });
     </script>
 }
@@ -110,7 +131,9 @@
                                 <button type="button" class="btn btn-default checkbox-toggle">
                                     <i class="fa fa-square-o"></i>
                                 </button>
-                                <button type="button" class="btn btn-default"><i class="fa fa-trash-o"></i></button>
+                                <button type="button" class="btn btn-default" id="btnDelete">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
                             </div>
                             <!-- /.btn-group -->
                             <div class="btn-group">

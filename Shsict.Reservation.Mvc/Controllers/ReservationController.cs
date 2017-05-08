@@ -227,6 +227,23 @@ namespace Shsict.Reservation.Mvc.Controllers
             return View(model);
         }
 
+        // AJAX JsonResult
+        // GET: Reservation/BatchOrdersDelete?ids=172,171
+        [HttpPost]
+        [ManagerRole]
+        public JsonResult BatchOrdersDelete(int[] ids)
+        {
+            foreach (var id in ids)
+            {
+                var order = _repo.Single<Order>(id);
+
+                order.IsActive = false;
+
+                _repo.Update(order);
+            }
+
+            return Json(ids.Length);
+        }
 
         // GET: Reservation/Order
         [ManagerRole]
@@ -294,6 +311,22 @@ namespace Shsict.Reservation.Mvc.Controllers
 
                     if (order == null)
                     {
+                        // 判断补登记的订餐是否重复
+                        // 判断登记的用户订餐记录中是否有对应表单中选择的菜单ID
+                        var todayMenus = _repo.Query<Menu>(x => x.MenuDate == model.MenuDate &&
+                                                       x.MenuType == (MenuTypeEnum)Enum.Parse(typeof(MenuTypeEnum), model.MenuName) &&
+                                                       // ReSharper disable once RedundantBoolCompare
+                                                       // Shsict.Core.ConditionBuilder
+                                                       x.IsActive == true);
+
+                        if (_repo.Query<Order>(x => x.UserGuid == new Guid(model.UserName))
+                            .FindAll(x => x.IsActive).Any(x => todayMenus.Any(m => m.ID == x.MenuID)))
+                        {
+                            ModelState.AddModelError("Error", "所选用户已经成功预订了此时段套餐，无法重复添加订餐");
+
+                            return View(model);
+                        }
+
                         // 新增订餐记录
                         order = model.MapTo<OrderDto, Order>();
                         order.IsActive = true;

@@ -243,6 +243,24 @@ namespace Shsict.Reservation.Mvc.Controllers
         }
 
 
+        // AJAX JsonResult
+        // GET: Console/BatchOrdersDelete?ids=172,171
+        [HttpPost]
+        public JsonResult BatchOrdersDelete(int[] ids)
+        {
+            foreach (var id in ids)
+            {
+                var order = _repo.Single<Order>(id);
+
+                order.IsActive = false;
+
+                _repo.Update(order);
+            }
+
+            return Json(ids.Length);
+        }
+
+
         // GET: Console/Order
 
         public ActionResult Order(int id = 0)

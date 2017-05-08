@@ -23,12 +23,14 @@
     <script type="text/javascript">
         $.fn.dataTable.ext.search.push(function (settings, data) {
             var selectedZone = $("#DeliveryZone").val();
+            var keyword = $("#tbKeyword").val();
             var deliveryZone = data[6];
+            var employee = data[5];
 
-            if (selectedZone === "" || deliveryZone.indexOf(selectedZone) >= 0) {
-                return true;
-            }
-            return false;
+            if (selectedZone === "" && keyword === "") { return true; }
+
+            return (selectedZone === "" || deliveryZone.indexOf(selectedZone) >= 0)
+                && (keyword === "" || employee.indexOf(keyword) >= 0);
         });
 
         $(function () {
@@ -45,6 +47,10 @@
             });
 
             $("#DeliveryZone").change(function () {
+                table.draw();
+            });
+
+            $("#tbKeyword").keyup(function () {
                 table.draw();
             });
 
@@ -69,6 +75,27 @@
                 }
                 $(this).data("clicks", !clicks);
             });
+
+            $("#btnDelete").click(function () {
+                if ($("#tblOrder input[type='checkbox']:checked").length > 0) {
+                    var ids = new Array();
+
+                    $("#tblOrder input[type='checkbox']:checked").each(function () {
+                        ids.push($(this).val());
+                    });
+
+                    if (confirm("确认批量删除【" + ids.length + "】条订餐记录吗？")) {
+                        $.post("@Url.Action("BatchOrdersDelete", "Reservation")", { ids }, function(data, status) {
+                            if (status === "success" && data != null) {
+                                alert("删除了【" + data + "】条订餐记录");
+                                window.location.href = window.location.href;
+                            } else {
+                                alert("调用数据接口失败(BatchOrdersDelete)");
+                            }
+                        });
+                    }
+                }
+            });
         });
     </script>
 }
@@ -87,7 +114,9 @@
                                 <button type="button" class="btn btn-default checkbox-toggle">
                                     <i class="fa fa-square-o"></i>
                                 </button>
-                                <button type="button" class="btn btn-default"><i class="fa fa-trash-o"></i></button>
+                                <button type="button" class="btn btn-default" id="btnDelete">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
                             </div>
                             <!-- /.btn-group -->
                             <div class="btn-group">
@@ -114,7 +143,7 @@
                                            class="form-control" disabled="disabled" placeholder="订餐日期">
                                 </div>
                             </div>
-                            <div class="box-tools pull-right col-sm-3" style="text-align: right">
+                            <div class="box-tools pull-right col-sm-2" style="text-align: right">
                                 <select class="form-control" id="DeliveryZone">
                                     <option value="">-- 送餐区域 --</option>
                                     @if (Model.DeliveryZones != null && Model.DeliveryZones.Count > 0)
@@ -125,6 +154,9 @@
                                         }
                                     }
                                 </select>
+                            </div>
+                            <div class="box-tools pull-right col-sm-2" style="text-align: right">
+                                <input type="text" id="tbKeyword" value="" class="form-control" placeholder="--搜索关键字--">
                             </div>
                             <!-- /.box-tools -->
                         </div>

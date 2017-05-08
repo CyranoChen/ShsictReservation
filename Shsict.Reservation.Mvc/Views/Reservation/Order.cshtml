@@ -1,6 +1,5 @@
 ﻿@using Shsict.Core
 @using Shsict.Reservation.Mvc.Entities
-@using Shsict.Reservation.Mvc.Entities
 @model Shsict.Reservation.Mvc.Models.OrderDto
 @{
     Layout = "~/Views/Shared/_LayoutMobile.cshtml";
@@ -110,7 +109,7 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                @using (Html.BeginForm("Order", "Console", FormMethod.Post, new { id = "formOrder", @class = "form-horizontal" }))
+                @using (Html.BeginForm("Order", "Reservation", FormMethod.Post, new { id = "formOrder", @class = "form-horizontal" }))
                 {
                     <div class="box-body">
                         <!-- Date -->
@@ -122,7 +121,7 @@
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <input type="text" value="@((Model != null && Model.ID > 0 ? Model.MenuDate : DateTime.Today).ToString("yyyy年MM月dd日"))"
-                                       class="form-control" id="MenuDate" name="MenuDate" disabled="disabled">
+                                       class="form-control" id="MenuDate" name="MenuDate">
                             </div>
                             <!-- /.input group -->
                         </div>
