@@ -65,7 +65,7 @@
 
         function bindDeliveryPointByZone(zid) {
             if (zid !== "") {
-                $.getJSON("@Url.Action("GetDeliveryPointByZone", "Reservation")", { zid }, function(data, status) {
+                $.getJSON("@Url.Action("GetDeliveryPointByZone", "Reservation")", { "zid": zid }, function (data, status) {
                     if (status === "success" && data != null) {
                         if (JSON.stringify(data) !== "[]") {
                             $("select#DeliveryPoint").empty();

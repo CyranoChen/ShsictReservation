@@ -67,7 +67,7 @@
 
         function bindDeliveryPointByZone(zid) {
             if (zid !== "") {
-                $.getJSON("@Url.Action("GetDeliveryPointByZone","Reservation")", { zid }, function (data, status) {
+                $.getJSON("@Url.Action("GetDeliveryPointByZone","Reservation")", { "zid": zid }, function (data, status) {
                     if (status === "success" && data != null) {
                         if (JSON.stringify(data) !== "[]") {
                             $("select#DeliveryPoint").empty();
@@ -180,15 +180,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(m => m.DeliveryPoint, new {@class = "col-sm-2 control-label"})
+                            @Html.LabelFor(m => m.DeliveryPoint, new { @class = "col-sm-2 control-label" })
                             <div class="col-sm-5">
                                 <select name="DeliveryZone" id="DeliveryZone" class="form-control" style="width: 49%; display: inline">
                                     <option value="">-- 送餐区域 --</option>
                                     @foreach (var m in Delivery.Cache.DeliveryZoneList)
                                     {
-                                    <option value="@m.ID" @(Model != null && !string.IsNullOrEmpty(Model.DeliveryZone) && m.ID.ToString().Equals(Model.DeliveryZone) ? "selected=\" selected\"" : string.Empty)>
-                                        @m.DeliveryName
-                                    </option>
+                                        <option value="@m.ID" @(Model != null && !string.IsNullOrEmpty(Model.DeliveryZone) && m.ID.ToString().Equals(Model.DeliveryZone) ? "selected=\" selected\"" : string.Empty)>
+                                            @m.DeliveryName
+                                        </option>
                                     }
                                 </select>
                                 <select name="DeliveryPoint" id="DeliveryPoint" class="form-control" style="width: 49%; display: inline">
@@ -197,9 +197,9 @@
                                     {
                                         foreach (var m in Delivery.Cache.GetDeliveryPointsByZone(new Guid(Model.DeliveryZone)))
                                         {
-                                    <option value="@m.ID" @(Model != null && !string.IsNullOrEmpty(Model.DeliveryPoint) && m.ID.ToString().Equals(Model.DeliveryPoint) ? "selected=\" selected\"" : string.Empty)>
-                                        @m.DeliveryName
-                                    </option>
+                                            <option value="@m.ID" @(Model != null && !string.IsNullOrEmpty(Model.DeliveryPoint) && m.ID.ToString().Equals(Model.DeliveryPoint) ? "selected=\" selected\"" : string.Empty)>
+                                                @m.DeliveryName
+                                            </option>
                                         }
                                     }
                                 </select>

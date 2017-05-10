@@ -23,7 +23,7 @@
             });
 
             $("button.sync-user").click(function() {
-                $.post("@Url.Action("SyncUser", "Console")", { id: $(this).prop("id") }, function(data, status) {
+                $.post("@Url.Action("SyncUser", "Console")", { "id": $(this).prop("id") }, function(data, status) {
                     if (status === "success" && data != null) {
                         if (JSON.stringify(data) !== "Success") {
                             alert("通过微信通讯录接口，更新用户信息成功");

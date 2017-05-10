@@ -23,7 +23,7 @@
             });
 
             $("input.config").change(function () {
-                $.post("@Url.Action("Config","Console")", { key: $(this).prop("id"), value: $(this).val() });
+                $.post("@Url.Action("Config","Console")", { "key": $(this).prop("id"), "value": $(this).val() });
             });
         });
     </script>

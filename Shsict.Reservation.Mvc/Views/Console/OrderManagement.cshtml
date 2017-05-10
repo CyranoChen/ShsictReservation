@@ -90,7 +90,7 @@
                     });
 
                     if (confirm("确认批量删除【" + ids.length + "】条订餐记录吗？")) {
-                        $.post("@Url.Action("BatchOrdersDelete", "Console")", { ids }, function(data, status) {
+                        $.post("@Url.Action("BatchOrdersDelete", "Console")", { "ids": ids }, function(data, status) {
                             if (status === "success" && data != null) {
                                 alert("删除了【" + data + "】条订餐记录");
                                 window.location.href = window.location.href;
