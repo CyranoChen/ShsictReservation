@@ -153,13 +153,16 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserWeChat.cs" />
     <Compile Include="Entities\Viewer\OrderView.cs" />
+    <Compile Include="Entities\Viewer\ReportViewFactory.cs" />
     <Compile Include="Entities\Viewer\OrderViewFactory.cs" />
+    <Compile Include="Entities\Viewer\ReportView.cs" />
     <Compile Include="Filter\RoleFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MenuModel.cs" />
+    <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\ConsoleModels.cs" />
     <Compile Include="Models\ReservationModels.cs" />

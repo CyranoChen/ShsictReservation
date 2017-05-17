@@ -7,6 +7,11 @@ namespace Shsict.Reservation.Mvc.Models
 {
     public class ConsoleModels
     {
+        public class IndexDto
+        {
+            public List<ReportDto> Reports { get; set; }
+        }
+
         public class MenuManagementDto
         {
             public DateTime? MenuDate { get; set; }

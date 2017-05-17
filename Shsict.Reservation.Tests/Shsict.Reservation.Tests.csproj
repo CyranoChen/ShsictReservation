@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="JsonTest.cs" />
     <Compile Include="MenuTest.cs" />
+    <Compile Include="ReportViewTest.cs" />
     <Compile Include="OrderViewTest.cs" />
     <Compile Include="RelationTeamPositionDeliveryTest.cs" />
     <Compile Include="UserTest.cs" />

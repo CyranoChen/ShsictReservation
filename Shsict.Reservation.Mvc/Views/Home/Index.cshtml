@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Shsict.Reservation.Mvc.Models.ConsoleModels.IndexDto
+@{
     ViewBag.Title = "管理控制台";
 }
 
@@ -16,26 +17,72 @@
         </ol>
     </section>
     <!-- Main content -->
+    <!-- Main content -->
     <section class="content">
-        <div class="Row">
-            <h3>正在建设中</h3>
-            @*<div>
-                    <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxed1e5aacdfc38665&redirect_uri=http%3a%2f%2freservation.iarsenal.cn%2fAccount%2fDebug&response_type=code&scope=snsapi_base&state=ShsictReservation#wechat_redirect">调试WeChat认证接口</a>
-                </div>
-                <br />
-                <div>
-                    <a href="@Url.Action("DebugRegister", "Account")">固定用户信息注册接口</a>
-                </div>
-                <br />
-                <div>
-                    <a href="@Url.Action("WeChatLogin", "Account")">跳转WeChat认证接口</a>
-                </div>
-                <br />
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-body">
+                        <div class="mailbox-controls">
+                            <!-- /.btn-group -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default"
+                                        onclick="window.location.href = window.location.href">
+                                    <i class="fa fa-refresh"></i>
+                                </button>
+                                <button type="button" class="btn btn-default"
+                                        onclick="window.location.href = '@Url.Action("ExportOrders", "Console")'">
+                                    <i class="fa fa-file-excel-o"></i>
+                                </button>
+                            </div>
 
-                <div>
-                    <a href="@Url.Action("Index", "Reservation")">自助订餐测试界面</a>
-                </div>*@
+                            <div class="box-tools pull-right col-sm-3">
+                                <div class="has-feedback input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" value="@DateTime.Today.ToString("yyyy年MM月dd日")"
+                                           class="form-control" disabled="disabled" placeholder="订餐日期">
+                                </div>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <table id="tblOrder" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>送餐区域</th>
+                                    <th>时段</th>
+                                    <th>套餐</th>
+                                    <th>主食</th>
+                                    <th>加饭</th>
+                                    <th>数量</th>
+                                </tr>
+                            </thead>
+                            @if (Model.Reports != null && Model.Reports.Count > 0)
+                            {
+                                <tbody>
+                                    @foreach (var m in Model.Reports)
+                                    {
+                                        <tr>
+                                            <td>@m.DeliveryZone</td>
+                                            <td>@m.MenuName</td>
+                                            <td>@m.MenuFlag</td>
+                                            <td>@m.StapleFood</td>
+                                            <td>@if (m.ExtraFood) { @Html.Raw("加饭") }</td>
+                                            <td>@m.OrderCount</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
         </div>
+        <!-- /.row -->
     </section>
     <!-- /.content -->
 </div>
