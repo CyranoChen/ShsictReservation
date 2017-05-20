@@ -85,7 +85,7 @@
                     });
 
                     if (confirm("确认批量删除【" + ids.length + "】条订餐记录吗？")) {
-                        $.post("@Url.Action("BatchOrdersDelete", "Reservation")", { "ids": ids }, function(data, status) {
+                        $.post("@Url.Action("BatchOrdersDelete", "Reservation")", { "ids": ids }, function (data, status) {
                             if (status === "success" && data != null) {
                                 alert("删除了【" + data + "】条订餐记录");
                                 window.location.href = window.location.href;
@@ -94,6 +94,19 @@
                             }
                         });
                     }
+                }
+            });
+
+            $("#btnApprove").click(function () {
+                if (confirm("确认今日的【" + @if(Model.Orders != null) { @Html.Raw(Model.Orders.Count) } + "】条订餐记录吗，确认后将无法新增或修改？")) {
+                    $.post("@Url.Action("ApproveTodayMenus", "Reservation")", function (data, status) {
+                        if (status === "success" && data != null) {
+                            alert("确认今日的订餐记录");
+                            window.location.href = window.location.href;
+                        } else {
+                            alert("调用数据接口失败(ApproveTodayMenus)");
+                        }
+                    });
                 }
             });
         });
@@ -109,28 +122,40 @@
                 <div class="box">
                     <div class="box-body">
                         <div class="mailbox-controls">
-                            <div class="btn-group">
-                                <!-- Check all button -->
-                                <button type="button" class="btn btn-default checkbox-toggle">
-                                    <i class="fa fa-square-o"></i>
-                                </button>
-                                <button type="button" class="btn btn-default" id="btnDelete">
-                                    <i class="fa fa-trash-o"></i>
-                                </button>
-                            </div>
+                            @if (!Model.IsMenuApproved)
+                            {
+                                <div class="btn-group">
+                                    <!-- Check all button -->
+                                    <button type="button" class="btn btn-default checkbox-toggle">
+                                        <i class="fa fa-square-o"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-default" id="btnDelete">
+                                        <i class="fa fa-trash-o"></i>
+                                    </button>
+                                </div>
+                            }
                             <!-- /.btn-group -->
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default"
-                                        onclick="window.location.href = '@Url.Action("Order", "Reservation")'">
-                                    <i class="fa fa-plus-circle"></i>
-                                </button>
+                                @if (!Model.IsMenuApproved)
+                                {
+                                    <button type="button" class="btn btn-default"
+                                            onclick="window.location.href = '@Url.Action("Order", "Reservation")'">
+                                        <i class="fa fa-plus-circle"></i>
+                                    </button>
+                                }
                                 <button type="button" class="btn btn-default"
                                         onclick="window.location.href = '@Url.Action("TodayOrders", "Reservation")'">
                                     <i class="fa fa-refresh"></i>
                                 </button>
+                                @if (!Model.IsMenuApproved && Model.Orders != null && Model.Orders.Count > 0)
+                                {
+                                    <button type="button" class="btn btn-default" id="btnApprove">
+                                        <i class="fa fa-thumbs-o-up"></i> 大班长确认
+                                    </button>
+                                }
                                 <button type="button" class="btn btn-default"
                                         onclick="window.location.href = '@Url.Action("ExportOrders", "Reservation")'">
-                                    <i class="fa fa-file-excel-o"></i>
+                                    <i class="fa fa-file-excel-o"></i> 导出记录
                                 </button>
                             </div>
 
@@ -163,7 +188,10 @@
                         <table id="tblOrder" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>序号</th>
+                                    @if (!Model.IsMenuApproved)
+                                    {
+                                        <th>序号</th>
+                                    }
                                     <th>日期</th>
                                     <th>时段</th>
                                     <th>A / B</th>
@@ -171,7 +199,10 @@
                                     <th>用餐人</th>
                                     <th>送餐点</th>
                                     <th>创建时间</th>
-                                    <th>操作</th>
+                                    @if (!Model.IsMenuApproved)
+                                    {
+                                        <th>操作</th>
+                                    }
                                 </tr>
                             </thead>
                             @if (Model.Orders != null && Model.Orders.Count > 0)
@@ -180,25 +211,35 @@
                                     @foreach (var m in Model.Orders)
                                     {
                                         <tr>
-                                            <td><input type="checkbox" value="@m.ID" title="@m.ID"></td>
+                                            @if (!Model.IsMenuApproved)
+                                            {
+                                                <td><input type="checkbox" value="@m.ID" title="@m.ID"></td>
+                                            }
                                             <td>@m.MenuDate.ToString("yyyy-MM-dd")</td>
                                             <td>@m.MenuName</td>
                                             <td>@m.Flag</td>
                                             <td>
                                                 @m.StapleFood @if (m.ExtraFood)
-                                                { @Html.Raw("(+)") }
+                                                {
+                                                    @Html.Raw("(+)")
+                                                }
                                             </td>
                                             <td>
                                                 @m.UserName @if (!string.IsNullOrEmpty(m.EmployeeNo))
-                                                { @Html.Raw("(" + m.EmployeeNo + ")")}
+                                                {
+                                                    @Html.Raw("(" + m.EmployeeNo + ")")
+                                                }
                                             </td>
                                             <td>@m.DeliveryZone -> @m.DeliveryPoint</td>
                                             <td>@m.CreateTime.ToString("yyyyMMdd HH:mm")</td>
-                                            <td>
-                                                <a href="@Url.Action("Order", "Reservation", new {id = m.ID})" class="btn btn-info btn-xs">
-                                                    <i class="fa fa-pencil"></i> 修改
-                                                </a>
-                                            </td>
+                                            @if (!Model.IsMenuApproved)
+                                            {
+                                                <td>
+                                                    <a href="@Url.Action("Order", "Reservation", new {id = m.ID})" class="btn btn-info btn-xs">
+                                                        <i class="fa fa-pencil"></i> 修改
+                                                    </a>
+                                                </td>
+                                            }
                                         </tr>
                                     }
                                 </tbody>

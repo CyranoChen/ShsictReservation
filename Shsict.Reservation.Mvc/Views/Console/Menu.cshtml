@@ -22,8 +22,9 @@
             });
 
             //Flat color scheme for iCheck
-            $('input[type="radio"]').iCheck({
-                radioClass: 'iradio_flat-blue'
+            $('input[type="radio"], input[type="checkbox"]').iCheck({
+                radioClass: 'iradio_flat-blue',
+                checkboxClass: 'icheckbox_flat-blue'
             });
 
             $("#btnMenu").click(function () {
@@ -115,12 +116,17 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.Label("素菜", new { @class = "col-sm-2 control-label" })
+                            @Html.Label("素菜", new {@class = "col-sm-2 control-label"})
                             <div class="col-sm-4">
-                                @Html.TextBoxFor(m => m.Vegetable1, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Vegetable1) })
+                                @Html.TextBoxFor(m => m.Vegetable1, new {@class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Vegetable1)})
                             </div>
                             <div class="col-sm-4">
-                                @Html.TextBoxFor(m => m.Vegetable2, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Vegetable2) })
+                                @Html.TextBoxFor(m => m.Vegetable2, new {@class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Vegetable2)})
+                            </div>
+                        </div>
+                        <div class="form-group">                        
+                            <div class="col-sm-offset-2 col-sm-10">
+                                @Html.CheckBoxFor(m => m.IsApproved) 大班长确认
                             </div>
                         </div>
                         <div class="col-sm-offset-2 col-sm-10">

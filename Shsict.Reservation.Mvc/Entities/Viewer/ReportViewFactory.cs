@@ -11,11 +11,9 @@ namespace Shsict.Reservation.Mvc.Entities.Viewer
         {
             Dapper = new DapperHelper();
 
-            ViewerSql = 
-
             ViewerSql = @"SELECT dp.DeliveryGuid, dp.DeliveryName, o.StapleFood, o.ExtraFood, COUNT(o.ID) AS OrderCount, m.ID, m.MenuDate, m.MenuType, m.MenuFlag, m.Meat, m.MeatSmall, m.Vegetable1, m.Vegetable2
                                     FROM Reservation_Order AS o INNER JOIN 
-                                    Reservation_Menu AS m ON o.MenuID = m.ID AND m.IsActive = 1 LEFT OUTER JOIN 
+                                    Reservation_Menu AS m ON o.MenuID = m.ID AND m.IsActive = 1 AND m.IsApproved =1 LEFT OUTER JOIN 
                                     Reservation_Delivery AS d ON o.DeliveryGuid = d.DeliveryGuid AND d.IsActive = 1 LEFT OUTER JOIN 
                                     Reservation_Delivery AS dp ON d.ParentID = dp.DeliveryGuid AND d.IsActive = 1 
                                     WHERE (o.IsActive = 1)

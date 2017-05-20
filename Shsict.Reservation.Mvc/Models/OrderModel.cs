@@ -56,7 +56,7 @@ namespace Shsict.Reservation.Mvc.Models
         public override string ToString()
         {
             var extra = ExtraFood ? " (加饭)" : string.Empty;
-            return $@"{MenuDate.ToString("2017年3月29日")}，{MenuName}{Flag} <br />
+            return $@"{MenuDate.ToString("yyyy年MM月dd日")}，{MenuName}{Flag} <br />
                             主食：{StapleFood}{extra} <br />
                             送餐点：{DeliveryZone} -> {DeliveryPoint}";
         }

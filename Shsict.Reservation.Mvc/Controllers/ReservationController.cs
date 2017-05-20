@@ -224,6 +224,9 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             model.DeliveryZones = Delivery.Cache.DeliveryZoneList;
 
+            // 查找今日的菜单
+            model.IsMenuApproved = Menu.Cache.MenuListActiveToday.Exists(x => x.IsApproved);
+
             return View(model);
         }
 
@@ -414,6 +417,15 @@ namespace Shsict.Reservation.Mvc.Controllers
             return RedirectToAction("Order", "Reservation", new { model.ID });
         }
 
+        // Post: Reservation/ApproveTodayMenus
+        [HttpPost]
+        [ManagerRole]
+        [ValidateAntiForgeryToken]
+        public ActionResult ApproveTodayMenus()
+        {
+            // TODO
+            throw new NotImplementedException();
+        }
 
         // GET: Reservation/ExportOrders
         [ManagerRole]

@@ -88,6 +88,9 @@ namespace Shsict.Reservation.Mvc.Models
 
         public int OrderCount { get; set; }
 
+        [Display(Name = "大班长确认")]
+        public bool IsApproved { get; set; }
+
         #endregion
     }
 }

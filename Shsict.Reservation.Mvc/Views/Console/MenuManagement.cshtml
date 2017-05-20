@@ -96,6 +96,7 @@
                                     <th>小荤</th>
                                     <th>素菜1</th>
                                     <th>素菜2</th>
+                                    <th>确认</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -118,6 +119,7 @@
                                             <td>@m.MeatSmall</td>
                                             <td>@m.Vegetable1</td>
                                             <td>@m.Vegetable2</td>
+                                            <td>@m.IsApproved</td>
                                             <td>
                                                 <a href="@Url.Action("Menu", "Console", new {id = m.ID})" c class="btn btn-info btn-xs">
                                                     <i class="fa fa-pencil"></i> 修改

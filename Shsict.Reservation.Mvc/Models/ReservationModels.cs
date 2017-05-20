@@ -68,6 +68,8 @@ namespace Shsict.Reservation.Mvc.Models
             public List<Delivery> DeliveryZones { get; set; }
 
             public List<OrderDto> Orders { get; set; }
+
+            public bool IsMenuApproved { get; set; } 
         }
     }
 }

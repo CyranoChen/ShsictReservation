@@ -36,6 +36,9 @@ namespace Shsict.Reservation.Mvc.Entities
         [DbColumn("CreateUser")]
         public string CreateUser { get; set; }
 
+        [DbColumn("IsApproved")]
+        public bool IsApproved { get; set; }
+
         [DbColumn("IsActive")]
         public bool IsActive { get; set; }
 
