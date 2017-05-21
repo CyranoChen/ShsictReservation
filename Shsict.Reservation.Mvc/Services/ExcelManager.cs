@@ -12,7 +12,7 @@ namespace Shsict.Reservation.Mvc.Services
 {
     public static class ExcelManager
     {
-        public static HSSFWorkbook BuilderOrderWorkbook(List<OrderDto> list)
+        public static HSSFWorkbook BuildOrderWorkbook(List<OrderDto> list)
         {
             var book = new HSSFWorkbook();
 
@@ -38,13 +38,37 @@ namespace Shsict.Reservation.Mvc.Services
                                 o.CreateUser
                             };
 
-                BuilderSheet(book, z, ConvertToDataTable(query.ToList()), title);
+                BuildSheet(book, z, ConvertToDataTable(query.ToList()), title);
             }
 
             return book;
         }
 
-        private static void BuilderSheet(HSSFWorkbook book, string name, DataTable dt, string[] title = null)
+        public static HSSFWorkbook BuildReportWorkbook(List<ReportDto> list)
+        {
+            var book = new HSSFWorkbook();
+
+            var title = new[] { "送餐区域", "时段", "套餐", "主食", "加饭", "数量" };
+
+            var query = from r in list
+                        orderby r.DeliveryZone ascending, r.MenuName descending, r.MenuFlag ascending, r.StapleFood descending, r.ExtraFood descending
+                        select new
+                        {
+                            r.DeliveryZone,
+                            r.MenuName,
+                            r.MenuFlag,
+                            r.StapleFood,
+                            ExtraFood = r.ExtraFood ? "加饭" : string.Empty,
+                            r.OrderCount
+                        };
+
+            BuildSheet(book, "各区域订餐数量统计表", ConvertToDataTable(query.ToList()), title);
+
+            return book;
+        }
+
+
+        private static void BuildSheet(HSSFWorkbook book, string name, DataTable dt, string[] title = null)
         {
             ISheet sheet = book.CreateSheet(name);
 

@@ -27,6 +27,7 @@ namespace Shsict.Reservation.Tests
                     Vegetable2 = "麻婆豆腐",
                     CreateTime = DateTime.Now,
                     CreateUser = "admin",
+                    IsApproved = false,
                     IsActive = true,
                     Remark = "TEST Lunch A"
                 };
@@ -42,6 +43,7 @@ namespace Shsict.Reservation.Tests
                     Vegetable2 = "凉拌马兰头",
                     CreateTime = DateTime.Now,
                     CreateUser = "admin",
+                    IsApproved = false,
                     IsActive = true,
                     Remark = "TEST Lunch B"
                 };
@@ -57,6 +59,7 @@ namespace Shsict.Reservation.Tests
                     Vegetable2 = "清炒冬瓜",
                     CreateTime = DateTime.Now,
                     CreateUser = "admin",
+                    IsApproved = false,
                     IsActive = true,
                     Remark = "TEST Supper A"
                 };
@@ -72,6 +75,7 @@ namespace Shsict.Reservation.Tests
                     Vegetable2 = "手撕包心菜",
                     CreateTime = DateTime.Now,
                     CreateUser = "admin",
+                    IsApproved = false,
                     IsActive = true,
                     Remark = "TEST Supper B"
                 };

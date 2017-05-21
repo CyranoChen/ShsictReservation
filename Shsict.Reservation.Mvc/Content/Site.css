@@ -10,3 +10,13 @@
 .panel-history p {
     font-size: 16px !important;
 }
+
+#panel-reservation a,
+#panel-reservation .form-control, #panel-reservation label {
+    font-size: 16px !important;
+}
+
+#panel-reservation #extra-option {
+    height: 35px;
+    padding: 0 10px 5px 10px;
+}

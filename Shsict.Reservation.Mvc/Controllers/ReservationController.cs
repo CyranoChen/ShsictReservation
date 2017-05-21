@@ -417,14 +417,26 @@ namespace Shsict.Reservation.Mvc.Controllers
             return RedirectToAction("Order", "Reservation", new { model.ID });
         }
 
+        // AJAX JsonResult
         // Post: Reservation/ApproveTodayMenus
         [HttpPost]
         [ManagerRole]
-        [ValidateAntiForgeryToken]
         public ActionResult ApproveTodayMenus()
         {
-            // TODO
-            throw new NotImplementedException();
+            var menus = Menu.Cache.MenuListActiveToday;
+
+            if (menus != null && menus.Count > 0)
+            {
+                foreach (var m in menus)
+                {
+                    m.IsApproved = true;
+                    _repo.Update(m);
+                }
+
+                Menu.Cache.RefreshCache();
+            }
+
+            return Json(menus?.Count ?? 0);
         }
 
         // GET: Reservation/ExportOrders
@@ -440,7 +452,7 @@ namespace Shsict.Reservation.Mvc.Controllers
                 var mapper = OrderDto.ConfigMapper().CreateMapper();
                 var orders = mapper.Map<IEnumerable<OrderDto>>(list.AsEnumerable()).ToList();
 
-                var book = ExcelManager.BuilderOrderWorkbook(orders);
+                var book = ExcelManager.BuildOrderWorkbook(orders);
 
                 byte[] file;
                 using (var ms = new MemoryStream())

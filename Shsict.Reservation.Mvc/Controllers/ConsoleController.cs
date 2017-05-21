@@ -413,6 +413,34 @@ namespace Shsict.Reservation.Mvc.Controllers
             return RedirectToAction("Order", "Console", new { model.ID });
         }
 
+        // GET: Console/ExportReports
+
+        public ActionResult ExportReports()
+        {
+            IViewerFactory<ReportView> factory = new ReportViewFactory();
+
+            var list = factory.Query(new Criteria(new { MenuDate = DateTime.Today }));
+
+            if (list != null && list.Count > 0)
+            {
+                var mapper = ReportDto.ConfigMapper().CreateMapper();
+                var reports = mapper.Map<IEnumerable<ReportDto>>(list.AsEnumerable()).ToList();
+
+                var book = ExcelManager.BuildReportWorkbook(reports);
+
+                byte[] file;
+                using (var ms = new MemoryStream())
+                {
+                    book.Write(ms);
+                    file = ms.GetBuffer();
+                }
+
+                return File(file, "application/vnd.ms-excel", $@"今日订餐统计表-{DateTime.Today.ToString("yyyyMMdd")}.xls");
+            }
+
+
+            return RedirectToAction("Index", "Home");
+        }
 
         // GET: Console/ExportOrders
 
@@ -438,7 +466,7 @@ namespace Shsict.Reservation.Mvc.Controllers
                 var mapper = OrderDto.ConfigMapper().CreateMapper();
                 var orders = mapper.Map<IEnumerable<OrderDto>>(list.AsEnumerable()).ToList();
 
-                var book = ExcelManager.BuilderOrderWorkbook(orders);
+                var book = ExcelManager.BuildOrderWorkbook(orders);
 
                 byte[] file;
                 using (var ms = new MemoryStream())

@@ -30,8 +30,8 @@
                                         onclick="window.location.href = window.location.href">
                                     <i class="fa fa-refresh"></i>
                                 </button>
-                                @* TODO *@
-                                <button type="button" class="btn btn-default">
+                                <button type="button" class="btn btn-default"
+                                        onclick="window.location.href = '@Url.Action("ExportReports", "Console")'">
                                     <i class="fa fa-file-excel-o"></i> 导出记录
                                 </button>
                             </div>
@@ -68,7 +68,8 @@
                                             <td>@m.MenuName</td>
                                             <td>@m.MenuFlag</td>
                                             <td>@m.StapleFood</td>
-                                            <td>@if (m.ExtraFood) { @Html.Raw("加饭") }</td>
+                                            <td>@if (m.ExtraFood)
+                                            { @Html.Raw("加饭") }</td>
                                             <td>@m.OrderCount</td>
                                         </tr>
                                     }
