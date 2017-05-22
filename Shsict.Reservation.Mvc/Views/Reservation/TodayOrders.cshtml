@@ -147,11 +147,18 @@
                                         onclick="window.location.href = '@Url.Action("TodayOrders", "Reservation")'">
                                     <i class="fa fa-refresh"></i>
                                 </button>
-                                @if (!Model.IsMenuApproved && Model.Orders != null && Model.Orders.Count > 0)
+                                @if (!Model.IsMenuApproved && Model.CanApprovedNow && Model.Orders != null && Model.Orders.Count > 0)
                                 {
                                     <button type="button" class="btn btn-default" id="btnApprove">
                                         <i class="fa fa-thumbs-o-up"></i> 大班长确认
                                     </button>
+                                }
+                                @if (Model.IsMenuApproved)
+                                {
+                                    <button type="button" class="btn btn-default" title="@Model.ApproverInfo"
+                                            onclick="alert($(this).prop('title'))">
+                                        <i class="fa fa-info-circle"></i>
+                                    </button>                                
                                 }
                                 <button type="button" class="btn btn-default"
                                         onclick="window.location.href = '@Url.Action("ExportOrders", "Reservation")'">

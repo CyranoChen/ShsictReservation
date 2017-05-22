@@ -10,6 +10,8 @@ namespace Shsict.Reservation.Mvc.Models
         public class IndexDto
         {
             public List<ReportDto> Reports { get; set; }
+
+            public string ApproverInfo { get; set; }
         }
 
         public class MenuManagementDto

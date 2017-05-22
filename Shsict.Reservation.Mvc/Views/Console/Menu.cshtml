@@ -124,13 +124,9 @@
                                 @Html.TextBoxFor(m => m.Vegetable2, new {@class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Vegetable2)})
                             </div>
                         </div>
-                        <div class="form-group">                        
-                            <div class="col-sm-offset-2 col-sm-10">
-                                @Html.CheckBoxFor(m => m.IsApproved) 大班长确认
-                            </div>
-                        </div>
                         <div class="col-sm-offset-2 col-sm-10">
                             @Html.HiddenFor(m => m.ID)
+                            @Html.HiddenFor(m => m.IsApproved)
                             @Html.AntiForgeryToken()
                             @Html.ValidationSummary()
                         </div>

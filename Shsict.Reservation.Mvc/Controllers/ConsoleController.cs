@@ -419,7 +419,11 @@ namespace Shsict.Reservation.Mvc.Controllers
         {
             IViewerFactory<ReportView> factory = new ReportViewFactory();
 
-            var list = factory.Query(new Criteria(new { MenuDate = DateTime.Today }));
+            var list = factory.Query(new Criteria(new
+            {
+                MenuDate = DateTime.Today,
+                MenuType = (int)MenuDto.GetMenuLunchOrSupper(0, false)
+            }));
 
             if (list != null && list.Count > 0)
             {

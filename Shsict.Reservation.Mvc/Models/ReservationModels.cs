@@ -69,7 +69,11 @@ namespace Shsict.Reservation.Mvc.Models
 
             public List<OrderDto> Orders { get; set; }
 
+            public bool CanApprovedNow { get; set; }
+
             public bool IsMenuApproved { get; set; } 
+
+            public string ApproverInfo { get; set; }
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Shsict.Reservation.Mvc.Controllers
         {
             var model = new ReservationModels.IndexDto();
 
-            var menuType = GetMenuLunchOrSupper();
+            var menuType = MenuDto.GetMenuLunchOrSupper();
 
             var menuA = Menu.Cache.MenuListActiveToday.Find(x =>
                 x.MenuType == menuType && x.MenuFlag == "A");
@@ -145,7 +145,7 @@ namespace Shsict.Reservation.Mvc.Controllers
             {
                 MenuDate = DateTime.Today,
                 // 设置当前是否在订餐时间内，不判断是否有菜单
-                CanReserveNow = GetMenuLunchOrSupper() != MenuTypeEnum.None
+                CanReserveNow = MenuDto.GetMenuLunchOrSupper() != MenuTypeEnum.None
             };
 
 
@@ -213,7 +213,11 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             IViewerFactory<OrderView> factory = new OrderViewFactory();
 
-            var list = factory.Query(new Criteria(new { MenuDate = DateTime.Today }));
+            var list = factory.Query(new Criteria(new
+            {
+                MenuDate = DateTime.Today,
+                MenuType = (int)MenuDto.GetMenuLunchOrSupper(0, false)
+            }));
 
             if (list != null && list.Count > 0)
             {
@@ -224,8 +228,16 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             model.DeliveryZones = Delivery.Cache.DeliveryZoneList;
 
-            // 查找今日的菜单
-            model.IsMenuApproved = Menu.Cache.MenuListActiveToday.Exists(x => x.IsApproved);
+            // 判断当前时间是否可进行大班长确认过
+            model.CanApprovedNow = MenuDto.GetMenuLunchOrSupper().Equals(MenuTypeEnum.None);
+
+            // 查找今日的菜单，判断是否大班长确认过
+            var currentMenus = Menu.Cache.MenuListActiveToday.FindAll(x =>
+                x.MenuType.Equals(MenuDto.GetMenuLunchOrSupper(0, false)));
+
+            model.IsMenuApproved = currentMenus.Exists(x => x.IsApproved);
+
+            model.ApproverInfo = model.IsMenuApproved ? currentMenus[0].Remark : string.Empty;
 
             return View(model);
         }
@@ -423,20 +435,22 @@ namespace Shsict.Reservation.Mvc.Controllers
         [ManagerRole]
         public ActionResult ApproveTodayMenus()
         {
-            var menus = Menu.Cache.MenuListActiveToday;
+            var menus = Menu.Cache.MenuListActiveToday.FindAll(x =>
+                x.MenuType.Equals(MenuDto.GetMenuLunchOrSupper(0, false)));
 
-            if (menus != null && menus.Count > 0)
+            if (menus.Count > 0)
             {
                 foreach (var m in menus)
                 {
                     m.IsApproved = true;
+                    m.Remark = $"【{_authorizedUser.EmployeeName}（{_authorizedUser.EmployeeNo}）】于【{DateTime.Now.ToString("yyyy-MM-dd HH:mm")}】确认";
                     _repo.Update(m);
                 }
 
                 Menu.Cache.RefreshCache();
             }
 
-            return Json(menus?.Count ?? 0);
+            return Json(menus.Count);
         }
 
         // GET: Reservation/ExportOrders
@@ -445,7 +459,11 @@ namespace Shsict.Reservation.Mvc.Controllers
         {
             IViewerFactory<OrderView> factory = new OrderViewFactory();
 
-            var list = factory.Query(new Criteria(new { MenuDate = DateTime.Today }));
+            var list = factory.Query(new Criteria(new
+            {
+                MenuDate = DateTime.Today,
+                MenuType = (int)MenuDto.GetMenuLunchOrSupper(0, false)
+            }));
 
             if (list != null && list.Count > 0)
             {
@@ -471,27 +489,9 @@ namespace Shsict.Reservation.Mvc.Controllers
         }
 
 
-        private MenuTypeEnum GetMenuLunchOrSupper(int deadlineOffset = 0)
-        {
-            if (DateTime.Now.Hour >= ConfigGlobal.MenuDuration[0]
-                && DateTime.Now.Hour < ConfigGlobal.MenuDuration[1] + deadlineOffset)
-            {
-                return MenuTypeEnum.Lunch;
-            }
-            else if (DateTime.Now.Hour >= ConfigGlobal.MenuDuration[2]
-                && DateTime.Now.Hour < ConfigGlobal.MenuDuration[3] + deadlineOffset)
-            {
-                return MenuTypeEnum.Supper;
-            }
-            else
-            {
-                return MenuTypeEnum.None;
-            }
-        }
-
         private bool CanCancelNow(int id)
         {
-            var menuType = GetMenuLunchOrSupper();
+            var menuType = MenuDto.GetMenuLunchOrSupper();
 
             if (menuType != MenuTypeEnum.None)
             {
@@ -509,7 +509,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         private bool CanReserveNow(int[] ids)
         {
-            if (GetMenuLunchOrSupper() != MenuTypeEnum.None)
+            if (MenuDto.GetMenuLunchOrSupper() != MenuTypeEnum.None)
             {
                 // 已经预订了对应的套餐
                 return !_repo.Query<Order>(x => x.UserGuid == _authorizedUser.ID).FindAll(x => x.IsActive)
@@ -521,7 +521,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         private OrderDto GetMyCurrentOrder(int[] ids)
         {
-            if (GetMenuLunchOrSupper() != MenuTypeEnum.None)
+            if (MenuDto.GetMenuLunchOrSupper() != MenuTypeEnum.None)
             {
                 // 获得预订了对应的套餐
                 var factory = new OrderViewFactory();

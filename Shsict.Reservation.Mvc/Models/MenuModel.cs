@@ -45,6 +45,35 @@ namespace Shsict.Reservation.Mvc.Models
             }
         }
 
+        public static MenuTypeEnum GetMenuLunchOrSupper(int deadlineOffset = 0, bool isStrict = true)
+        {
+            if (DateTime.Now.Hour >= ConfigGlobal.MenuDuration[0]
+                && DateTime.Now.Hour < ConfigGlobal.MenuDuration[1] + deadlineOffset)
+            {
+                return MenuTypeEnum.Lunch;
+            }
+            else if (DateTime.Now.Hour >= ConfigGlobal.MenuDuration[2]
+                && DateTime.Now.Hour < ConfigGlobal.MenuDuration[3] + deadlineOffset)
+            {
+                return MenuTypeEnum.Supper;
+            }
+            else
+            {
+                if (!isStrict && DateTime.Now.Hour >= ConfigGlobal.MenuDuration[3] + deadlineOffset)
+                {
+                    return MenuTypeEnum.Supper;
+                }
+                else if (!isStrict)
+                {
+                    return MenuTypeEnum.Lunch;
+                }
+                else
+                {
+                    return MenuTypeEnum.None;
+                }
+            }
+        }
+
         #region Members and Properties
 
         public int ID { get; set; }
@@ -86,10 +115,10 @@ namespace Shsict.Reservation.Mvc.Models
         [Display(Name = "素菜(二)")]
         public string Vegetable2 { get; set; }
 
-        public int OrderCount { get; set; }
-
         [Display(Name = "大班长确认")]
         public bool IsApproved { get; set; }
+
+        public int OrderCount { get; set; }
 
         #endregion
     }

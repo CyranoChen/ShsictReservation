@@ -50,7 +50,7 @@ namespace Shsict.Core
 
                 foreach (var p in propties)
                 {
-                    arrWhere[i] = $" {p.Name} = @{p.Name}";
+                    arrWhere[i++] = $" {p.Name} = @{p.Name}";
                 }
 
                 strPara = string.Join(" AND ", arrWhere);
