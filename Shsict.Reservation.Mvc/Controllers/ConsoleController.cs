@@ -207,6 +207,41 @@ namespace Shsict.Reservation.Mvc.Controllers
         }
 
 
+        // GET: Console/OrderManagementCanteen
+
+        public ActionResult OrderManagementCanteen()
+        {
+            var model = new ConsoleModels.OrderManagementDto();
+
+            IViewerFactory<OrderView> factory = new OrderViewFactory();
+
+            var list = factory.Query(new Criteria(new
+            {
+                MenuDate = DateTime.Today,
+                MenuType = (int)MenuDto.GetMenuLunchOrSupper(0, false)
+            }));
+
+            if (list != null && list.Count > 0)
+            {
+                var mapper = OrderDto.ConfigMapper().CreateMapper();
+
+                model.Orders = mapper.Map<IEnumerable<OrderDto>>(list.AsEnumerable()).ToList();
+
+                // 查找今日的菜单，判断是否大班长确认过
+                var currentMenus = Entities.Menu.Cache.MenuListActiveToday.FindAll(x =>
+                    x.MenuType.Equals(MenuDto.GetMenuLunchOrSupper(0, false)));
+
+                model.IsMenuApproved = currentMenus.Exists(x => x.IsApproved);
+
+                model.ApproverInfo = model.IsMenuApproved ? currentMenus[0].Remark : string.Empty;
+            }
+
+            model.DeliveryZones = Delivery.Cache.DeliveryZoneList;
+
+            return View(model);
+        }
+
+
         // GET: Console/OrderManagement
 
         public ActionResult OrderManagement(string date)
@@ -223,6 +258,13 @@ namespace Shsict.Reservation.Mvc.Controllers
                 list = factory.Query(new Criteria(new { MenuDate = menuDate }));
 
                 model.MenuDate = menuDate;
+
+                // 查找今日的菜单，判断是否大班长确认过
+                var currentMenus = Entities.Menu.Cache.MenuListActive.FindAll(x => x.MenuDate.Equals(menuDate) &&
+                    x.MenuType.Equals(MenuDto.GetMenuLunchOrSupper(0, false)));
+
+                model.ApproverInfo = currentMenus.Exists(x => x.IsApproved) ?
+                    currentMenus[0].Remark : string.Empty;
             }
             else
             {

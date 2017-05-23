@@ -31,16 +31,6 @@
         });
 
         $(function () {
-            $("#MenuDate").datepicker({
-                autoclose: true,
-                language: "zh-CN",
-                todayHighlight: true
-            }).on('changeDate', function (calendar) {
-                var date = calendar.date.getFullYear().toString() + "-" + (calendar.date.getMonth() + 1).toString() + "-" + calendar.date.getDate().toString();
-
-                window.location.href = "@Url.Action("OrderManagement", "Console")" + "?date=" + date;
-            });
-
             var table = $("#tblOrder").DataTable({
                 "paging": true,
                 "lengthChange": false,
@@ -126,23 +116,29 @@
                 <div class="box">
                     <div class="box-body">
                         <div class="mailbox-controls">
-                            <div class="btn-group">
-                                <!-- Check all button -->
-                                <button type="button" class="btn btn-default checkbox-toggle">
-                                    <i class="fa fa-square-o"></i>
-                                </button>
-                                <button type="button" class="btn btn-default" id="btnDelete">
-                                    <i class="fa fa-trash-o"></i>
-                                </button>
-                            </div>
+                            @if (!Model.IsMenuApproved)
+                            {
+                                <div class="btn-group">
+                                    <!-- Check all button -->
+                                    <button type="button" class="btn btn-default checkbox-toggle">
+                                        <i class="fa fa-square-o"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-default" id="btnDelete">
+                                        <i class="fa fa-trash-o"></i>
+                                    </button>
+                                </div>
+                            }
                             <!-- /.btn-group -->
                             <div class="btn-group">
+                                @if (!Model.IsMenuApproved)
+                                {
+                                    <button type="button" class="btn btn-default"
+                                            onclick="window.location.href = '@Url.Action("Order", "Console")'">
+                                        <i class="fa fa-plus-circle"></i>
+                                    </button>
+                                }
                                 <button type="button" class="btn btn-default"
-                                        onclick="window.location.href = '@Url.Action("Order", "Console")'">
-                                    <i class="fa fa-plus-circle"></i>
-                                </button>
-                                <button type="button" class="btn btn-default"
-                                        onclick="window.location.href = '@Url.Action("OrderManagement", "Console")'">
+                                        onclick="window.location.href = '@Url.Action("OrderManagementCanteen", "Console")'">
                                     <i class="fa fa-refresh"></i>
                                 </button>
                                 @if (!string.IsNullOrEmpty(Model.ApproverInfo))
@@ -153,7 +149,7 @@
                                     </button>
                                 }
                                 <button type="button" class="btn btn-default"
-                                        onclick="window.location.href = '@Url.Action("ExportOrders", "Console", new { @date = Model.MenuDate })'">
+                                        onclick="window.location.href = '@Url.Action("ExportOrders", "Console")'">
                                     <i class="fa fa-file-excel-o"></i> 导出记录
                                 </button>
                             </div>
@@ -163,10 +159,8 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input type="text" value="@(Model.MenuDate.HasValue ?
-                                        Model.MenuDate.Value.ToString("yyyy年MM月dd日") : string.Empty)"
-                                           class="form-control" id="MenuDate" name="MenuDate" placeholder="订餐日期">
-                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                    <input type="text" value="@DateTime.Today.ToString("yyyy年MM月dd日")"
+                                           class="form-control" disabled="disabled" placeholder="订餐日期">
                                 </div>
                             </div>
                             <div class="box-tools pull-right col-sm-3" style="text-align: right">

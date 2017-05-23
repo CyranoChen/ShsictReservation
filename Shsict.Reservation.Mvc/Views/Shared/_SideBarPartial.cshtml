@@ -22,11 +22,22 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="@Url.Action("MenuManagement", "Console")"><i class="fa fa-calendar-minus-o"></i> 菜单管理</a></li>
-                        <li>
-                            <a href="@Url.Action("OrderManagement", "Console", new {@date = DateTime.Today.ToString("yyyy-MM-dd")})">
-                                <i class="fa fa-clipboard"></i> 订餐查询
-                            </a>
-                        </li>
+                        @if (authorizedUser.Role == UserRoleEnum.Canteen)
+                        {
+                            <li>
+                                <a href="@Url.Action("OrderManagementCanteen", "Console")">
+                                    <i class="fa fa-clipboard"></i> 订餐查询
+                                </a>
+                            </li>
+                        }
+                        else if (authorizedUser.Role == UserRoleEnum.Admin)
+                        {
+                            <li>
+                                <a href="@Url.Action("OrderManagement", "Console", new {@date = DateTime.Today.ToString("yyyy-MM-dd")})">
+                                    <i class="fa fa-clipboard"></i> 订餐查询
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </li>
             }
