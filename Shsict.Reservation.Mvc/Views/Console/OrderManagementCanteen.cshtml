@@ -116,27 +116,8 @@
                 <div class="box">
                     <div class="box-body">
                         <div class="mailbox-controls">
-                            @if (!Model.IsMenuApproved)
-                            {
-                                <div class="btn-group">
-                                    <!-- Check all button -->
-                                    <button type="button" class="btn btn-default checkbox-toggle">
-                                        <i class="fa fa-square-o"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-default" id="btnDelete">
-                                        <i class="fa fa-trash-o"></i>
-                                    </button>
-                                </div>
-                            }
                             <!-- /.btn-group -->
                             <div class="btn-group">
-                                @if (!Model.IsMenuApproved)
-                                {
-                                    <button type="button" class="btn btn-default"
-                                            onclick="window.location.href = '@Url.Action("Order", "Console")'">
-                                        <i class="fa fa-plus-circle"></i>
-                                    </button>
-                                }
                                 <button type="button" class="btn btn-default"
                                         onclick="window.location.href = '@Url.Action("OrderManagementCanteen", "Console")'">
                                     <i class="fa fa-refresh"></i>
@@ -147,11 +128,11 @@
                                             onclick="alert($(this).prop('title'))">
                                         <i class="fa fa-info-circle"></i>
                                     </button>
+                                    <button type="button" class="btn btn-default"
+                                            onclick="window.location.href = '@Url.Action("ExportOrders", "Reservation")'">
+                                        <i class="fa fa-file-excel-o"></i> 导出记录
+                                    </button>
                                 }
-                                <button type="button" class="btn btn-default"
-                                        onclick="window.location.href = '@Url.Action("ExportOrders", "Console")'">
-                                    <i class="fa fa-file-excel-o"></i> 导出记录
-                                </button>
                             </div>
 
                             <div class="box-tools pull-right col-sm-3">
@@ -191,7 +172,7 @@
                                     <th>操作</th>
                                 </tr>
                             </thead>
-                            @if (Model.Orders != null && Model.Orders.Count > 0)
+                            @if (!string.IsNullOrEmpty(Model.ApproverInfo) && Model.Orders != null && Model.Orders.Count > 0)
                             {
                                 <tbody>
                                     @foreach (var m in Model.Orders)

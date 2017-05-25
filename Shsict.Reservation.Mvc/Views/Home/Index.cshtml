@@ -36,11 +36,11 @@
                                             onclick="alert($(this).prop('title'))">
                                         <i class="fa fa-info-circle"></i>
                                     </button>
+                                    <button type="button" class="btn btn-default"
+                                            onclick="window.location.href = '@Url.Action("ExportReports", "Console")'">
+                                        <i class="fa fa-file-excel-o"></i> 导出记录
+                                    </button>
                                 }
-                                <button type="button" class="btn btn-default"
-                                        onclick="window.location.href = '@Url.Action("ExportReports", "Console")'">
-                                    <i class="fa fa-file-excel-o"></i> 导出记录
-                                </button>
                             </div>
 
                             <div class="box-tools pull-right col-sm-3">
