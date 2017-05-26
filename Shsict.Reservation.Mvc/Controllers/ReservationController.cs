@@ -455,6 +455,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         // GET: Reservation/ExportOrders
         [ManagerRole]
+        [CanteenRole]
         public ActionResult ExportOrders()
         {
             IViewerFactory<OrderView> factory = new OrderViewFactory();
