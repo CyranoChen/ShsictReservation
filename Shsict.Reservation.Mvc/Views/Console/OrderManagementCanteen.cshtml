@@ -161,7 +161,6 @@
                         <table id="tblOrder" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>序号</th>
                                     <th>日期</th>
                                     <th>时段</th>
                                     <th>A / B</th>
@@ -169,7 +168,6 @@
                                     <th>用餐人</th>
                                     <th>送餐点</th>
                                     <th>创建时间</th>
-                                    <th>操作</th>
                                 </tr>
                             </thead>
                             @if (!string.IsNullOrEmpty(Model.ApproverInfo) && Model.Orders != null && Model.Orders.Count > 0)
@@ -178,7 +176,6 @@
                                     @foreach (var m in Model.Orders)
                                     {
                                         <tr>
-                                            <td><input type="checkbox" value="@m.ID" title="@m.ID"></td>
                                             <td>@m.MenuDate.ToString("yyyy-MM-dd")</td>
                                             <td>@m.MenuName</td>
                                             <td>@m.Flag</td>
@@ -192,11 +189,6 @@
                                             </td>
                                             <td>@m.DeliveryZone -> @m.DeliveryPoint</td>
                                             <td>@m.CreateTime.ToString("yyyyMMdd HH:mm")</td>
-                                            <td>
-                                                <a href="@Url.Action("Order", "Console", new {id = m.ID})" class="btn btn-info btn-xs">
-                                                    <i class="fa fa-pencil"></i> 修改
-                                                </a>
-                                            </td>
                                         </tr>
                                     }
                                 </tbody>
