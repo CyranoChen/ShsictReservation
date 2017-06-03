@@ -129,6 +129,24 @@ namespace Shsict.Reservation.Mvc.Entities
             }
         }
 
+        public static short DefaultExcelFontSize
+        {
+            get
+            {
+                short fontsize;
+
+                if (ConfigDictionary.ContainsKey("DefaultExcelFontSize") &&
+                    short.TryParse(ConfigDictionary["DefaultExcelFontSize"], out fontsize))
+                {
+                    return fontsize;
+                }
+                else
+                {
+                    return 18;
+                }
+            }
+        }
+
         #endregion
     }
 }

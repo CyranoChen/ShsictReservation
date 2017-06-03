@@ -6,6 +6,7 @@ using System.Linq;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using Shsict.Core;
+using Shsict.Reservation.Mvc.Entities;
 using Shsict.Reservation.Mvc.Models;
 
 namespace Shsict.Reservation.Mvc.Services
@@ -70,6 +71,20 @@ namespace Shsict.Reservation.Mvc.Services
 
         private static void BuildSheet(HSSFWorkbook book, string name, DataTable dt, string[] title = null)
         {
+            ICellStyle style = book.CreateCellStyle();
+
+            // 设置字体样式
+            IFont font = book.CreateFont();
+            font.FontHeightInPoints = ConfigGlobal.DefaultExcelFontSize;
+
+            style.SetFont(font);
+
+            // 设置边框样式
+            style.BorderTop = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Thin;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+
             ISheet sheet = book.CreateSheet(name);
 
             if (title != null && title.Length > 0)
@@ -78,7 +93,13 @@ namespace Shsict.Reservation.Mvc.Services
 
                 for (var i = 0; i < title.Length; i++)
                 {
-                    row.CreateCell(i).SetCellValue(title[i]);
+                    // 设置sheet默认样式
+                    //sheet.SetDefaultColumnStyle(i, style);
+
+                    ICell cell = row.CreateCell(i);
+
+                    cell.SetCellValue(title[i]);
+                    cell.CellStyle = style;
                 }
             }
 
@@ -95,6 +116,7 @@ namespace Shsict.Reservation.Mvc.Services
                         ICell cell = row.CreateCell(j, CellType.String);
 
                         cell.SetCellValue(dt.Rows[i][j].ToString());
+                        cell.CellStyle = style;
 
                         sheet.AutoSizeColumn(j, true);
                     }
