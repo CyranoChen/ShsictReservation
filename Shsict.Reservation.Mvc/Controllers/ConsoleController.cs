@@ -268,7 +268,13 @@ namespace Shsict.Reservation.Mvc.Controllers
             }
             else
             {
-                list = factory.All();
+                // 为避免数据量过大，只显示7天内的订餐记录
+                list = factory.Query(new Criteria
+                {
+                    WhereClause = "MenuDate >= DATEADD(DAY,-7,GETDATE())",
+                    PagingSize = 0
+                });
+
                 list.Sort((x1, x2) => x2.Menu.MenuDate.CompareTo(x1.Menu.MenuDate));
             }
 
