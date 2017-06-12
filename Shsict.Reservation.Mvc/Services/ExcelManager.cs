@@ -39,7 +39,15 @@ namespace Shsict.Reservation.Mvc.Services
                                 o.CreateUser
                             };
 
-                BuildSheet(book, z, ConvertToDataTable(query.ToList()), title);
+                var dt = ConvertToDataTable(query.ToList());
+                var no = 1;
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    dr["ID"] = no++;
+                }
+
+                BuildSheet(book, z, dt, title);
             }
 
             return book;
