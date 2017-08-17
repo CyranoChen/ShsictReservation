@@ -26,8 +26,8 @@ namespace Shsict.Reservation.Mvc.Models
                     MeatSmall = s.Menu.MeatSmall,
                     Vegetable1 = s.Menu.Vegetable1,
                     Vegetable2 = s.Menu.Vegetable2,
-                    DeliveryZone = s.Delivery != null ?
-                        Delivery.Cache.GetParentZone(s.Delivery.ID).DeliveryName : string.Empty,
+                    //DeliveryZone = s.Delivery != null ?
+                    //    Delivery.Cache.GetParentZone(s.Delivery.ID).DeliveryName : string.Empty,
                     DeliveryGuid = s.Delivery?.ID,
                     DeliveryPoint = s.Delivery?.DeliveryName,
                     ExtraFood = s.ExtraFood,
@@ -48,6 +48,24 @@ namespace Shsict.Reservation.Mvc.Models
                 }))
                 .ForMember(d => d.StapleFood, opt =>
                     opt.MapFrom(s => s.StapleFood == StapleFoodEnum.Rice ? "米饭" : "馒头"))
+                .ForMember(d => d.DeliveryZone, opt => opt.ResolveUsing(s =>
+                {
+                    if (s.Delivery != null)
+                    {
+                        var zone = Delivery.Cache.GetParentZone(s.Delivery.ID);
+
+                        if (zone != null)
+                        {
+                            return zone.DeliveryName;
+                        }
+                        else
+                        {
+                            return s.Delivery.DeliveryName;
+                        }
+                    }
+
+                    return string.Empty;
+                }))
                 );
 
             return config;
