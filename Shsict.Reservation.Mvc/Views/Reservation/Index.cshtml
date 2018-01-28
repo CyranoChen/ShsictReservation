@@ -68,9 +68,12 @@
                             });
                         } else {
                             $("select#DeliveryPoint").empty();
-                            $("select#DeliveryPoint").append($("<option>", { value: zid }).prop("selected", "selected")
-                                // 如果对应订餐区域无订餐点，则显示订餐区域信息
-                                .text($('select#DeliveryZone>option[selected=" selected"]').text()));
+                            // 如果订餐区域没有下属订餐点，则置空，提示选择订餐区域与地点，限制提交
+                            $("select#DeliveryPoint").append($("<option>", { value: "" }).text("-- 送餐点 --"));
+
+                            //$("select#DeliveryPoint").append($("<option>", { value: zid }).prop("selected", "selected")
+                            //    // 如果对应订餐区域无订餐点，则显示订餐区域信息
+                            //    .text($('select#DeliveryZone>option[selected=" selected"]').text()));
                         }
                     } else {
                         alert("调用数据接口失败(GetDeliveryPointByZone)");
