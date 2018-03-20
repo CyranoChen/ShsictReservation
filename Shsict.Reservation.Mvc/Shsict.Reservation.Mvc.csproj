@@ -138,6 +138,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
     <Compile Include="Entities\Config.cs" />
+    <Compile Include="Entities\SecureNode\CheckList.cs" />
+    <Compile Include="Entities\SecureNode\OperationStandard.cs" />
     <Compile Include="Entities\Relation\RelationTeamPositionDelivery.cs" />
     <Compile Include="Entities\Delivery.cs" />
     <Compile Include="Entities\Order.cs" />
