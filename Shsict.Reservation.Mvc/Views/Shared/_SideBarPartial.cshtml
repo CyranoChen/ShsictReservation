@@ -9,11 +9,11 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- sidebar menu: : style can be found in sidebar.less -->
-        <ul class="sidebar-menu">
+        <ul class="sidebar-menu" data-widget="tree">
             <li class="header">导航栏</li>
             @if (authorizedUser.Role >= UserRoleEnum.Canteen)
             {
-                <li class="active treeview">
+                <li class="active treeview menu-open">
                     <a href="#">
                         <i class="fa fa-cutlery"></i> <span>订餐管理</span>
                         <span class="pull-right-container">
@@ -43,7 +43,7 @@
             }
             @if (authorizedUser.Role == UserRoleEnum.Admin)
             {
-                <li class="active treeview">
+                <li class="active treeview menu-open">
                     <a href="#">
                         <i class="fa fa-cogs"></i> <span>系统管理</span>
                         <span class="pull-right-container">

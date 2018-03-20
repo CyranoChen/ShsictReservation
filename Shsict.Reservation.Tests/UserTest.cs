@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Shsict.Core;
 using Shsict.Reservation.Mvc.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -103,11 +104,11 @@ namespace Shsict.Reservation.Tests
         {
             IRepository repo = new Repository();
 
-            var list = repo.All<UserWeChat>();
+            var list = repo.All<UserWeChat>().Take(10).ToList();
 
             var auth = new AuthorizeManager();
 
-            if (list != null && list.Count > 0)
+            if (list.Count > 0)
             {
                 foreach (var uw in list)
                 {

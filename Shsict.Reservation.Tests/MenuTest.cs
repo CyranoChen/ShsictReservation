@@ -99,7 +99,8 @@ namespace Shsict.Reservation.Tests
                 }
             }
 
-            Assert.IsTrue(repo.Count<Menu>(x => x.MenuDate == DateTime.Today) == 4);
+            Assert.IsTrue(repo.Count<Menu>(x => x.MenuDate == DateTime.Today) == 4
+                          || repo.Count<Menu>(x => x.MenuDate == DateTime.Today) == 2);
         }
     }
 }

@@ -12,16 +12,11 @@ namespace Shsict.Reservation.Mvc
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                 "~/Scripts/jquery.validate*"));
 
-            // Use the development version of Modernizr to develop with and learn from. Then, when you're
-            // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                "~/Scripts/modernizr-*"));
-
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                 "~/Scripts/bootstrap.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/adminlte").Include(
-                "~/Scripts/app.min.js"));
+                "~/admin-lte/js/adminlte.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/icheck").Include(
                 "~/Scripts/jquery.icheck.min.js"));
@@ -32,8 +27,8 @@ namespace Shsict.Reservation.Mvc
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.min.css",
                 "~/Content/bootstrap-theme.min.css",
-                "~/Content/AdminLTE.min.css",
-                "~/Content/skins/_all-skins.min.css",
+                "~/admin-lte/css/AdminLTE.min.css",
+                "~/admin-lte/css/skins/_all-skins.min.css",
                 "~/Content/font-awesome.min.css",
                 "~/Content/Site.css"));
 
