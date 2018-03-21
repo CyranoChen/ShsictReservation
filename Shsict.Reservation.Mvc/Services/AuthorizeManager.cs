@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using Newtonsoft.Json.Linq;
 using Shsict.Core;
+using Shsict.Core.Dapper;
+using Shsict.Core.Extension;
 using Shsict.Core.Utility;
 using Shsict.Reservation.Mvc.Entities;
 using Shsict.Reservation.Mvc.Models;
@@ -35,11 +37,13 @@ namespace Shsict.Reservation.Mvc.Services
 
         public bool AuthorizeEmployee(string userId, string password)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (IDapperHelper dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
-                    var user = _repo.Query<User>(x => x.Password == Encrypt.GetMd5Hash(password), trans).Find(x =>
+                    var user = _repo.Query<User>(x => x.Password == Encrypt.GetMd5Hash(password)).Find(x =>
                         x.IsActive && (x.UserName.Equals(userId, StringComparison.OrdinalIgnoreCase) ||
                                        x.EmployeeNo.Equals(userId, StringComparison.OrdinalIgnoreCase)));
 
@@ -47,7 +51,7 @@ namespace Shsict.Reservation.Mvc.Services
                     {
                         user.LastLoginDate = DateTime.Now;
 
-                        _repo.Update(user, trans);
+                        _repo.Update(user);
 
                         trans.Commit();
 
@@ -187,8 +191,10 @@ namespace Shsict.Reservation.Mvc.Services
                         user = _repo.Single<User>(x => x.UserName == json["userid"].Value<string>());
                     }
 
-                    using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+                    using (IDapperHelper dapper = DapperHelper.GetInstance())
                     {
+                        var trans = dapper.BeginTransaction();
+
                         try
                         {
                             #region 封装 User 实例
@@ -214,9 +220,7 @@ namespace Shsict.Reservation.Mvc.Services
 
                             user.Remark = json.ToString();
 
-                            object key;
-
-                            _repo.Save(user, out key, trans);
+                            _repo.Save(user, out var key);
 
                             #endregion
 
@@ -231,7 +235,7 @@ namespace Shsict.Reservation.Mvc.Services
                             if (!string.IsNullOrEmpty(deviceId))
                             { userWeChat.DeviceId = deviceId; }
 
-                            _repo.Save(userWeChat, out key, trans);
+                            _repo.Save(userWeChat, out key);
 
                             #endregion
 

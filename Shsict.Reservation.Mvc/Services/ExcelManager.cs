@@ -6,6 +6,7 @@ using System.Linq;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using Shsict.Core;
+using Shsict.Core.Extension;
 using Shsict.Reservation.Mvc.Entities;
 using Shsict.Reservation.Mvc.Models;
 

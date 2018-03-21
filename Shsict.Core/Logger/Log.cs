@@ -3,7 +3,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Threading;
-using Dapper;
+using Shsict.Core.Dapper;
+using Shsict.Core.Extension;
 
 namespace Shsict.Core.Logger
 {
@@ -36,7 +37,10 @@ namespace Shsict.Core.Logger
             };
 
             // no logging method
-            DapperHelper.MarsConnection.Execute(sql, para.ToDapperParameters(), trans);
+            using (IDapperHelper dapper = DapperHelper.GetInstance())
+            {
+                dapper.Execute(sql, para.ToDapperParameters(), null, ignoreLog: true);
+            }
         }
 
         protected void Logging(string logger, DateTime createTime, LogLevel level, string message,
@@ -67,7 +71,10 @@ namespace Shsict.Core.Logger
             };
 
             // no logging method
-            DapperHelper.MarsConnection.Execute(sql, para.ToDapperParameters(), trans);
+            using (var dapper = DapperHelper.GetInstance())
+            {
+                dapper.Execute(sql, para.ToDapperParameters(), null, ignoreLog: true);
+            }
         }
 
         public static void Clean()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Shsict.Core;
+using Shsict.Core.Utility;
 
 namespace Shsict.Reservation.Mvc.Entities
 {

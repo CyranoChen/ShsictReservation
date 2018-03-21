@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
 
-namespace Shsict.Core
+namespace Shsict.Core.Extension
 {
     public static class AutoMapperHelper
     {

@@ -5,12 +5,13 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
+using Shsict.Core.Extension;
 
 namespace Shsict.Core
 {
     public abstract class Dao : IDao
     {
-        public virtual void Inital(){}
+        public virtual void Inital() { }
 
         protected virtual string GenerateKey()
         {

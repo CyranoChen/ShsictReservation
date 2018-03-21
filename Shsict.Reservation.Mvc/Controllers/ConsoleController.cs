@@ -4,6 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Shsict.Core;
+using Shsict.Core.Dapper;
+using Shsict.Core.Extension;
+using Shsict.Core.Utility;
 using Shsict.Reservation.Mvc.Entities;
 using Shsict.Reservation.Mvc.Entities.Viewer;
 using Shsict.Reservation.Mvc.Filter;
@@ -169,13 +172,15 @@ namespace Shsict.Reservation.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+                using (IDapperHelper dapper = DapperHelper.GetInstance())
                 {
+                    var trans = dapper.BeginTransaction();
+
                     try
                     {
-                        if (model.ID > 0 && _repo.Delete<Menu>(model.ID, trans) > 0)
+                        if (model.ID > 0 && _repo.Delete<Menu>(model.ID) > 0)
                         {
-                            var list = _repo.Query<Order>(x => x.MenuID == model.ID, trans);
+                            var list = _repo.Query<Order>(x => x.MenuID == model.ID);
 
                             if (list != null && list.Count > 0)
                             {
@@ -185,7 +190,7 @@ namespace Shsict.Reservation.Mvc.Controllers
                                 }
                             }
 
-                            list.Update(trans);
+                            list.Update();
 
                             trans.Commit();
 

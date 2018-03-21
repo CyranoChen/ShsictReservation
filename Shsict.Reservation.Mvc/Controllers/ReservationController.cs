@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Shsict.Core;
+using Shsict.Core.Extension;
 using Shsict.Reservation.Mvc.Entities;
 using Shsict.Reservation.Mvc.Entities.Relation;
 using Shsict.Reservation.Mvc.Entities.Viewer;

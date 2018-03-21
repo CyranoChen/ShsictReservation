@@ -34,7 +34,7 @@
 
             GetPageSize();
 
-            MaxPage = TotalCount/PagingSize;
+            MaxPage = TotalCount / PagingSize;
 
             if (CurrentPage > MaxPage)
             {

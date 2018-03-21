@@ -2,14 +2,17 @@
 using System.Data;
 using System.Linq;
 using Shsict.Core;
+using Shsict.Core.Dapper;
 
 namespace Shsict.Reservation.Mvc.Entities.Viewer
 {
     public class ReportViewFactory : ViewerFactory, IViewerFactory<ReportView>
     {
-        public ReportViewFactory()
+        private IDapperHelper _dapper;
+
+        public ReportViewFactory(IDapperHelper dapper = null)
         {
-            Dapper = new DapperHelper();
+            _dapper = dapper ?? DapperHelper.GetInstance();
 
             ViewerSql = @"SELECT dp.DeliveryGuid, dp.DeliveryName, o.StapleFood, o.ExtraFood, COUNT(o.ID) AS OrderCount, m.ID, m.MenuDate, m.MenuType, m.MenuFlag, m.Meat, m.MeatSmall, m.Vegetable1, m.Vegetable2
                                     FROM Reservation_Order AS o INNER JOIN 
@@ -24,48 +27,48 @@ namespace Shsict.Reservation.Mvc.Entities.Viewer
             DbSchema = Repository.GetTableAttr<ReportView>();
         }
 
-        public ReportView Single(Criteria criteria, IDbTransaction trans = null)
+        public ReportView Single(Criteria criteria)
         {
-            return Dapper.Query<ReportView, Menu, ReportView>(BuildSingleSql(criteria),
+            return _dapper.Query<ReportView, Menu, ReportView>(BuildSingleSql(criteria),
                         (x, m) =>
                         {
                             x.Menu = m;
 
                             return x;
-                        }, criteria?.Parameters, trans, SplitOn).FirstOrDefault();
+                        }, criteria?.Parameters, SplitOn).FirstOrDefault();
         }
 
-        public List<ReportView> All(IDbTransaction trans = null)
+        public List<ReportView> All()
         {
-            return Dapper.Query<ReportView, Menu, ReportView>(BuildAllSql(),
+            return _dapper.Query<ReportView, Menu, ReportView>(BuildAllSql(),
                         (x, m) =>
                         {
                             x.Menu = m;
 
                             return x;
-                        }, null, trans, SplitOn).ToList();
+                        }, null, SplitOn).ToList();
         }
 
-        public List<ReportView> All(IPager pager, string orderBy = null, IDbTransaction trans = null)
+        public List<ReportView> All(IPager pager, string orderBy = null)
         {
-            return Dapper.Query<ReportView, Menu, ReportView>(BuildAllSql(pager, orderBy),
+            return _dapper.Query<ReportView, Menu, ReportView>(BuildAllSql(pager, orderBy),
                         (x, m) =>
                         {
                             x.Menu = m;
 
                             return x;
-                        }, null, trans, SplitOn).ToList();
+                        }, null, SplitOn).ToList();
         }
 
-        public List<ReportView> Query(Criteria criteria, IDbTransaction trans = null)
+        public List<ReportView> Query(Criteria criteria)
         {
-            return Dapper.Query<ReportView, Menu, ReportView>(BuildQuerySql(criteria),
+            return _dapper.Query<ReportView, Menu, ReportView>(BuildQuerySql(criteria),
                         (x, m) =>
                         {
                             x.Menu = m;
 
                             return x;
-                        }, criteria?.Parameters, trans, SplitOn).ToList();
+                        }, criteria?.Parameters, SplitOn).ToList();
         }
     }
 }

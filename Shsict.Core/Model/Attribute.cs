@@ -47,7 +47,7 @@ namespace Shsict.Core
     {
         public DomainAttribute(string value)
         {
-            Values = new[] {value};
+            Values = new[] { value };
         }
 
         public DomainAttribute(params string[] values)

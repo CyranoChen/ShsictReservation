@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Shsict.Core;
+using Shsict.Core.Utility;
 using Shsict.Reservation.Mvc.Entities;
 
 namespace Shsict.Reservation.Mvc.Models

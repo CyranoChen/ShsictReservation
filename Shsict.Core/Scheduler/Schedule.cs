@@ -1,5 +1,4 @@
 using System;
-using System.Data;
 
 namespace Shsict.Core.Scheduler
 {
@@ -21,34 +20,6 @@ namespace Shsict.Core.Scheduler
             }
         }
 
-        //private static void CreateMap()
-        //{
-        //    var map = Mapper.CreateMap<IDataReader, Schedule>();
-
-        //    map.ForMember(d => d.ScheduleKey, opt => opt.MapFrom(s => s.GetValue("ScheduleKey").ToString()));
-
-        //    map.ForMember(d => d.Minutes, opt => opt.ResolveUsing(s =>
-        //    {
-        //        var mins = (int) s.GetValue("Minutes");
-        //        if (mins > 0 & mins < ScheduleManager.TimerMinutesInterval)
-        //        {
-        //            return ScheduleManager.TimerMinutesInterval;
-        //        }
-        //        return mins;
-        //    }));
-
-        //    map.ForMember(d => d.ExecuteTimeInfo, opt => opt.ResolveUsing(s =>
-        //    {
-        //        var dailyTime = (int) s.GetValue("DailyTime");
-
-        //        if (dailyTime >= 0)
-        //        {
-        //            return $"Run at {dailyTime/60}:{dailyTime%60}";
-        //        }
-        //        return $"Run By {s.GetValue("Minutes").ToString()} mins";
-        //    }));
-        //}
-
         public override void Inital()
         {
             if (Minutes > 0 & Minutes < ScheduleManager.TimerMinutesInterval)
@@ -65,61 +36,6 @@ namespace Shsict.Core.Scheduler
                 ExecuteTimeInfo = $"Run By {Minutes} mins";
             }
         }
-
-        //public Schedule Single(object key)
-        //{
-        //    var sql = $"SELECT * FROM {Repository.GetTableAttr<Schedule>().Name} WHERE ScheduleKey = @key";
-
-        //    return _conn.QueryFirstOrDefault<Schedule>(sql, new { key });
-        //}
-
-        //public bool Any()
-        //{
-        //    var sql = $"SELECT * FROM {Repository.GetTableAttr<Schedule>().Name} WHERE ScheduleKey = @key";
-
-        //    var result = _conn.Query<int>(sql, new { key = ScheduleKey }).ToList();
-
-        //    return Convert.ToInt32(result[0]) > 0;
-        //}
-
-        //public List<Schedule> All()
-        //{
-        //    var attr = Repository.GetTableAttr<Schedule>();
-
-        //    var sql = $"SELECT * FROM {attr.Name} ORDER BY {attr.Sort}";
-
-        //    var list = _conn.Query<Schedule>(sql).ToList();
-
-        //    //if (list.Count > 0) { list.Each(x => x.Inital()); }
-        //    // TODO CREATEMAP
-
-        //    return list;
-        //}
-
-        //public void Update(IDbTransaction trans = null)
-        //{
-        //    Contract.Requires(Any());
-
-        //    var sql =
-        //        $@"UPDATE {Repository.GetTableAttr<Schedule>().Name
-        //            } SET ScheduleType = @scheduleType, DailyTime = @dailyTime, Minutes = @minutes, 
-        //                     LastCompletedTime = @lastCompletedTime, IsSystem = @isSystem, IsActive = @isActive, Remark = @remark 
-        //                     WHERE ScheduleKey = @key";
-
-        //    SqlParameter[] para =
-        //    {
-        //        new SqlParameter("@scheduleType", ScheduleType),
-        //        new SqlParameter("@dailyTime", DailyTime),
-        //        new SqlParameter("@minutes", Minutes),
-        //        new SqlParameter("@lastCompletedTime", LastCompletedTime),
-        //        new SqlParameter("@isSystem", IsSystem),
-        //        new SqlParameter("@isActive", IsActive),
-        //        new SqlParameter("@remark", Remark),
-        //        new SqlParameter("@key", ScheduleKey)
-        //    };
-
-        //    _conn.Execute(sql, para, trans);
-        //}
 
         /// <summary>
         ///     Private method for loading an instance of ISchedule
@@ -143,7 +59,7 @@ namespace Shsict.Core.Scheduler
                 }
                 else
                 {
-                    _ischedule = (ISchedule) Activator.CreateInstance(type);
+                    _ischedule = (ISchedule)Activator.CreateInstance(type);
 
                     if (_ischedule == null)
                     {
@@ -202,19 +118,6 @@ namespace Shsict.Core.Scheduler
         /// </summary>
         [DbColumn("LastCompletedTime")]
         public DateTime LastCompletedTime { get; set; }
-
-        //public DateTime LastCompletedTime
-        //{
-        //    get { return LastCompletedTime; }
-        //    set
-        //    {
-        //        dateWasSet = true;
-        //        LastCompletedTime = value;
-        //    }
-        //}
-
-        //internal testing variable
-        //bool dateWasSet = false;
 
         [DbColumn("IsSystem")]
         public bool IsSystem { get; set; }

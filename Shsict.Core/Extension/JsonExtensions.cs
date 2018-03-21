@@ -1,6 +1,6 @@
 ﻿using System.Web.Script.Serialization;
 
-namespace Shsict.Core
+namespace Shsict.Core.Extension
 {
     public static class JsonExtensions
     {

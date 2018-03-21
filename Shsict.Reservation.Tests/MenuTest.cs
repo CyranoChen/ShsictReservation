@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shsict.Core;
+using Shsict.Core.Dapper;
 using Shsict.Reservation.Mvc.Entities;
 
 namespace Shsict.Reservation.Tests
@@ -80,14 +81,16 @@ namespace Shsict.Reservation.Tests
                     Remark = "TEST Supper B"
                 };
 
-                using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+                using (IDapperHelper dapper = DapperHelper.GetInstance())
                 {
+                    var trans = dapper.BeginTransaction();
+
                     try
                     {
-                        repo.Insert(menuL1, trans);
-                        repo.Insert(menuL2, trans);
-                        repo.Insert(menuS1, trans);
-                        repo.Insert(menuS2, trans);
+                        repo.Insert(menuL1);
+                        repo.Insert(menuL2);
+                        repo.Insert(menuS1);
+                        repo.Insert(menuS2);
 
                         trans.Commit();
                     }

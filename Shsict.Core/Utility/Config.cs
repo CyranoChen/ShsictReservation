@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Reflection;
 
-namespace Shsict.Core
+namespace Shsict.Core.Utility
 {
     [DbSchema("Shsict_Config", Sort = "ConfigSystem, ConfigKey")]
     public class Config : Dao
@@ -23,7 +22,7 @@ namespace Shsict.Core
             ConfigSystemInfo = (ConfigSystem)Enum.Parse(typeof(ConfigSystem), ConfigSystem);
         }
 
-        public void Save(IDbTransaction trans = null)
+        public void Save()
         {
             IRepository repo = new Repository();
 
@@ -32,20 +31,20 @@ namespace Shsict.Core
                 ConfigSystem = ConfigSystemInfo.ToString();
             }
 
-            repo.Save(this, x => x.ConfigSystem == ConfigSystem && x.ConfigKey == ConfigKey, trans);
+            repo.Save(this, x => x.ConfigSystem == ConfigSystem && x.ConfigKey == ConfigKey);
         }
 
         public static void UpdateAssemblyInfo(Assembly assembly, ConfigSystem configSystem)
         {
             if (assembly != null)
             {
-                //[assembly: AssemblyTitle("Shsict.Core")]
+                //[assembly: AssemblyTitle("Sap.SmartAccounting.Core")]
                 //[assembly: AssemblyDescription("沪ICP备12045527号")]
-                //[assembly: AssemblyConfiguration("webmaster@Shsict.com")]
+                //[assembly: AssemblyConfiguration("webmaster@arsenalcn.com")]
                 //[assembly: AssemblyCompany("Arsenal China Official Supporters Club")]
-                //[assembly: AssemblyProduct("Shsict.com")]
+                //[assembly: AssemblyProduct("Arsenalcn.com")]
                 //[assembly: AssemblyCopyright("© 2015")]
-                //[assembly: AssemblyTrademark("Shsict")]
+                //[assembly: AssemblyTrademark("ArsenalCN")]
                 //[assembly: AssemblyCulture("")]
                 //[assembly: AssemblyVersion("1.8.*")]
                 //[assembly: AssemblyFileVersion("1.8.2")]

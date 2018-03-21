@@ -4,6 +4,7 @@ using System.Threading;
 using Shsict.Core;
 using Shsict.Core.Logger;
 using Shsict.Core.Scheduler;
+using Shsict.Core.Utility;
 using Shsict.Reservation.Mvc.Entities;
 
 namespace Shsict.Reservation.Mvc.Scheduler

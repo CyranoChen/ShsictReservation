@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Shsict.Core
+namespace Shsict.Core.Extension
 {
     public static class CollectionExtensions
     {
