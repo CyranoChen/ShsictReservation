@@ -6,8 +6,8 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/Scripts/datepicker/datepicker3.css" />
-    <link rel="stylesheet" href="~/Scripts/datatables/dataTables.bootstrap.css" />
+    @Styles.Render("~/Content/datepicker/css")
+    @Styles.Render("~/Content/datatables/css")
     <style type="text/css">
         #btn-shift-daytime.shift-selected {
             color: orange;
@@ -17,14 +17,6 @@
             color: #be4bdb;
         }
 
-        .secure-pass {
-            color: greenyellow;
-        }
-
-        .secure-warn {
-            color: red;
-        }
-
         #tbl-grid_filter {
             display: none;
         }
@@ -32,11 +24,8 @@
 }
 
 @section Scripts {
-    <script src="~/Scripts/datepicker/bootstrap-datepicker.js"></script>
-    <script src="~/Scripts/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
-    <!-- DataTables -->
-    <script src="~/Scripts/datatables/jquery.dataTables.min.js"></script>
-    <script src="~/Scripts/datatables/dataTables.bootstrap.min.js"></script>
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/datatables")
 
     <script type="text/javascript">
         $.fn.dataTable.ext.search.push(function (settings, data) {
@@ -58,8 +47,6 @@
                         (calendar.date.getMonth() + 1).toString() +
                         "-" +
                         calendar.date.getDate().toString();
-
-                    //alert($("select#Shift").val());
 
                     window.location.href = "@Url.Action("CheckListManagement", "SecureNode")" + "?date=" + date;
                 });
@@ -117,7 +104,6 @@
                                     <i class="fa fa-file-excel-o"></i> 导出记录
                                 </button>
                             </div>
-
                             <div class="box-tools pull-right col-sm-3">
                                 <div class="has-feedback input-group date">
                                     <div class="input-group-addon" id="btn-shift-daytime" title="日班">
@@ -136,7 +122,7 @@
                         <table id="tbl-grid" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>序号</th>
+                                    <th>编号</th>
                                     <th style="width: 200px">安全检查点</th>
                                     <th style="width: 250px">安全检查标准</th>
                                     <th>操作班期</th>
@@ -153,13 +139,16 @@
                                     {
                                         <tr>
                                             <td>@m.ID</td>
-                                            <td>@m.SecureNode.SecureNodeName</td>
+                                            <td>
+                                                <span class="badge"># @m.SecureNode.SecureNodeNo</span> 
+                                                @m.SecureNode.SecureNodeName
+                                            </td>
                                             <td>
                                                 @if (m.SecureNode.JsonCheckRequirement.Count > 0)
                                                 {
                                                     for (var i = 1; i <= m.SecureNode.JsonCheckRequirement.Count; i++)
                                                     {
-                                                        <span class="label label-primary">@i</span>
+                                                        <span class="label label-primary">@i</span> 
                                                         @m.SecureNode.JsonCheckRequirement[i - 1] <br />
                                                     }
                                                 }
@@ -172,7 +161,7 @@
                                             <td>@m.CheckLocation</td>
                                             <td>
                                                 <span class="label @(m.CheckResult ? "bg-green-gradient": "bg-red-gradient")"
-                                                      @if (!string.IsNullOrEmpty(m.Remark)) { @Html.Raw(string.Format("style=\"cursor: pointer\" title=\"{0}\" onclick=\"alert('{0}')\"", m.Remark))  }>
+                                                      @if (!string.IsNullOrEmpty(m.Remark)) { @Html.Raw(string.Format("style=\"cursor: pointer\" title=\"{0}\" onclick=\"alert('{0}')\"", m.Remark)) }>
                                                     <i class="fas @(m.CheckResult ? "fa-check-circle" : "fa-exclamation-triangle")"></i>
                                                     @m.CheckNodePoint
                                                 </span>

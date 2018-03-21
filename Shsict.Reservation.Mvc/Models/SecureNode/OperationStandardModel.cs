@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using AutoMapper;
+﻿using AutoMapper;
 using Newtonsoft.Json.Linq;
 using Shsict.Reservation.Mvc.Entities.SecureNode;
 
@@ -29,6 +25,8 @@ namespace Shsict.Reservation.Mvc.Models.SecureNode
         #region Members and Properties
 
         public int ID { get; set; }
+
+        public string SecureNodeNo { get; set; }
 
         public string SecureNodeName { get; set; }
 

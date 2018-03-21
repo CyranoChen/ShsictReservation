@@ -9,14 +9,14 @@ namespace Shsict.Reservation.Mvc.Entities.SecureNode
     {
         #region Members and Properties
 
+        [DbColumn("SecureNodeNo")]
+        public string SecureNodeNo { get; set; }
+
         [DbColumn("SecureNodeName")]
         public string SecureNodeName { get; set; }
 
         [DbColumn("CheckRequirement")]
         public string CheckRequirement { get; set; }
-
-        [DbColumn("CheckCount")]
-        public int CheckCount { get; set; }
 
         #endregion
 

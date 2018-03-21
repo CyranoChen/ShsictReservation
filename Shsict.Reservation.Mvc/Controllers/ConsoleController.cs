@@ -37,9 +37,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             var list = Entities.Menu.Cache.MenuListActive;
 
-            DateTime menuDate;
-
-            if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out menuDate))
+            if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out var menuDate))
             {
                 list = list.FindAll(x => x.MenuDate == menuDate);
 

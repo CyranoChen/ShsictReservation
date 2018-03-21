@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Shsict.Core;
 using Shsict.Core.Dapper;
+using Shsict.Reservation.Mvc.Entities.Relation;
 using Shsict.Reservation.Mvc.Models.SecureNode;
 using Shsict.Reservation.Mvc.Entities.SecureNode;
 using Shsict.Reservation.Mvc.Models;
@@ -17,9 +18,63 @@ namespace Shsict.Reservation.Mvc.Controllers
         private readonly UserDto _authorizedUser = new AuthorizeManager().GetSession();
 
         // GET: SecureNode
-        public ActionResult Index()
+        public ActionResult Index(string date)
         {
-            return View();
+            var model = new SecureNodeModels.IndexDto();
+
+            using (IRepository repo = new Repository())
+            {
+                var relations = repo.Query<RelationUserOperationStandard>(x => x.UserGuid == _authorizedUser.ID);
+
+                if (relations.Count > 0)
+                {
+                    var secureNodes = OperationStandard.Cache.OperationStandardList
+                        .FindAll(x => relations.Exists(rela => rela.OperationStandardId.Equals(x.ID)));
+
+                    var mapper = OperationStandardDto.ConfigMapper().CreateMapper();
+
+                    model.SecureNodes = mapper.Map<IEnumerable<OperationStandardDto>>(secureNodes.AsEnumerable())
+                        .ToList();
+                }
+
+                var list = repo.Query<CheckList>(x => x.UserGuid == _authorizedUser.ID);
+
+                if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out var operateDate))
+                {
+                    list = list.FindAll(x => x.OperateDate.Date == operateDate.Date && x.IsActive);
+
+                    model.OperateDate = operateDate;
+                }
+                else
+                {
+                    list = list.FindAll(x => x.OperateDate.Date == DateTime.Today.Date && x.IsActive);
+
+                    model.OperateDate = DateTime.Today;
+                }
+
+                if (list.Count > 0)
+                {
+                    var mapper = CheckListDto.ConfigMapper().CreateMapper();
+
+                    model.MyCheckLists = mapper.Map<IEnumerable<CheckListDto>>(list.AsEnumerable()).ToList();
+                }
+            }
+
+            return View(model);
+        }
+
+
+        // POST: SecureNode/CheckList
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CheckList(CheckListDto model)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+
+            return RedirectToAction("Index", "SecureNode");
         }
 
         // GET: SecureNode/History

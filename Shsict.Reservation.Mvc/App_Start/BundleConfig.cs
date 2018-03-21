@@ -24,6 +24,14 @@ namespace Shsict.Reservation.Mvc
             bundles.Add(new ScriptBundle("~/bundles/json2").Include(
                 "~/Scripts/json2.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/datepicker").Include(
+                "~/Scripts/datepicker/bootstrap-datepicker.js",
+                "~/Scripts/datepicker/locales/bootstrap-datepicker.zh-CN.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/datatables").Include(
+                "~/Scripts/datatables/jquery.dataTables.min.js",
+                "~/Scripts/datatables/dataTables.bootstrap.min.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.min.css",
                 "~/Content/bootstrap-theme.min.css",
@@ -33,6 +41,12 @@ namespace Shsict.Reservation.Mvc
                 "~/Content/Site.css"));
 
             bundles.Add(new StyleBundle("~/Content/iCheck/css").Include("~/Content/iCheck/all.css"));
+
+            bundles.Add(new StyleBundle("~/Content/datepicker/css").Include(
+                "~/Scripts/datepicker/datepicker3.css"));
+
+            bundles.Add(new ScriptBundle("~/Content/datatables/css").Include(
+                "~/Scripts/datatables/dataTables.bootstrap.css"));
 
             bundles.Add(new StyleBundle("~/Content/FontAwesome5/css").Include("~/Content/fontawesome-all.min.css"));
         }
