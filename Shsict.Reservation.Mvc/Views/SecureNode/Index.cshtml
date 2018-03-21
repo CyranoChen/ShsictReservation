@@ -41,6 +41,12 @@
                     $(this).toggleClass("selected");
                 });
             });
+
+            $(".secure-node .btn-danger").each(function () {
+                $(this).click(function () {
+                    $(this).parents(".secure-node").find(".form-control.checklist-remark").show();
+                });
+            });
         });
     </script>
 }
@@ -82,12 +88,20 @@
                             {
                                 <div class="box-body">
                                     <div class="col-xs-7">
-                                        <i class="far fa-compass"></i>
-                                        <input type="text" placeholder="-所在位置-" style="width: 140px;" />
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="far fa-compass"></i>
+                                            </div>
+                                            <input type="text" class="form-control">
+                                        </div>
                                     </div>
                                     <div class="col-xs-5">
-                                        <i class="far fa-clock"></i>
-                                        <input type="text" placeholder="-登记时间-" style="width: 80px;" />
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="far fa-clock"></i>
+                                            </div>
+                                            <input type="text" class="form-control timepicker">
+                                        </div>
                                     </div>
                                 </div>
                             }
@@ -106,6 +120,8 @@
                                     }
                                 </div>
                                 <div class="col-sm-12">
+                                    <textarea class="form-control checklist-remark" style="display: none"
+                                              rows="3" placeholder="-填写异常信息-"></textarea>
                                     @Html.Hidden("SecureNodeId", m.ID)
                                     @Html.AntiForgeryToken()
                                     @Html.ValidationSummary()
@@ -122,11 +138,11 @@
                                 <div class="col-xs-7">
                                     @if (count < 3)
                                     {
-                                        <button type="button" class="btn btn-success" id="btn-save">
+                                        <button type="button" class="btn btn-success">
                                             <i class="fa fa-check-circle"></i> 通过
                                         </button>
-                                        <button type="button" class="btn btn-danger" id="btn-save">
-                                            <i class="fa fa-exclamation-triangle"></i> 风险
+                                        <button type="button" class="btn btn-danger">
+                                            <i class="fa fa-exclamation-triangle"></i> 异常
                                         </button>
                                     }
                                 </div>
