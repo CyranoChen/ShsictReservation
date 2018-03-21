@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using Shsict.Core;
 
 namespace Shsict.Reservation.Mvc.Entities.SecureNode
@@ -21,5 +18,32 @@ namespace Shsict.Reservation.Mvc.Entities.SecureNode
         public int CheckCount { get; set; }
 
         #endregion
+
+        public static class Cache
+        {
+            public static List<OperationStandard> OperationStandardList;
+
+            static Cache()
+            {
+                InitCache();
+            }
+
+            public static void RefreshCache()
+            {
+                InitCache();
+            }
+
+            private static void InitCache()
+            {
+                IRepository repo = new Repository();
+
+                OperationStandardList = repo.All<OperationStandard>();
+            }
+
+            public static OperationStandard Load(int id)
+            {
+                return OperationStandardList.Find(x => x.ID.Equals(id));
+            }
+        }
     }
 }

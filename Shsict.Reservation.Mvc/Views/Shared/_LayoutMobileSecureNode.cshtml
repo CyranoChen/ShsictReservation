@@ -1,0 +1,58 @@
+﻿@using Shsict.Reservation.Mvc.Entities
+@using Shsict.Reservation.Mvc.Services
+@{
+    var auth = new AuthorizeManager();
+    var authorizedUser = auth.GetSession();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>安全节点强制检查</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    @Styles.Render("~/Content/css")
+    @RenderSection("Styles", false)
+</head>
+<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">导航栏</span>
+                </a>
+                @Html.Partial("_AccountPartial")
+            </nav>
+        </header>
+        <aside class="main-sidebar" style="padding-top: 50px">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu">
+                    <li class="header">导航栏</li>
+                    <li><a href="@Url.Action("Index", "SecureNode")"><i class="fa fa fa-cutlery"></i> <span>安全检查登记</span></a></li>
+                    <li><a href="@Url.Action("History", "SecureNode")"><i class="fa fa-book"></i> <span>我的检查记录</span></a></li>
+                    @if (authorizedUser.Role == UserRoleEnum.Manager || authorizedUser.Role == UserRoleEnum.Admin)
+                    {
+                        <li><a href="@Url.Action("CheckListManagement", "SecureNode")"><i class="fa fa-clipboard"></i> <span>检查记录管理</span></a></li>
+                    }
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        @RenderBody()
+    </div>
+    <!-- ./wrapper -->
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/json2")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/adminlte")
+
+    @RenderSection("Scripts", false)
+</body>
+</html>

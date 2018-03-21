@@ -137,6 +137,7 @@
     <Compile Include="Controllers\ConsoleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
+    <Compile Include="Controllers\SecureNodeController.cs" />
     <Compile Include="Entities\Config.cs" />
     <Compile Include="Entities\SecureNode\CheckList.cs" />
     <Compile Include="Entities\SecureNode\OperationStandard.cs" />
@@ -160,6 +161,8 @@
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\ConsoleModels.cs" />
     <Compile Include="Models\ReservationModels.cs" />
+    <Compile Include="Models\SecureNode\CheckListModel.cs" />
+    <Compile Include="Models\SecureNode\SecureNodeModels.cs" />
     <Compile Include="Models\TipModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -592,6 +595,10 @@
     <Content Include="Views\Console\OrderManagementCanteen.cshtml" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+    <Content Include="Views\SecureNode\Index.cshtml" />
+    <Content Include="Views\SecureNode\CheckListManagement.cshtml" />
+    <Content Include="Views\Shared\_LayoutMobileSecureNode.cshtml" />
+    <Content Include="Views\SecureNode\History.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

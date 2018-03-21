@@ -1,0 +1,178 @@
+﻿@model Shsict.Reservation.Mvc.Models.SecureNode.SecureNodeModels.CheckListManagementDto
+
+@{
+    ViewBag.Title = "检查记录管理";
+    Layout = "~/Views/Shared/_LayoutMobileSecureNode.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/Scripts/datepicker/datepicker3.css">
+    <link rel="stylesheet" href="~/Scripts/datatables/dataTables.bootstrap.css">
+}
+
+@section Scripts {
+    <script src="~/Scripts/datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
+    <!-- DataTables -->
+    <script src="~/Scripts/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/datatables/dataTables.bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        //$.fn.dataTable.ext.search.push(function (settings, data) {
+        //    var selectedZone = $("#DeliveryZone").val();
+        //    var deliveryZone = data[6];
+
+        //    if (selectedZone === "" || deliveryZone.indexOf(selectedZone) >= 0) {
+        //        return true;
+        //    }
+        //    return false;
+        //});
+
+        $(function() {
+            $("#OperateDate").datepicker({
+                autoclose: true,
+                language: "zh-CN",
+                todayHighlight: true
+            }).on('changeDate',
+                function(calendar) {
+                    var date = calendar.date.getFullYear().toString() +
+                        "-" +
+                        (calendar.date.getMonth() + 1).toString() +
+                        "-" +
+                        calendar.date.getDate().toString();
+
+                    //alert($("select#Shift").val());
+
+                    window.location.href = "@Url.Action("CheckListManagement", "SecureNode")" +
+                        "?date=" + date + "&shift=" + $("select#Shift").val();
+                });
+
+            $("#Shift").change(function() {
+                var calendar = $("#OperateDate").val();
+                //alert(calendar);
+            });
+
+            var table = $("#tblCheckList").DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": true,
+                "autoWidth": true,
+                "language": {
+                    "url": "/Scripts/datatables/zh-CN.json"
+                }
+            });
+
+            //$("#DeliveryZone").change(function () {
+            //    table.draw();
+            //});
+        });
+    </script>
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <b><i class="fa fa-clipboard"></i> 检查记录管理</b>
+            <small>显示对应日期的所有检查记录，按班期进行筛选</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="@Url.Action("Index","Home")"><i class="fa fa-dashboard"></i> 管理控制台</a></li>
+            <li class="active">检查记录管理</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-body">
+                        <div class="mailbox-controls">
+                            <!-- /.btn-group -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default"
+                                        onclick="window.location.href = '@Url.Action("CheckListManagement", "SecureNode")'">
+                                    <i class="fa fa-refresh"></i>
+                                </button>
+                                <button type="button" class="btn btn-default"
+                                        onclick="window.location.href = '@Url.Action("ExportCheckLists", "SecureNode", new { @date = Model.OperateDate })'">
+                                    <i class="fa fa-file-excel-o"></i> 导出记录
+                                </button>
+                            </div>
+
+                            <div class="box-tools pull-right col-sm-1">
+                                <select id="Shift" name="Shift">
+                                    <option value="daytime" @if (Model.Shift != null && Model.Shift.Equals("daytime")) { @Html.Raw("selected") }>
+                                        day
+                                    </option>
+                                    <option value="night" @if (Model.Shift != null && Model.Shift.Equals("night")) { @Html.Raw("selected") }>
+                                        night
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="box-tools pull-right col-sm-3">
+                                <div class="has-feedback input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" value="@(Model.OperateDate.HasValue ? Model.OperateDate.Value.ToString("yyyy年MM月dd日") : string.Empty)"
+                                           class="form-control" id="OperateDate" name="OperateDate" placeholder="检查班期">
+                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </div>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <table id="tblCheckList" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th style="width: 300px">安全检查点</th>
+                                    <th style="width: 300px">安全检查标准</th>
+                                    <th>操作班期</th>
+                                    <th>检查地点</th>
+                                    <th>检查结果</th>
+                                    <th>检查时间</th>
+                                    <th style="width: 50px">操作</th>
+                                </tr>
+                            </thead>
+                            @if (Model.CheckLists != null && Model.CheckLists.Count > 0)
+                            {
+                                <tbody>
+                                    @foreach (var m in Model.CheckLists)
+                                    {
+                                        <tr>
+                                            <td>@m.ID</td>
+                                            <td>@m.SecureNode.SecureNodeName</td>
+                                            <td>@m.SecureNode.CheckRequirement</td>
+                                            <td>@m.OperateDate.ToString("yyyyMMdd") @m.ShiftInfo</td>
+                                            <td>@m.CheckLocation</td>
+                                            <td>@m.CheckNodePoint @m.CheckResult</td>
+                                            <td>@m.CheckTime.ToString("HH:mm")</td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(m.Remark))
+                                                {
+                                                    <a title="@m.Remark">
+                                                        <i class="fa fa-pencil"></i> 备注
+                                                    </a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
