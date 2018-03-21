@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shsict.Core;
+using Shsict.Core.Dapper;
 using Shsict.Reservation.Mvc.Entities.Relation;
 
 namespace Shsict.Reservation.Tests

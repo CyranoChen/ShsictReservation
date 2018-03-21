@@ -9,8 +9,6 @@ namespace Shsict.Reservation.Mvc.Models.SecureNode
         {
             public DateTime? OperateDate { get; set; }
 
-            public string Shift { get; set; }
-
             public List<CheckListDto> CheckLists { get; set; }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using Shsict.Core;
+using Shsict.Core.Dapper;
 using Shsict.Core.Extension;
 
 namespace Shsict.Reservation.Mvc.Entities

@@ -162,6 +162,7 @@
     <Compile Include="Models\ConsoleModels.cs" />
     <Compile Include="Models\ReservationModels.cs" />
     <Compile Include="Models\SecureNode\CheckListModel.cs" />
+    <Compile Include="Models\SecureNode\OperationStandardModel.cs" />
     <Compile Include="Models\SecureNode\SecureNodeModels.cs" />
     <Compile Include="Models\TipModel.cs" />
     <Compile Include="Models\UserModel.cs" />
@@ -244,6 +245,18 @@
     <Content Include="admin-lte\js\demo.js" />
     <Content Include="admin-lte\js\pages\dashboard.js" />
     <Content Include="admin-lte\js\pages\dashboard2.js" />
+    <Content Include="Content\fa-brands.css" />
+    <Content Include="Content\fa-brands.min.css" />
+    <Content Include="Content\fa-regular.css" />
+    <Content Include="Content\fa-regular.min.css" />
+    <Content Include="Content\fa-solid.css" />
+    <Content Include="Content\fa-solid.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\fontawesome-all.css" />
+    <Content Include="Content\fontawesome-all.min.css" />
+    <Content Include="Content\fontawesome.css" />
+    <Content Include="Content\fontawesome.min.css" />
     <Content Include="Content\iCheck\all.css" />
     <Content Include="Content\iCheck\flat\aero%402x.png" />
     <Content Include="Content\iCheck\flat\aero.css" />
@@ -360,8 +373,6 @@
     <Content Include="Content\images\img-lunch.jpg" />
     <Content Include="Content\images\img-supper.jpg" />
     <Content Include="Content\images\login-bg.png" />
-    <Content Include="Content\font-awesome.css" />
-    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\tether\tether-theme-arrows-dark.css" />
     <Content Include="Content\tether\tether-theme-arrows-dark.min.css" />
     <Content Include="Content\tether\tether-theme-arrows.css" />
@@ -370,6 +381,7 @@
     <Content Include="Content\tether\tether-theme-basic.min.css" />
     <Content Include="Content\tether\tether.css" />
     <Content Include="Content\tether\tether.min.css" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\app.min.js" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -392,6 +404,11 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="admin-lte\css\adminlte.min.css.map" />
     <Content Include="admin-lte\css\adminlte.css.map" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\Shsict.Deployment.pubxml" />
     <Content Include="Scripts\datatables\dataTables.bootstrap.css" />
     <Content Include="Scripts\datatables\dataTables.bootstrap.js" />
@@ -599,6 +616,21 @@
     <Content Include="Views\SecureNode\CheckListManagement.cshtml" />
     <Content Include="Views\Shared\_LayoutMobileSecureNode.cshtml" />
     <Content Include="Views\SecureNode\History.cshtml" />
+    <Content Include="webfonts\fa-brands-400.svg" />
+    <Content Include="webfonts\fa-regular-400.svg" />
+    <Content Include="webfonts\fa-solid-900.svg" />
+    <Content Include="webfonts\fa-solid-900.woff2" />
+    <Content Include="webfonts\fa-solid-900.woff" />
+    <Content Include="webfonts\fa-solid-900.ttf" />
+    <Content Include="webfonts\fa-solid-900.eot" />
+    <Content Include="webfonts\fa-regular-400.woff2" />
+    <Content Include="webfonts\fa-regular-400.woff" />
+    <Content Include="webfonts\fa-regular-400.ttf" />
+    <Content Include="webfonts\fa-regular-400.eot" />
+    <Content Include="webfonts\fa-brands-400.woff2" />
+    <Content Include="webfonts\fa-brands-400.woff" />
+    <Content Include="webfonts\fa-brands-400.ttf" />
+    <Content Include="webfonts\fa-brands-400.eot" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

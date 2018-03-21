@@ -33,6 +33,8 @@ namespace Shsict.Reservation.Mvc
                 "~/Content/Site.css"));
 
             bundles.Add(new StyleBundle("~/Content/iCheck/css").Include("~/Content/iCheck/all.css"));
+
+            bundles.Add(new StyleBundle("~/Content/FontAwesome5/css").Include("~/Content/fontawesome-all.min.css"));
         }
     }
 }

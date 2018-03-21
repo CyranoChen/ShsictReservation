@@ -3,6 +3,7 @@ using System.Linq;
 using Shsict.Core;
 using Shsict.Reservation.Mvc.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shsict.Core.Dapper;
 using Shsict.Core.Extension;
 using Shsict.Core.Utility;
 using Shsict.Reservation.Mvc.Models;

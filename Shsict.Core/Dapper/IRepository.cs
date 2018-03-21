@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 
-namespace Shsict.Core
+namespace Shsict.Core.Dapper
 {
     public interface IRepository : IDisposable
     {

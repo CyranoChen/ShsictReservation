@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
+using Shsict.Core.Dapper;
 using Shsict.Core.Extension;
 
 namespace Shsict.Core

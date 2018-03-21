@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
+using Shsict.Core.Dapper;
 
 namespace Shsict.Core.Extension
 {

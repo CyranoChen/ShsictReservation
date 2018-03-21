@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Newtonsoft.Json.Linq;
 using Shsict.Core;
+using Shsict.Core.Dapper;
 using Shsict.Core.Utility;
 using Shsict.Reservation.Mvc.Entities;
 using Shsict.Reservation.Mvc.Models;

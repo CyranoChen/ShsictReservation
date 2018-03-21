@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Shsict.Core.Dapper;
 
 namespace Shsict.Core.Utility
 {
@@ -188,6 +189,7 @@ namespace Shsict.Core.Utility
 
     public enum ConfigSystem
     {
-        Reservation
+        Reservation,
+        SecureNode
     }
 }

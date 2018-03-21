@@ -1,5 +1,7 @@
 ﻿using System;
 using Shsict.Core;
+using Shsict.Core.Dapper;
+using Shsict.Core.Extension;
 
 namespace Shsict.Reservation.Mvc.Entities.SecureNode
 {
@@ -29,8 +31,14 @@ namespace Shsict.Reservation.Mvc.Entities.SecureNode
         [DbColumn("CheckResult")]
         public bool CheckResult { get; set; }
 
-        [DbColumn("CheckEmployeeNo")]
-        public string CheckEmployeeNo { get; set; }
+        [DbColumn("UserGuid")]
+        public Guid UserGuid { get; set; }
+
+        [DbColumn("EmployeeName")]
+        public string EmployeeName { get; set; }
+
+        [DbColumn("EmployeeNo")]
+        public string EmployeeNo { get; set; }
 
         [DbColumn("IsActive")]
         public bool IsActive { get; set; }
@@ -40,23 +48,24 @@ namespace Shsict.Reservation.Mvc.Entities.SecureNode
 
         #endregion
 
-        //public static void Clean(int dateDiff)
-        //{
-        //    IRepository repo = new Repository();
+        public static void Clean(int dateDiff)
+        {
+            using (IRepository repo = new Repository())
+            {
+                var criteria = new Criteria
+                {
+                    WhereClause = $"CheckTime < '{DateTime.Today.AddDays(dateDiff)}' AND IsActive = 0",
+                    OrderClause = "CheckTime DESC",
+                    PagingSize = 0
+                };
 
-        //    var criteria = new Criteria
-        //    {
-        //        WhereClause = $"CreateTime < '{DateTime.Today.AddDays(dateDiff)}' AND IsActive = 0",
-        //        OrderClause = "CreateTime DESC",
-        //        PagingSize = 0
-        //    };
+                var list = repo.Query<Order>(criteria);
 
-        //    var list = repo.Query<Order>(criteria);
-
-        //    if (list != null && list.Count > 0)
-        //    {
-        //        list.Delete();
-        //    }
-        //}
+                if (list != null && list.Count > 0)
+                {
+                    list.Delete();
+                }
+            }
+        }
     }
 }

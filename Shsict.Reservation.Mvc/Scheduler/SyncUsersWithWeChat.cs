@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading;
 using Shsict.Core;
+using Shsict.Core.Dapper;
 using Shsict.Core.Logger;
 using Shsict.Core.Scheduler;
 using Shsict.Reservation.Mvc.Entities;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Shsict.Core;
+using Shsict.Core.Dapper;
 using Shsict.Reservation.Mvc.Models.SecureNode;
 using Shsict.Reservation.Mvc.Entities.SecureNode;
 using Shsict.Reservation.Mvc.Models;
@@ -26,34 +27,29 @@ namespace Shsict.Reservation.Mvc.Controllers
         {
             var model = new SecureNodeModels.HistoryDto();
 
-            IRepository repo = new Repository();
-
-            List<CheckList> list;
-
-            var employeeNo = _authorizedUser.EmployeeNo;
-            employeeNo = "1015";
-
-            if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out var operateDate))
+            using (IRepository repo = new Repository())
             {
-                list = repo.Query<CheckList>(x => x.CheckEmployeeNo == employeeNo)
-                    .FindAll(x => x.OperateDate.Date == operateDate.Date && x.IsActive);
+                var list = repo.Query<CheckList>(x => x.UserGuid == _authorizedUser.ID);
 
-                model.OperateDate = operateDate;
-            }
-            else
-            {
-                list = repo.Query<CheckList>(x => x.CheckEmployeeNo == employeeNo)
-                    .FindAll(x => x.OperateDate.Date == DateTime.Today.Date && x.IsActive);
+                if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out var operateDate))
+                {
+                    list = list.FindAll(x => x.OperateDate.Date == operateDate.Date && x.IsActive);
 
-                model.OperateDate = DateTime.Today;
+                    model.OperateDate = operateDate;
+                }
+                else
+                {
+                    list = list.FindAll(x => x.OperateDate.Date == DateTime.Today.Date && x.IsActive);
 
-            }
+                    model.OperateDate = DateTime.Today;
+                }
 
-            if (list.Count > 0)
-            {
-                var mapper = CheckListDto.ConfigMapper().CreateMapper();
+                if (list.Count > 0)
+                {
+                    var mapper = CheckListDto.ConfigMapper().CreateMapper();
 
-                model.MyCheckLists = mapper.Map<IEnumerable<CheckListDto>>(list.AsEnumerable()).ToList();
+                    model.MyCheckLists = mapper.Map<IEnumerable<CheckListDto>>(list.AsEnumerable()).ToList();
+                }
             }
 
             return View(model);
@@ -61,41 +57,38 @@ namespace Shsict.Reservation.Mvc.Controllers
 
 
         // GET: SecureNode/CheckListManagement
-        public ActionResult CheckListManagement(string date, string shift)
+        public ActionResult CheckListManagement(string date)
         {
             var model = new SecureNodeModels.CheckListManagementDto();
 
-            IRepository repo = new Repository();
-
-            List<CheckList> list;
-
-            if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out var operateDate))
+            using (IRepository repo = new Repository())
             {
-                // TODO pase datetime only for day field
-                list = repo.Query<CheckList>(x => x.OperateDate == operateDate);
+                List<CheckList> list;
 
-                model.OperateDate = operateDate;
+                if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out var operateDate))
+                {
+                    list = repo.Query<CheckList>(x => x.OperateDate >= operateDate.AddDays(-2) && x.OperateDate <= operateDate.AddDays(2))
+                        .FindAll(x => x.OperateDate.Date == operateDate.Date && x.IsActive);
+
+                    model.OperateDate = operateDate;
+                }
+                else
+                {
+                    // 为避免数据量过大，只显示7天内的检查记录
+                    list = repo.Query<CheckList>(x => x.OperateDate >= DateTime.Now.AddDays(-7));
+
+                    model.OperateDate = null;
+                }
+
+                if (list.Count > 0)
+                {
+                    var mapper = CheckListDto.ConfigMapper().CreateMapper();
+
+                    model.CheckLists = mapper.Map<IEnumerable<CheckListDto>>(list.AsEnumerable()).ToList();
+                }
             }
-            else
-            {
-                // 为避免数据量过大，只显示7天内的检查记录
-                list = repo.Query<CheckList>(x => x.OperateDate >= DateTime.Now.AddDays(-7));
-            }
-
-            list = list.FindAll(x => x.IsActive &&
-                                     (string.IsNullOrEmpty(shift) || x.Shift.Trim().Equals(shift, StringComparison.OrdinalIgnoreCase)));
-
-            if (list.Count > 0)
-            {
-                var mapper = CheckListDto.ConfigMapper().CreateMapper();
-
-                model.CheckLists = mapper.Map<IEnumerable<CheckListDto>>(list.AsEnumerable()).ToList();
-            }
-
-            model.Shift = shift;
 
             return View(model);
-
         }
 
         public ActionResult ExportCheckLists(string date)

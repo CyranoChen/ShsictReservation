@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.Threading;
+using Shsict.Core.Dapper;
 using Shsict.Core.Logger;
 
 namespace Shsict.Core.Scheduler

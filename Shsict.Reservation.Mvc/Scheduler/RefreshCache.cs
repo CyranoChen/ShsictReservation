@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading;
-using Shsict.Core;
 using Shsict.Core.Logger;
 using Shsict.Core.Scheduler;
 using Shsict.Core.Utility;
 using Shsict.Reservation.Mvc.Entities;
+using Shsict.Reservation.Mvc.Entities.SecureNode;
 
 namespace Shsict.Reservation.Mvc.Scheduler
 {
@@ -28,12 +28,15 @@ namespace Shsict.Reservation.Mvc.Scheduler
                 Config.UpdateAssemblyInfo(Assembly.GetExecutingAssembly(), ConfigSystem.Reservation);
 
                 ConfigGlobal.Refresh();
+                ConfigGlobalSecureNode.Refresh();
 
                 Delivery.Cache.RefreshCache();
                 Menu.Cache.RefreshCache();
 
                 // 删除30天前的无效订单记录
                 Order.Clean(-30);
+
+                OperationStandard.Cache.RefreshCache();
 
                 _log.Info("Scheduler End: (RefreshCache)", logInfo);
             }

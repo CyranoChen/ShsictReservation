@@ -6,8 +6,29 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/Scripts/datepicker/datepicker3.css">
-    <link rel="stylesheet" href="~/Scripts/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="~/Scripts/datepicker/datepicker3.css" />
+    <link rel="stylesheet" href="~/Scripts/datatables/dataTables.bootstrap.css" />
+    <style type="text/css">
+        #btn-shift-daytime.shift-selected {
+            color: orange;
+        }
+
+        #btn-shift-night.shift-selected {
+            color: #be4bdb;
+        }
+
+        .secure-pass {
+            color: greenyellow;
+        }
+
+        .secure-warn {
+            color: red;
+        }
+
+        #tbl-grid_filter {
+            display: none;
+        }
+    </style>
 }
 
 @section Scripts {
@@ -18,15 +39,12 @@
     <script src="~/Scripts/datatables/dataTables.bootstrap.min.js"></script>
 
     <script type="text/javascript">
-        //$.fn.dataTable.ext.search.push(function (settings, data) {
-        //    var selectedZone = $("#DeliveryZone").val();
-        //    var deliveryZone = data[6];
-
-        //    if (selectedZone === "" || deliveryZone.indexOf(selectedZone) >= 0) {
-        //        return true;
-        //    }
-        //    return false;
-        //});
+        $.fn.dataTable.ext.search.push(function (settings, data) {
+            if ($(".shift-selected").length === 1) {
+                return data[3].indexOf($(".shift-selected").prop("title")) > 0;
+            }
+            return true;
+        });
 
         $(function() {
             $("#OperateDate").datepicker({
@@ -43,19 +61,13 @@
 
                     //alert($("select#Shift").val());
 
-                    window.location.href = "@Url.Action("CheckListManagement", "SecureNode")" +
-                        "?date=" + date + "&shift=" + $("select#Shift").val();
+                    window.location.href = "@Url.Action("CheckListManagement", "SecureNode")" + "?date=" + date;
                 });
 
-            $("#Shift").change(function() {
-                var calendar = $("#OperateDate").val();
-                //alert(calendar);
-            });
-
-            var table = $("#tblCheckList").DataTable({
+            var table = $("#tbl-grid").DataTable({
                 "paging": true,
                 "lengthChange": false,
-                "searching": false,
+                "searching": true,
                 "ordering": false,
                 "info": true,
                 "autoWidth": true,
@@ -64,9 +76,12 @@
                 }
             });
 
-            //$("#DeliveryZone").change(function () {
-            //    table.draw();
-            //});
+            $("#tbl-grid_filter").hide();
+
+            $("#btn-shift-daytime, #btn-shift-night").click(function() {
+                $(this).toggleClass("shift-selected");
+                table.draw();
+            });
         });
     </script>
 }
@@ -80,7 +95,7 @@
             <small>显示对应日期的所有检查记录，按班期进行筛选</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="@Url.Action("Index","Home")"><i class="fa fa-dashboard"></i> 管理控制台</a></li>
+            <li><a href="@Url.Action("Index","Home")"><i class="fas fa-tachometer-alt"></i> 管理控制台</a></li>
             <li class="active">检查记录管理</li>
         </ol>
     </section>
@@ -94,7 +109,7 @@
                             <!-- /.btn-group -->
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default"
-                                        onclick="window.location.href = '@Url.Action("CheckListManagement", "SecureNode")'">
+                                        onclick="window.location.href = '@Url.Action("OperationStandardRefresh", "Cache")'">
                                     <i class="fa fa-refresh"></i>
                                 </button>
                                 <button type="button" class="btn btn-default"
@@ -103,20 +118,13 @@
                                 </button>
                             </div>
 
-                            <div class="box-tools pull-right col-sm-1">
-                                <select id="Shift" name="Shift">
-                                    <option value="daytime" @if (Model.Shift != null && Model.Shift.Equals("daytime")) { @Html.Raw("selected") }>
-                                        day
-                                    </option>
-                                    <option value="night" @if (Model.Shift != null && Model.Shift.Equals("night")) { @Html.Raw("selected") }>
-                                        night
-                                    </option>
-                                </select>
-                            </div>
                             <div class="box-tools pull-right col-sm-3">
                                 <div class="has-feedback input-group date">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
+                                    <div class="input-group-addon" id="btn-shift-daytime" title="日班">
+                                        <i class="fa fa-sun"></i>
+                                    </div>
+                                    <div class="input-group-addon" id="btn-shift-night" title="夜班">
+                                        <i class="fa fa-moon"></i>
                                     </div>
                                     <input type="text" value="@(Model.OperateDate.HasValue ? Model.OperateDate.Value.ToString("yyyy年MM月dd日") : string.Empty)"
                                            class="form-control" id="OperateDate" name="OperateDate" placeholder="检查班期">
@@ -125,17 +133,17 @@
                             </div>
                             <!-- /.box-tools -->
                         </div>
-                        <table id="tblCheckList" class="table table-bordered table-striped">
+                        <table id="tbl-grid" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>序号</th>
-                                    <th style="width: 300px">安全检查点</th>
-                                    <th style="width: 300px">安全检查标准</th>
+                                    <th style="width: 200px">安全检查点</th>
+                                    <th style="width: 250px">安全检查标准</th>
                                     <th>操作班期</th>
+                                    <th>安全员</th>
                                     <th>检查地点</th>
                                     <th>检查结果</th>
                                     <th>检查时间</th>
-                                    <th style="width: 50px">操作</th>
                                 </tr>
                             </thead>
                             @if (Model.CheckLists != null && Model.CheckLists.Count > 0)
@@ -146,19 +154,30 @@
                                         <tr>
                                             <td>@m.ID</td>
                                             <td>@m.SecureNode.SecureNodeName</td>
-                                            <td>@m.SecureNode.CheckRequirement</td>
-                                            <td>@m.OperateDate.ToString("yyyyMMdd") @m.ShiftInfo</td>
-                                            <td>@m.CheckLocation</td>
-                                            <td>@m.CheckNodePoint @m.CheckResult</td>
-                                            <td>@m.CheckTime.ToString("HH:mm")</td>
                                             <td>
-                                                @if (!string.IsNullOrEmpty(m.Remark))
+                                                @if (m.SecureNode.JsonCheckRequirement.Count > 0)
                                                 {
-                                                    <a title="@m.Remark">
-                                                        <i class="fa fa-pencil"></i> 备注
-                                                    </a>
+                                                    for (var i = 1; i <= m.SecureNode.JsonCheckRequirement.Count; i++)
+                                                    {
+                                                        <span class="label label-primary">@i</span>
+                                                        @m.SecureNode.JsonCheckRequirement[i - 1] <br />
+                                                    }
                                                 }
                                             </td>
+                                            <td>@m.OperateDate.ToString("yyyyMMdd") @m.ShiftInfo</td>
+                                            <td>
+                                                @m.EmployeeName @if (!string.IsNullOrEmpty(m.EmployeeNo))
+                                                {@Html.Raw("(" + m.EmployeeNo + ")")}
+                                            </td>
+                                            <td>@m.CheckLocation</td>
+                                            <td>
+                                                <span class="label @(m.CheckResult ? "bg-green-gradient": "bg-red-gradient")"
+                                                      @if (!string.IsNullOrEmpty(m.Remark)) { @Html.Raw(string.Format("style=\"cursor: pointer\" title=\"{0}\" onclick=\"alert('{0}')\"", m.Remark))  }>
+                                                    <i class="fas @(m.CheckResult ? "fa-check-circle" : "fa-exclamation-triangle")"></i>
+                                                    @m.CheckNodePoint
+                                                </span>
+                                            </td>
+                                            <td>@m.CheckTime.ToString("HH:mm")</td>
                                         </tr>
                                     }
                                 </tbody>

@@ -1,4 +1,5 @@
 ﻿@using Shsict.Core
+@using Shsict.Core.Dapper
 @using Shsict.Reservation.Mvc.Entities
 @model Shsict.Reservation.Mvc.Models.OrderDto
 @{
@@ -6,7 +7,7 @@
 
     IRepository repo = new Repository();
     var employees = repo.All<User>().FindAll(x => x.IsActive);
-    employees.Sort((x1, x2) => String.Compare(x1.EmployeeNo, x2.EmployeeNo, StringComparison.OrdinalIgnoreCase));
+    employees.Sort((x1, x2) => string.Compare(x1.EmployeeNo, x2.EmployeeNo, StringComparison.OrdinalIgnoreCase));
 }
 
 @section Styles {

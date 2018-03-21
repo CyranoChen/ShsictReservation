@@ -635,6 +635,7 @@ namespace Shsict.Reservation.Mvc.Controllers
                     config.Save();
 
                     ConfigGlobal.Refresh();
+                    ConfigGlobalSecureNode.Refresh();
 
                     return Json("Success");
                 }

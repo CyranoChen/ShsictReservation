@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Shsict.Core;
 using Shsict.Core.Utility;
 
 namespace Shsict.Reservation.Mvc.Entities
@@ -134,10 +133,8 @@ namespace Shsict.Reservation.Mvc.Entities
         {
             get
             {
-                short fontsize;
-
                 if (ConfigDictionary.ContainsKey("DefaultExcelFontSize") &&
-                    short.TryParse(ConfigDictionary["DefaultExcelFontSize"], out fontsize))
+                    short.TryParse(ConfigDictionary["DefaultExcelFontSize"], out var fontsize))
                 {
                     return fontsize;
                 }
@@ -150,4 +147,47 @@ namespace Shsict.Reservation.Mvc.Entities
 
         #endregion
     }
+
+    public static class ConfigGlobalSecureNode
+    {
+        static ConfigGlobalSecureNode()
+        {
+            Init();
+        }
+
+        private static Dictionary<string, string> ConfigDictionary { get; set; }
+
+        public static void Refresh()
+        {
+            Init();
+        }
+
+        private static void Init()
+        {
+            Config.Cache.RefreshCache();
+            ConfigDictionary = Config.Cache.GetDictionaryByConfigSystem(ConfigSystem.SecureNode);
+        }
+
+        #region Members and Properties
+
+        public static short[] ShiftDuration
+        {
+            get
+            {
+                var strHours = ConfigDictionary["ShiftDuration"];
+
+                if (!string.IsNullOrEmpty(strHours))
+                {
+                    return strHours.Split('|').Select(x => Convert.ToInt16(x)).ToArray();
+                }
+                else
+                {
+                    return new short[] { 8, 19 };
+                }
+            }
+        }
+
+        #endregion
+    }
+
 }

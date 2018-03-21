@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Shsict.Core;
+using Shsict.Core.Dapper;
 
 namespace Shsict.Reservation.Mvc.Entities.SecureNode
 {
