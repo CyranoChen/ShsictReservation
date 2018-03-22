@@ -7,6 +7,8 @@
 
 @section Styles {
     @Styles.Render("~/Content/datepicker/css")
+    @Styles.Render("~/Content/timepicker/css")
+
     <style type="text/css">
         p.check-requirement-item.selected {
             background: antiquewhite;
@@ -17,13 +19,15 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
 
     <script type="text/javascript">
-        $(function () {
+        $(function() {
             $("#OperateDate").datepicker({
                 autoclose: true,
                 language: "zh-CN",
-                todayHighlight: true
+                todayHighlight: true,
+                endDate: new Date()
             }).on('changeDate',
                 function(calendar) {
                     var date = calendar.date.getFullYear().toString() +
@@ -35,19 +39,72 @@
                     window.location.href = "@Url.Action("Index", "SecureNode")" + "?date=" + date;
                 });
 
-            $("p.check-requirement-item").each(function() {
-                $(this).click(function() {
-                    $(this).siblings(".selected").removeClass("selected");
-                    $(this).toggleClass("selected");
-                });
+            //Timepicker
+            $(".check-timepicker").timepicker({
+                showMeridian: false,
+                showInputs: false
             });
 
-            $(".secure-node .btn-danger").each(function () {
-                $(this).click(function () {
-                    $(this).parents(".secure-node").find(".form-control.checklist-remark").show();
-                });
+            $("p.check-requirement-item").click(function() {
+                $(this).siblings(".selected").removeClass("selected");
+                $(this).toggleClass("selected");
+            });
+
+            $(".secure-node .btn-success").click(function () {
+                if (validateCheckList($(this).parents(".secure-node")) &&
+                    confirm("提交检查【通过】记录？")) {
+                    submitCheckList($(this).parents(".secure-node"), true);
+                }
+            });
+
+            $(".secure-node .btn-danger").click(function () {
+                var $remark = $(this).parents(".secure-node").find(".form-control.checklist-remark");
+
+                if ($remark.val() !== "" && validateCheckList($(this).parents(".secure-node"))
+                    && confirm("提交检查【异常】记录？")) {
+                    submitCheckList($(this).parents(".secure-node"), false);
+                } else {
+                    $remark.show();
+                }
             });
         });
+
+        function validateCheckList($obj) {
+            if ($obj.find(".check-location").val() === "") {
+                alert("请填写检查地点");
+                return false;
+            }
+
+            if ($obj.find("p.check-requirement-item.selected").length <= 0) {
+                alert("请选择检查项");
+                return false;
+            }
+
+            return true;
+        }
+
+        function submitCheckList($obj, result) {
+            $.post("/SecureNode/CheckList?secureNodeId=" + $obj.find("h3").prop("id"),
+                {
+                    "CheckTime": "@Model.OperateDate.Date.ToString("yyyy-MM-dd") "+ $obj.find(".check-timepicker").val(),
+                    "CheckLocation": $obj.find(".check-location").val(),
+                    "CheckNodePoint": $obj.find("p.check-requirement-item.selected span").text(),
+                    "CheckResult": result,
+                    "Remark": $obj.find(".form-control.checklist-remark").val()
+                },
+                function (data, status) {
+                    if (status === "success" && data != null) {
+                        if (data === "success") {
+                            alert("提交成功");
+                            window.location.href = window.location.href;
+                        } else {
+                            alert("提交失败");
+                        }
+                    } else {
+                        alert("调用数据接口失败(CheckList)");
+                    }
+                });
+        }
     </script>
 }
 
@@ -61,8 +118,8 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" value="@(Model.OperateDate.HasValue ? Model.OperateDate.Value.ToString("yyyy年MM月dd日") : string.Empty)"
-                           class="form-control" id="OperateDate" name="OperateDate" placeholder="检查班期">
+                    <input type="text" value="@(Model.OperateDate.ToString("yyyy年MM月dd日"))"
+                           class="form-control" id="OperateDate" name="OperateDate" placeholder="检查班期" readonly="readonly">
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
             </div>
@@ -79,28 +136,28 @@
                         }
                         <div class="box box-primary secure-node">
                             <div class="box-header with-border">
-                                <h3 class="box-title" style="line-height: 1.3">
+                                <h3 class="box-title" style="line-height: 1.3" id="@m.ID">
                                     <span class="badge"># @m.SecureNodeNo</span>
                                     @m.SecureNodeName
                                 </h3>
                             </div>
                             @if (count < 3)
                             {
-                                <div class="box-body">
-                                    <div class="col-xs-7">
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="far fa-compass"></i>
-                                            </div>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-5">
+                                <div class="box-body bootstrap-timepicker">
+                                    <div class="col-xs-6">
                                         <div class="input-group">
                                             <div class="input-group-addon">
                                                 <i class="far fa-clock"></i>
                                             </div>
-                                            <input type="text" class="form-control timepicker">
+                                            <input type="text" class="form-control check-timepicker" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="far fa-compass"></i>
+                                            </div>
+                                            <input type="text" class="form-control check-location" />
                                         </div>
                                     </div>
                                 </div>

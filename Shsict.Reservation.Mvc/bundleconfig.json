@@ -1,0 +1,20 @@
+[
+  {
+    "outputFileName": "Scripts/datepicker/bootstrap-datepicker.min.js",
+    "inputFiles": [
+      "Scripts/datepicker/bootstrap-datepicker.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/datepicker/datepicker3.min.css",
+    "inputFiles": [
+      "Scripts/datepicker/datepicker3.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/iCheck/all.min.css",
+    "inputFiles": [
+      "Content/iCheck/all.css"
+    ]
+  }
+]

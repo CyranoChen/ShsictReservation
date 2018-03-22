@@ -25,8 +25,11 @@ namespace Shsict.Reservation.Mvc
                 "~/Scripts/json2.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/datepicker").Include(
-                "~/Scripts/datepicker/bootstrap-datepicker.js",
+                "~/Scripts/datepicker/bootstrap-datepicker.min.js",
                 "~/Scripts/datepicker/locales/bootstrap-datepicker.zh-CN.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/timepicker").Include(
+                "~/Scripts/timepicker/bootstrap-timepicker.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/datatables").Include(
                 "~/Scripts/datatables/jquery.dataTables.min.js",
@@ -40,13 +43,16 @@ namespace Shsict.Reservation.Mvc
                 "~/Content/font-awesome.min.css",
                 "~/Content/Site.css"));
 
-            bundles.Add(new StyleBundle("~/Content/iCheck/css").Include("~/Content/iCheck/all.css"));
+            bundles.Add(new StyleBundle("~/Content/iCheck/css").Include("~/Content/iCheck/all.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/datepicker/css").Include(
-                "~/Scripts/datepicker/datepicker3.css"));
+                "~/Scripts/datepicker/datepicker3.min.css"));
+
+            bundles.Add(new StyleBundle("~/Content/timepicker/css").Include(
+                "~/Scripts/timepicker/bootstrap-timepicker.min.css"));
 
             bundles.Add(new ScriptBundle("~/Content/datatables/css").Include(
-                "~/Scripts/datatables/dataTables.bootstrap.css"));
+                "~/Scripts/datatables/dataTables.bootstrap.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/FontAwesome5/css").Include("~/Content/fontawesome-all.min.css"));
         }

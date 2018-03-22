@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Shsict.Core;
 using Shsict.Core.Dapper;
+using Shsict.Reservation.Mvc.Entities;
 using Shsict.Reservation.Mvc.Entities.Relation;
 using Shsict.Reservation.Mvc.Models.SecureNode;
 using Shsict.Reservation.Mvc.Entities.SecureNode;
@@ -64,18 +65,53 @@ namespace Shsict.Reservation.Mvc.Controllers
         }
 
 
+        // AJAX JsonResult
         // POST: SecureNode/CheckList
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CheckList(CheckListDto model)
+        public JsonResult CheckList(CheckListDto model, int secureNodeId)
         {
-            if (ModelState.IsValid)
+            if (model != null && secureNodeId > 0 && model.CheckNodePoint > 0 
+                              && !string.IsNullOrEmpty(model.CheckLocation) && model.CheckTime > DateTime.MinValue)
             {
+                try
+                {
+                    var cl = new CheckList
+                    {
+                        SecureNodeId = secureNodeId,
+                        // 如果在0~7点，属于前一天的晚班
+                        OperateDate = model.CheckTime.Hour >= 0 &&
+                                      model.CheckTime.Hour < ConfigGlobalSecureNode.ShiftDuration[0]
+                            ? model.CheckTime.Date.AddDays(-1) : model.CheckTime.Date,
+                        Shift = model.CheckTime.Hour >= ConfigGlobalSecureNode.ShiftDuration[0] &&
+                                model.CheckTime.Hour <= ConfigGlobalSecureNode.ShiftDuration[1]
+                            ? "daytime" : "night",
+                        CheckTime = model.CheckTime,
+                        CheckLocation = model.CheckLocation.Trim(),
+                        CheckNodePoint = model.CheckNodePoint,
+                        CheckResult = model.CheckResult,
+                        UserGuid = _authorizedUser.ID,
+                        EmployeeName = _authorizedUser.EmployeeName,
+                        EmployeeNo = _authorizedUser.EmployeeNo,
+                        IsActive = true,
+                        Remark = !model.CheckResult ? model.Remark : string.Empty
+                    };
 
+                    using (IRepository repo = new Repository())
+                    {
+                        repo.Insert(cl);
+                    }
+
+                    return Json("success");
+                }
+                catch (Exception ex)
+                {
+                    return Json(ex.Message);
+                }
             }
 
-            return RedirectToAction("Index", "SecureNode");
+            return Json("failed");
         }
+
 
         // GET: SecureNode/History
         public ActionResult History(string date)

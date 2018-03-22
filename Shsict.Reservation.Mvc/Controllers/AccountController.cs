@@ -112,7 +112,7 @@ namespace Shsict.Reservation.Mvc.Controllers
 
         // GET: Account/Login
 
-        public ActionResult Login(bool weChatRedirect = true)
+        public ActionResult Login(bool weChatRedirect = true, string returnUrl = null)
         {
             if (weChatRedirect)
             {
@@ -122,6 +122,8 @@ namespace Shsict.Reservation.Mvc.Controllers
                     return RedirectToAction("WeChatLogin", "Account");
                 }
             }
+
+            ViewBag.ReturnUrl = returnUrl;
 
             // 直接打开登录界面
             return View();

@@ -259,6 +259,9 @@
     <Content Include="Content\fontawesome.css" />
     <Content Include="Content\fontawesome.min.css" />
     <Content Include="Content\iCheck\all.css" />
+    <Content Include="Content\iCheck\all.min.css">
+      <DependentUpon>all.css</DependentUpon>
+    </Content>
     <Content Include="Content\iCheck\flat\aero%402x.png" />
     <Content Include="Content\iCheck\flat\aero.css" />
     <Content Include="Content\iCheck\flat\aero.png" />
@@ -410,6 +413,7 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
+    <None Include="bundleconfig.json" />
     <None Include="Properties\PublishProfiles\Shsict.Deployment.pubxml" />
     <Content Include="Scripts\datatables\dataTables.bootstrap.css" />
     <Content Include="Scripts\datatables\dataTables.bootstrap.js" />
@@ -451,7 +455,13 @@
     <Content Include="Scripts\datatables\jquery.dataTables.min.js" />
     <Content Include="Scripts\datatables\jquery.dataTables_themeroller.css" />
     <Content Include="Scripts\datepicker\bootstrap-datepicker.js" />
+    <Content Include="Scripts\datepicker\bootstrap-datepicker.min.js">
+      <DependentUpon>bootstrap-datepicker.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\datepicker\datepicker3.css" />
+    <Content Include="Scripts\datepicker\datepicker3.min.css">
+      <DependentUpon>datepicker3.css</DependentUpon>
+    </Content>
     <Content Include="Scripts\datepicker\locales\bootstrap-datepicker.ar.js" />
     <Content Include="Scripts\datepicker\locales\bootstrap-datepicker.az.js" />
     <Content Include="Scripts\datepicker\locales\bootstrap-datepicker.bg.js" />
@@ -573,6 +583,10 @@
     <Content Include="Scripts\select2\select2.min.js" />
     <Content Include="Scripts\tether.js" />
     <Content Include="Scripts\tether.min.js" />
+    <Content Include="Scripts\timepicker\bootstrap-timepicker.css" />
+    <Content Include="Scripts\timepicker\bootstrap-timepicker.js" />
+    <Content Include="Scripts\timepicker\bootstrap-timepicker.min.css" />
+    <Content Include="Scripts\timepicker\bootstrap-timepicker.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

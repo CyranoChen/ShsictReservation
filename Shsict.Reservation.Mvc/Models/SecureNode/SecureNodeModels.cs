@@ -7,7 +7,7 @@ namespace Shsict.Reservation.Mvc.Models.SecureNode
     {
         public class IndexDto
         {
-            public DateTime? OperateDate { get; set; }
+            public DateTime OperateDate { get; set; }
 
             public List<OperationStandardDto> SecureNodes { get; set; }
 
@@ -16,7 +16,7 @@ namespace Shsict.Reservation.Mvc.Models.SecureNode
 
         public class HistoryDto
         {
-            public DateTime? OperateDate { get; set; }
+            public DateTime OperateDate { get; set; }
 
             public List<CheckListDto> MyCheckLists { get; set; }
         }

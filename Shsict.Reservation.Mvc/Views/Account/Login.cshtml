@@ -25,8 +25,7 @@
             <p class="login-box-msg">
                 <i class="fa fa-info-circle"></i> 非微信企业号成员请用工号和密码登录
             </p>
-            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { id = "formLogin" }))
-            {
+            <form action="~/Account/Login?ReturnUrl=@ViewBag.ReturnUrl" id="formLogin" method="post">
                 <div class="form-group has-feedback">
                     @Html.TextBoxFor(m => m.UserId, new { @class = "form-control", @placeholder = "用户名/工号" })
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -55,7 +54,7 @@
                     </div>
                     <!-- /.col -->
                 </div>
-            }
+            </form>
         </div>
         <!-- /.login-box-body -->
     </div>

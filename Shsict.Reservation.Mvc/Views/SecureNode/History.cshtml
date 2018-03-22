@@ -42,7 +42,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" value="@(Model.OperateDate.HasValue ? Model.OperateDate.Value.ToString("yyyy年MM月dd日") : string.Empty)"
+                    <input type="text" value="@(Model.OperateDate.ToString("yyyy年MM月dd日"))"
                            class="form-control" id="OperateDate" name="OperateDate" placeholder="检查班期">
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
