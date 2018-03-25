@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Text;
+using AutoMapper;
 using Newtonsoft.Json.Linq;
 using Shsict.Reservation.Mvc.Entities.SecureNode;
 
@@ -20,6 +21,22 @@ namespace Shsict.Reservation.Mvc.Models.SecureNode
             var mapper = OperationStandardDto.ConfigMapper().CreateMapper();
 
             return mapper.Map<OperationStandardDto>(OperationStandard.Cache.Load(id));
+        }
+
+        public string DisplayCheckRequirement()
+        {
+            var result = new StringBuilder();
+
+            if (this.JsonCheckRequirement != null)
+            {
+                var i = 1;
+                foreach (var item in JsonCheckRequirement)
+                {
+                    result.AppendLine($"({i++}) {item}");
+                }
+            }
+
+            return result.ToString();
         }
 
         #region Members and Properties

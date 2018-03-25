@@ -5,10 +5,10 @@ using System.Data;
 using System.Linq;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
-using Shsict.Core;
 using Shsict.Core.Extension;
 using Shsict.Reservation.Mvc.Entities;
 using Shsict.Reservation.Mvc.Models;
+using Shsict.Reservation.Mvc.Models.SecureNode;
 
 namespace Shsict.Reservation.Mvc.Services
 {
@@ -73,6 +73,32 @@ namespace Shsict.Reservation.Mvc.Services
                         };
 
             BuildSheet(book, "各区域订餐数量统计表", ConvertToDataTable(query.ToList()), title);
+
+            return book;
+        }
+
+        public static HSSFWorkbook BuildCheckListWorkbook(List<CheckListDto> list, DateTime operateDate)
+        {
+            var book = new HSSFWorkbook();
+
+            var title = new[] { "节点编号", "重点危险节点", "检查要求", "时间", "地点", "检查点", "检查情况", "检查人", "情况描述" };
+
+            var query = from cl in list
+                        orderby cl.SecureNode.SecureNodeName, cl.CheckTime
+                        select new
+                        {
+                            cl.SecureNode.SecureNodeNo,
+                            cl.SecureNode.SecureNodeName,
+                            CheckRequirement = cl.SecureNode.DisplayCheckRequirement(),
+                            CheckTime = cl.CheckTime.ToString("HH:mm"),
+                            cl.CheckLocation,
+                            cl.CheckNodePoint,
+                            CheckResult = cl.CheckResult ? "正常" : "异常",
+                            Employee = $"{cl.EmployeeName}({cl.EmployeeNo})",
+                            cl.Remark
+                        };
+
+            BuildSheet(book, operateDate.ToString("yyyyMMdd"), ConvertToDataTable(query.ToList()), title);
 
             return book;
         }

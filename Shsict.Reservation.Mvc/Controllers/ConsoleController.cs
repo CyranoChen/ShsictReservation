@@ -490,7 +490,7 @@ namespace Shsict.Reservation.Mvc.Controllers
                     file = ms.GetBuffer();
                 }
 
-                return File(file, "application/vnd.ms-excel", $@"今日订餐统计表-{DateTime.Today.ToString("yyyyMMdd")}.xls");
+                return File(file, "application/vnd.ms-excel", $@"今日订餐统计表-{DateTime.Today:yyyyMMdd}.xls");
             }
 
 

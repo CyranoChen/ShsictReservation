@@ -414,6 +414,7 @@
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
     <None Include="bundleconfig.json" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\Shsict.Deployment.pubxml" />
     <Content Include="Scripts\datatables\dataTables.bootstrap.css" />
     <Content Include="Scripts\datatables\dataTables.bootstrap.js" />
@@ -683,7 +684,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50529</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

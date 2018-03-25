@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Shsict.Core;
@@ -70,7 +71,7 @@ namespace Shsict.Reservation.Mvc.Controllers
         [HttpPost]
         public JsonResult CheckList(CheckListDto model, int secureNodeId)
         {
-            if (model != null && secureNodeId > 0 && model.CheckNodePoint > 0 
+            if (model != null && secureNodeId > 0 && model.CheckNodePoint > 0
                               && !string.IsNullOrEmpty(model.CheckLocation) && model.CheckTime > DateTime.MinValue)
             {
                 try
@@ -182,9 +183,30 @@ namespace Shsict.Reservation.Mvc.Controllers
             return View(model);
         }
 
-        public ActionResult ExportCheckLists(string date)
+        public ActionResult ExportCheckLists(DateTime date)
         {
-            // TODO
+            using (IRepository repo = new Repository())
+            {
+                var list = repo.Query<CheckList>(x => x.OperateDate >= date.AddDays(-2) && x.OperateDate <= date.AddDays(2))
+                    .FindAll(x => x.OperateDate.Date == date.Date && x.IsActive);
+
+                if (list.Count > 0)
+                {
+                    var mapper = CheckListDto.ConfigMapper().CreateMapper();
+                    var checklists = mapper.Map<IEnumerable<CheckListDto>>(list.AsEnumerable()).ToList();
+
+                    var book = ExcelManager.BuildCheckListWorkbook(checklists, date);
+
+                    byte[] file;
+                    using (var ms = new MemoryStream())
+                    {
+                        book.Write(ms);
+                        file = ms.GetBuffer();
+                    }
+
+                    return File(file, "application/vnd.ms-excel", $@"今日安全检查表-{date:yyyyMMdd}.xls");
+                }
+            }
 
             return RedirectToAction("CheckListManagement", "SecureNode", new { date });
         }

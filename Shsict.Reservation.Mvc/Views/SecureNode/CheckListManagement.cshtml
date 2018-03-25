@@ -99,10 +99,13 @@
                                         onclick="window.location.href = '@Url.Action("OperationStandardRefresh", "Cache")'">
                                     <i class="fa fa-refresh"></i>
                                 </button>
-                                <button type="button" class="btn btn-default"
-                                        onclick="window.location.href = '@Url.Action("ExportCheckLists", "SecureNode", new { @date = Model.OperateDate })'">
-                                    <i class="fa fa-file-excel-o"></i> 导出记录
-                                </button>
+                                @if (Model.OperateDate.HasValue)
+                                {
+                                    <button type="button" class="btn btn-default"
+                                            onclick="window.location.href = '@Url.Action("ExportCheckLists", "SecureNode", new { @date = Model.OperateDate })'">
+                                        <i class="fa fa-file-excel-o"></i> 导出记录
+                                    </button>
+                                }
                             </div>
                             <div class="box-tools pull-right col-sm-3">
                                 <div class="has-feedback input-group date">
@@ -140,7 +143,7 @@
                                         <tr>
                                             <td>@m.ID</td>
                                             <td>
-                                                <span class="badge"># @m.SecureNode.SecureNodeNo</span> 
+                                                <span class="badge"># @m.SecureNode.SecureNodeNo</span>
                                                 @m.SecureNode.SecureNodeName
                                             </td>
                                             <td>
@@ -148,7 +151,7 @@
                                                 {
                                                     for (var i = 1; i <= m.SecureNode.JsonCheckRequirement.Count; i++)
                                                     {
-                                                        <span class="label label-primary">@i</span> 
+                                                        <span class="label label-primary">@i</span>
                                                         @m.SecureNode.JsonCheckRequirement[i - 1] <br />
                                                     }
                                                 }
