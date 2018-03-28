@@ -51,8 +51,7 @@
             });
 
             $(".secure-node .btn-success").click(function () {
-                if (validateCheckList($(this).parents(".secure-node")) &&
-                    confirm("提交检查【通过】记录？")) {
+                if (validateCheckList($(this).parents(".secure-node"))) {
                     submitCheckList($(this).parents(".secure-node"), true);
                 }
             });
@@ -60,8 +59,7 @@
             $(".secure-node .btn-danger").click(function () {
                 var $remark = $(this).parents(".secure-node").find(".form-control.checklist-remark");
 
-                if ($remark.val() !== "" && validateCheckList($(this).parents(".secure-node"))
-                    && confirm("提交检查【异常】记录？")) {
+                if ($remark.val() !== "" && validateCheckList($(this).parents(".secure-node"))) {
                     submitCheckList($(this).parents(".secure-node"), false);
                 } else {
                     $remark.show();

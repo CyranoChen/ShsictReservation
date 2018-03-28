@@ -37,10 +37,7 @@
                     <li class="header">导航栏</li>
                     <li><a href="@Url.Action("Index", "SecureNode")"><i class="fas fa-pencil-alt"></i> <span>安全检查登记</span></a></li>
                     <li><a href="@Url.Action("History", "SecureNode")"><i class="fas fa-book"></i> <span>我的检查记录</span></a></li>
-                    @if (authorizedUser.Role == UserRoleEnum.Manager || authorizedUser.Role == UserRoleEnum.Admin)
-                    {
-                        <li><a href="@Url.Action("CheckListManagement", "SecureNode")"><i class="fas fa-database"></i> <span>检查记录管理</span></a></li>
-                    }
+                    <li><a href="@Url.Action("CheckListManagement", "SecureNode")"><i class="fas fa-database"></i> <span>检查记录管理</span></a></li>
                 </ul>
             </section>
             <!-- /.sidebar -->
