@@ -99,18 +99,28 @@ namespace Shsict.Reservation.Mvc.Controllers
 
                     using (IRepository repo = new Repository())
                     {
-                        repo.Insert(cl);
-                    }
+                        var count = repo.Query<CheckList>(x => x.UserGuid == _authorizedUser.ID && x.SecureNodeId == secureNodeId)
+                            .FindAll(x => x.OperateDate == cl.OperateDate && x.IsActive).Count;
 
-                    return Json("success");
+                        if (count < ConfigGlobalSecureNode.DailyCheckLimit)
+                        {
+                            repo.Insert(cl);
+                        }
+                        else
+                        {
+                            return Json(new { result = "failed", message = $"今天此节点已安全检查{count}次" });
+                        }
+
+                        return Json(new { result = "success", limit = count });
+                    }
                 }
                 catch (Exception ex)
                 {
-                    return Json(ex.Message);
+                    return Json(new { result = "exception", message = ex.Message });
                 }
             }
 
-            return Json("failed");
+            return Json(new { result = "failed" });
         }
 
 

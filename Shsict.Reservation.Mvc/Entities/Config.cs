@@ -187,6 +187,22 @@ namespace Shsict.Reservation.Mvc.Entities
             }
         }
 
+        public static short DailyCheckLimit
+        {
+            get
+            {
+                if (ConfigDictionary.ContainsKey("DailyCheckLimit") &&
+                    short.TryParse(ConfigDictionary["DailyCheckLimit"], out var limit))
+                {
+                    return limit;
+                }
+                else
+                {
+                    return 3;
+                }
+            }
+        }
+
         #endregion
     }
 
