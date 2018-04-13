@@ -28,7 +28,7 @@
     @Scripts.Render("~/bundles/datatables")
 
     <script type="text/javascript">
-        $.fn.dataTable.ext.search.push(function (settings, data) {
+        $.fn.dataTable.ext.search.push(function(settings, data) {
             if ($(".shift-selected").length === 1) {
                 return data[3].indexOf($(".shift-selected").prop("title")) > 0;
             }
@@ -69,6 +69,26 @@
                 $(this).toggleClass("shift-selected");
                 table.draw();
             });
+
+            $(".btn-delete").click(function() {
+                var id = $(this).parents("tr").find("td.td-checklist-id").text();
+
+                if (confirm("确认删除编号为【" + id + "】的安全检查记录？")) {
+                    $.post("@Url.Action("CheckListDelete", "SecureNode")", { "id": id }, function(data, status) {
+                        if (status === "success" && data != null) {
+                            if (data === "success") {
+                                alert("删除成功");
+                                window.location.href = window.location.href;
+                            } else {
+                                alert("删除失败");
+                            }
+                        } else {
+                            alert("调用数据接口失败(BatchOrdersDelete)");
+                        }
+                    });
+                }
+            });
+
         });
     </script>
 }
@@ -133,6 +153,7 @@
                                     <th>检查地点</th>
                                     <th>检查结果</th>
                                     <th>检查时间</th>
+                                    <th>操作</th>
                                 </tr>
                             </thead>
                             @if (Model.CheckLists != null && Model.CheckLists.Count > 0)
@@ -141,7 +162,7 @@
                                     @foreach (var m in Model.CheckLists)
                                     {
                                         <tr>
-                                            <td>@m.ID</td>
+                                            <td class="td-checklist-id">@m.ID</td>
                                             <td>
                                                 <span class="badge"># @m.SecureNode.SecureNodeNo</span>
                                                 @m.SecureNode.SecureNodeName
@@ -170,6 +191,11 @@
                                                 </span>
                                             </td>
                                             <td>@m.CheckTime.ToString("HH:mm")</td>
+                                            <td>
+                                                <a class="btn btn-danger btn-xs btn-delete">
+                                                    <i class="fas fa-trash-alt"></i> 删除
+                                                </a>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>

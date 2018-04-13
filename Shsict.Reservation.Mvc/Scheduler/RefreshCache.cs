@@ -38,6 +38,9 @@ namespace Shsict.Reservation.Mvc.Scheduler
 
                 OperationStandard.Cache.RefreshCache();
 
+                // 删除30天前的无效安全检查记录
+                CheckList.Clean(-30);
+
                 _log.Info("Scheduler End: (RefreshCache)", logInfo);
             }
             catch (Exception ex)

@@ -39,17 +39,17 @@ namespace Shsict.Reservation.Mvc.Controllers
                         .ToList();
                 }
 
-                var list = repo.Query<CheckList>(x => x.UserGuid == _authorizedUser.ID);
+                var list = repo.Query<CheckList>(x => x.UserGuid == _authorizedUser.ID).FindAll(x => x.IsActive);
 
                 if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out var operateDate))
                 {
-                    list = list.FindAll(x => x.OperateDate.Date == operateDate.Date && x.IsActive);
+                    list = list.FindAll(x => x.OperateDate.Date == operateDate.Date);
 
                     model.OperateDate = operateDate;
                 }
                 else
                 {
-                    list = list.FindAll(x => x.OperateDate.Date == DateTime.Today.Date && x.IsActive);
+                    list = list.FindAll(x => x.OperateDate.Date == DateTime.Today.Date);
 
                     model.OperateDate = DateTime.Today;
                 }
@@ -124,6 +124,37 @@ namespace Shsict.Reservation.Mvc.Controllers
         }
 
 
+        // AJAX JsonResult
+        // POST: SecoreNode/CheckListDelete
+        [HttpPost]
+        public JsonResult CheckListDelete(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    using (IRepository repo = new Repository())
+                    {
+                        var cl = repo.Single<CheckList>(id);
+
+                        cl.IsActive = false;
+
+                        repo.Update(cl);
+                    }
+
+                    return Json("success");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = "exception", message = ex.Message });
+            }
+
+            return Json("failed");
+        }
+
+
+
         // GET: SecureNode/History
         public ActionResult History(string date)
         {
@@ -131,17 +162,17 @@ namespace Shsict.Reservation.Mvc.Controllers
 
             using (IRepository repo = new Repository())
             {
-                var list = repo.Query<CheckList>(x => x.UserGuid == _authorizedUser.ID);
+                var list = repo.Query<CheckList>(x => x.UserGuid == _authorizedUser.ID).FindAll(x => x.IsActive);
 
                 if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out var operateDate))
                 {
-                    list = list.FindAll(x => x.OperateDate.Date == operateDate.Date && x.IsActive);
+                    list = list.FindAll(x => x.OperateDate.Date == operateDate.Date);
 
                     model.OperateDate = operateDate;
                 }
                 else
                 {
-                    list = list.FindAll(x => x.OperateDate.Date == DateTime.Today.Date && x.IsActive);
+                    list = list.FindAll(x => x.OperateDate.Date == DateTime.Today.Date);
 
                     model.OperateDate = DateTime.Today;
                 }
@@ -177,7 +208,7 @@ namespace Shsict.Reservation.Mvc.Controllers
                 else
                 {
                     // 为避免数据量过大，只显示7天内的检查记录
-                    list = repo.Query<CheckList>(x => x.OperateDate >= DateTime.Now.AddDays(-7));
+                    list = repo.Query<CheckList>(x => x.OperateDate >= DateTime.Now.AddDays(-7)).FindAll(x => x.IsActive);
 
                     model.OperateDate = null;
                 }
