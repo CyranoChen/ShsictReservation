@@ -148,7 +148,7 @@ namespace Shsict.Reservation.Mvc.Controllers
                     FormsAuthentication.SetAuthCookie(u.UserId, !string.IsNullOrEmpty(model.RememberMe));
 
                     // 食堂管理员和系统管理员跳后台管理界面
-                    if (u.Role >= UserRoleEnum.Canteen)
+                    if (u.Role >= UserRoleEnum.Canteen || returnUrl.ToLower().Contains("securenode"))
                     {
                         if (Url.IsLocalUrl(returnUrl)) { return Redirect(returnUrl); }
 
