@@ -119,7 +119,7 @@ namespace Shsict.Reservation.Mvc.Controllers
                 if (ConfigGlobal.WeChatActive && BrowserInfo.IsWeChatClient())
                 {
                     // 自动跳转微信认证机制
-                    return RedirectToAction("WeChatLogin", "Account");
+                    return RedirectToAction("WeChatLogin", "Account", new { returnUrl });
                 }
             }
 
@@ -163,6 +163,8 @@ namespace Shsict.Reservation.Mvc.Controllers
                 }
             }
 
+            ViewBag.ReturnUrl = returnUrl;
+
             return View(model);
         }
 
@@ -180,14 +182,14 @@ namespace Shsict.Reservation.Mvc.Controllers
         // 
         // GET: /Account/WeChatLogin
 
-        public ActionResult WeChatLogin()
+        public ActionResult WeChatLogin(string returnUrl)
         {
             // 开启微信认证，并通过微信内部浏览器访问时，跳转微信OAuth认证接口
             if (HttpContext.Request.Url != null && ConfigGlobal.WeChatActive && BrowserInfo.IsWeChatClient())
             {
                 var client = new WeChatAuthClient();
 
-                var authUri = client.GetOAuthUrl($"http://{HttpContext.Request.Url.Authority}/Account/WeChatAuth",
+                var authUri = client.GetOAuthUrl($"http://{HttpContext.Request.Url.Authority}/Account/WeChatAuth?returnUrl={returnUrl}",
                     ScopeType.snsapi_base, "ShsictReservation");
 
                 if (!string.IsNullOrEmpty(authUri))
@@ -202,7 +204,7 @@ namespace Shsict.Reservation.Mvc.Controllers
         // 
         // GET: /Account/WeChatAuth
 
-        public ActionResult WeChatAuth(string code, string state)
+        public ActionResult WeChatAuth(string code, string state, string returnUrl)
         {
             if (!string.IsNullOrEmpty(code) &&
                 !string.IsNullOrEmpty(state) && state.Equals("ShsictReservation"))
@@ -228,6 +230,12 @@ namespace Shsict.Reservation.Mvc.Controllers
                         {
                             // 设置Cookie
                             FormsAuthentication.SetAuthCookie(userid, true);
+
+                            // 跳转安全检查页面
+                            if (returnUrl.ToLower().Contains("securenode"))
+                            {
+                                if (Url.IsLocalUrl(returnUrl)) { return Redirect(returnUrl); }
+                            }
 
                             // 授权成功跳转订餐界面
                             return RedirectToAction("Index", "Reservation");
