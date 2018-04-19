@@ -60,11 +60,11 @@
                         </div>
                         <div class="box-body">
                             <div class="col-xs-7">
-                                <i class="far fa-compass"></i>
+                                <i class="fa fa-compass"></i>
                                 @m.CheckLocation
                             </div>
                             <div class="col-xs-5">
-                                <i class="far fa-clock"></i>
+                                <i class="fa fa-clock-o"></i>
                                 @m.CheckTime.ToString("MMdd HH:mm")
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                         <div class="box-footer">
                             <div class="col-sm-12">
                                 <span class="label @(m.CheckResult ? "bg-green-gradient" : "bg-red-gradient")">
-                                    <i class="fas @(m.CheckResult ? "fa-check-circle" : "fa-exclamation-triangle")"></i>
+                                    <i class="fa @(m.CheckResult ? "fa-check-circle" : "fa-exclamation-triangle")"></i>
                                     @m.CheckNodePoint
                                 </span> &nbsp;
                                 @if (!string.IsNullOrEmpty(m.Remark))
@@ -118,7 +118,7 @@
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <a href="@Url.Action("Index", "SecureNode")" class="btn btn-primary">
-                            <i class="fas fa-pencil-alt"></i> 登记安全检查记录
+                            <i class="fa fa-pencil"></i> 登记安全检查记录
                         </a>
                     </div>
                     <!-- /.box-footer-->

@@ -53,8 +53,6 @@ namespace Shsict.Reservation.Mvc
 
             bundles.Add(new ScriptBundle("~/Content/datatables/css").Include(
                 "~/Scripts/datatables/dataTables.bootstrap.min.css"));
-
-            bundles.Add(new StyleBundle("~/Content/FontAwesome5/css").Include("~/Content/fontawesome-all.min.css"));
         }
     }
 }

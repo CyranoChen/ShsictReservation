@@ -102,7 +102,7 @@
             <small>显示对应日期的所有检查记录，按班期进行筛选</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="@Url.Action("Index","Home")"><i class="fas fa-tachometer-alt"></i> 管理控制台</a></li>
+            <li><a href="@Url.Action("Index","Home")"><i class="fa fa-tachometer"></i> 管理控制台</a></li>
             <li class="active">检查记录管理</li>
         </ol>
     </section>
@@ -130,10 +130,10 @@
                             <div class="box-tools pull-right col-sm-3">
                                 <div class="has-feedback input-group date">
                                     <div class="input-group-addon" id="btn-shift-daytime" title="日班">
-                                        <i class="fa fa-sun"></i>
+                                        <i class="fa fa-sun-o"></i>
                                     </div>
                                     <div class="input-group-addon" id="btn-shift-night" title="夜班">
-                                        <i class="fa fa-moon"></i>
+                                        <i class="fa fa-moon-o"></i>
                                     </div>
                                     <input type="text" value="@(Model.OperateDate.HasValue ? Model.OperateDate.Value.ToString("yyyy年MM月dd日") : string.Empty)"
                                            class="form-control" id="OperateDate" name="OperateDate" placeholder="检查班期">
@@ -186,14 +186,14 @@
                                             <td>
                                                 <span class="label @(m.CheckResult ? "bg-green-gradient": "bg-red-gradient")"
                                                       @if (!string.IsNullOrEmpty(m.Remark)) { @Html.Raw(string.Format("style=\"cursor: pointer\" title=\"{0}\" onclick=\"alert('{0}')\"", m.Remark)) }>
-                                                    <i class="fas @(m.CheckResult ? "fa-check-circle" : "fa-exclamation-triangle")"></i>
+                                                    <i class="fa @(m.CheckResult ? "fa-check-circle" : "fa-exclamation-triangle")"></i>
                                                     @m.CheckNodePoint
                                                 </span>
                                             </td>
                                             <td>@m.CheckTime.ToString("HH:mm")</td>
                                             <td>
                                                 <a class="btn btn-danger btn-xs btn-delete">
-                                                    <i class="fas fa-trash-alt"></i> 删除
+                                                    <i class="fa fa-trash"></i> 删除
                                                 </a>
                                             </td>
                                         </tr>

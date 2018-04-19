@@ -246,18 +246,8 @@
     <Content Include="admin-lte\js\demo.js" />
     <Content Include="admin-lte\js\pages\dashboard.js" />
     <Content Include="admin-lte\js\pages\dashboard2.js" />
-    <Content Include="Content\fa-brands.css" />
-    <Content Include="Content\fa-brands.min.css" />
-    <Content Include="Content\fa-regular.css" />
-    <Content Include="Content\fa-regular.min.css" />
-    <Content Include="Content\fa-solid.css" />
-    <Content Include="Content\fa-solid.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
-    <Content Include="Content\fontawesome-all.css" />
-    <Content Include="Content\fontawesome-all.min.css" />
-    <Content Include="Content\fontawesome.css" />
-    <Content Include="Content\fontawesome.min.css" />
     <Content Include="Content\iCheck\all.css" />
     <Content Include="Content\iCheck\all.min.css">
       <DependentUpon>all.css</DependentUpon>
@@ -632,21 +622,6 @@
     <Content Include="Views\SecureNode\CheckListManagement.cshtml" />
     <Content Include="Views\Shared\_LayoutMobileSecureNode.cshtml" />
     <Content Include="Views\SecureNode\History.cshtml" />
-    <Content Include="webfonts\fa-brands-400.svg" />
-    <Content Include="webfonts\fa-regular-400.svg" />
-    <Content Include="webfonts\fa-solid-900.svg" />
-    <Content Include="webfonts\fa-solid-900.woff2" />
-    <Content Include="webfonts\fa-solid-900.woff" />
-    <Content Include="webfonts\fa-solid-900.ttf" />
-    <Content Include="webfonts\fa-solid-900.eot" />
-    <Content Include="webfonts\fa-regular-400.woff2" />
-    <Content Include="webfonts\fa-regular-400.woff" />
-    <Content Include="webfonts\fa-regular-400.ttf" />
-    <Content Include="webfonts\fa-regular-400.eot" />
-    <Content Include="webfonts\fa-brands-400.woff2" />
-    <Content Include="webfonts\fa-brands-400.woff" />
-    <Content Include="webfonts\fa-brands-400.ttf" />
-    <Content Include="webfonts\fa-brands-400.eot" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
