@@ -168,6 +168,16 @@ namespace Shsict.Reservation.Mvc.Entities
             ConfigDictionary = Config.Cache.GetDictionaryByConfigSystem(ConfigSystem.SecureNode);
         }
 
+        public static bool IsSecureAdmin(string userId)
+        {
+            if (!string.IsNullOrEmpty(userId) && SecureAdmin.Length > 0)
+            {
+                return SecureAdmin.Any(a => a.Equals(userId, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return false;
+        }
+
         #region Members and Properties
 
         public static short[] ShiftDuration
@@ -200,6 +210,15 @@ namespace Shsict.Reservation.Mvc.Entities
                 {
                     return 3;
                 }
+            }
+        }
+
+        public static string[] SecureAdmin
+        {
+            get
+            {
+                var admins = ConfigDictionary["SecureAdmin"];
+                return admins.Split('|');
             }
         }
 

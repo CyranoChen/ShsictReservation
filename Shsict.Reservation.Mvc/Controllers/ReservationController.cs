@@ -110,6 +110,11 @@ namespace Shsict.Reservation.Mvc.Controllers
             {
                 try
                 {
+                    if (model.DeliveryPoint == null || model.DeliveryPoint == Guid.Empty)
+                    {
+                        throw new Exception("请选择送餐点");
+                    }
+
                     var o = new Order
                     {
                         UserGuid = _authorizedUser.ID,

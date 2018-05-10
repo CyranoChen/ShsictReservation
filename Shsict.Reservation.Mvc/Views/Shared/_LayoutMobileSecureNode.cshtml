@@ -36,7 +36,10 @@
                     <li class="header">导航栏</li>
                     <li><a href="@Url.Action("Index", "SecureNode")"><i class="fa fa-pencil"></i> <span>安全检查登记</span></a></li>
                     <li><a href="@Url.Action("History", "SecureNode")"><i class="fa fa-book"></i> <span>我的检查记录</span></a></li>
-                    <li><a href="@Url.Action("CheckListManagement", "SecureNode")"><i class="fa fa-database"></i> <span>检查记录管理</span></a></li>
+                    @if (ConfigGlobalSecureNode.IsSecureAdmin(authorizedUser.UserId))
+                    {
+                        <li><a href="@Url.Action("CheckListManagement", "SecureNode")"><i class="fa fa-database"></i> <span>检查记录管理</span></a></li>
+                    }
                 </ul>
             </section>
             <!-- /.sidebar -->
