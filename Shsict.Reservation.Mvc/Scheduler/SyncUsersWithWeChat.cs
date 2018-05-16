@@ -26,17 +26,18 @@ namespace Shsict.Reservation.Mvc.Scheduler
             {
                 _log.Info("Scheduler Start: (SyncUsersWithWeChat)", logInfo);
 
-                IRepository repo = new Repository();
-
-                var list = repo.All<UserWeChat>();
-
-                var auth = new AuthorizeManager();
-
-                if (list != null && list.Count > 0)
+                using (IRepository repo = new Repository())
                 {
-                    foreach (var uw in list)
+                    var list = repo.All<UserWeChat>();
+
+                    if (list != null && list.Count > 0)
                     {
-                        auth.SyncUserWithWeChat(uw.UserName);
+                        var auth = new AuthorizeManager();
+
+                        foreach (var uw in list)
+                        {
+                            auth.SyncUserWithWeChat(uw.UserName);
+                        }
                     }
                 }
 

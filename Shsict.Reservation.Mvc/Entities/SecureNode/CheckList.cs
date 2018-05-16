@@ -54,12 +54,12 @@ namespace Shsict.Reservation.Mvc.Entities.SecureNode
             {
                 var criteria = new Criteria
                 {
-                    WhereClause = $"CheckTime < '{DateTime.Today.AddDays(dateDiff)}' AND IsActive = 0",
+                    WhereClause = $"CheckTime < '{DateTime.Today.AddDays(dateDiff).ToString("yyyy-MM-dd HH:mm:ss")}' AND IsActive = 0",
                     OrderClause = "CheckTime DESC",
                     PagingSize = 0
                 };
 
-                var list = repo.Query<Order>(criteria);
+                var list = repo.Query<CheckList>(criteria);
 
                 if (list != null && list.Count > 0)
                 {

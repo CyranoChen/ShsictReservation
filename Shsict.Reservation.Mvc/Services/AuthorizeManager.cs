@@ -14,25 +14,26 @@ namespace Shsict.Reservation.Mvc.Services
 {
     public class AuthorizeManager
     {
-        private IRepository _repo => new Repository();
-
         public bool AuthorizeUser(string userId, string deviceId)
         {
-            var user = _repo.Single<User>(x => x.UserName == userId);
-            var userWeChat = _repo.Single<UserWeChat>(x => x.UserName == userId);
-
-            // 数据库中存在对应的企业号成员 且 7天内已更新过微信用户信息
-            if (user != null && userWeChat?.LastAuthorizeDate >= DateTime.Today.AddDays(-7))
+            using (IRepository repo = new Repository())
             {
-                return SetSession(user.ID);
+                var user = repo.Single<User>(x => x.UserName == userId);
+                var userWeChat = repo.Single<UserWeChat>(x => x.UserName == userId);
+
+                // 数据库中存在对应的企业号成员 且 7天内已更新过微信用户信息
+                if (user != null && userWeChat?.LastAuthorizeDate >= DateTime.Today.AddDays(-7))
+                {
+                    return SetSession(user.ID);
+                }
+
+                // 数据库中不存在对应的企业号成员，需要新增成员并持久化User, UserWeChat
+                // 如数据库中存在，则同步成员信息，并更新时间戳
+                user = SyncUserWithWeChat(userId, deviceId);
+
+                // 设置授权Session
+                return user != null && SetSession(user.ID);
             }
-
-            // 数据库中不存在对应的企业号成员，需要新增成员并持久化User, UserWeChat
-            // 如数据库中存在，则同步成员信息，并更新时间戳
-            user = SyncUserWithWeChat(userId, deviceId);
-
-            // 设置授权Session
-            return user != null && SetSession(user.ID);
         }
 
         public bool AuthorizeEmployee(string userId, string password)
@@ -43,19 +44,22 @@ namespace Shsict.Reservation.Mvc.Services
 
                 try
                 {
-                    var user = _repo.Query<User>(x => x.Password == Encrypt.GetMd5Hash(password)).Find(x =>
-                        x.IsActive && (x.UserName.Equals(userId, StringComparison.OrdinalIgnoreCase) ||
-                                       x.EmployeeNo.Equals(userId, StringComparison.OrdinalIgnoreCase)));
-
-                    if (user != null)
+                    using (IRepository repo = new Repository())
                     {
-                        user.LastLoginDate = DateTime.Now;
+                        var user = repo.Query<User>(x => x.Password == Encrypt.GetMd5Hash(password)).Find(x =>
+                            x.IsActive && (x.UserName.Equals(userId, StringComparison.OrdinalIgnoreCase) ||
+                                           x.EmployeeNo.Equals(userId, StringComparison.OrdinalIgnoreCase)));
 
-                        _repo.Update(user);
+                        if (user != null)
+                        {
+                            user.LastLoginDate = DateTime.Now;
 
-                        trans.Commit();
+                            repo.Update(user);
 
-                        return SetSession(user.ID);
+                            trans.Commit();
+
+                            return SetSession(user.ID);
+                        }
                     }
                 }
                 catch
@@ -69,19 +73,22 @@ namespace Shsict.Reservation.Mvc.Services
 
         public bool AuthorizeGuest(string openid, string deviceId)
         {
-            var user = _repo.Single<User>(x => x.WeChatOpenId == openid);
-
-            if (user != null)
+            using (IRepository repo = new Repository())
             {
-                // 数据库中存在对应的企业号关注者
-                return SetSession(user.ID);
+                var user = repo.Single<User>(x => x.WeChatOpenId == openid);
+
+                if (user != null)
+                {
+                    // 数据库中存在对应的企业号关注者
+                    return SetSession(user.ID);
+                }
+
+                // 数据库中不存在对应的企业号关注者，需要新增成员并持久化User, UserWeChat
+
+                // TODO
+
+                return false;
             }
-
-            // 数据库中不存在对应的企业号关注者，需要新增成员并持久化User, UserWeChat
-
-            // TODO
-
-            return false;
         }
 
         public UserDto GetSession()
@@ -91,52 +98,58 @@ namespace Shsict.Reservation.Mvc.Services
                 return HttpContext.Current.Session["AuthorizedUser"] as UserDto;
             }
 
-            // 通过 User.Indentity.Name 获得用户对象
-            if (!string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
+            using (IRepository repo = new Repository())
             {
-                var user = _repo.Single<User>(x => x.UserName == HttpContext.Current.User.Identity.Name);
-
-                if (user != null && SetSession(user.ID))
+                // 通过 User.Indentity.Name 获得用户对象
+                if (!string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
                 {
-                    return HttpContext.Current.Session["AuthorizedUser"] as UserDto;
-                }
-            }
+                    var user = repo.Single<User>(x => x.UserName == HttpContext.Current.User.Identity.Name);
 
-            return null;
+                    if (user != null && SetSession(user.ID))
+                    {
+                        return HttpContext.Current.Session["AuthorizedUser"] as UserDto;
+                    }
+                }
+
+                return null;
+            }
         }
 
         public bool SetSession(Guid userGuid)
         {
-            var user = _repo.Single<User>(userGuid);
-
-            if (user != null)
+            using (IRepository repo = new Repository())
             {
-                // 更新用户登录与授权时间
-                user.LastLoginDate = DateTime.Now;
+                var user = repo.Single<User>(userGuid);
 
-                _repo.Update(user);
-
-                // 映射到UserDto
-                var u = user.MapTo<User, UserDto>();
-                u.UserId = user.UserName;
-
-                var userWeChat = _repo.Single<UserWeChat>(userGuid);
-
-                if (userWeChat != null)
+                if (user != null)
                 {
-                    u = userWeChat.MapTo(u);
+                    // 更新用户登录与授权时间
+                    user.LastLoginDate = DateTime.Now;
 
-                    //u.Avatar = userWeChat.Avatar;
-                    //u.Gender = userWeChat.Gender;
+                    repo.Update(user);
+
+                    // 映射到UserDto
+                    var u = user.MapTo<User, UserDto>();
+                    u.UserId = user.UserName;
+
+                    var userWeChat = repo.Single<UserWeChat>(userGuid);
+
+                    if (userWeChat != null)
+                    {
+                        u = userWeChat.MapTo(u);
+
+                        //u.Avatar = userWeChat.Avatar;
+                        //u.Gender = userWeChat.Gender;
+                    }
+
+                    // 设置授权Session
+                    HttpContext.Current.Session["AuthorizedUser"] = u;
+
+                    return true;
                 }
 
-                // 设置授权Session
-                HttpContext.Current.Session["AuthorizedUser"] = u;
-
-                return true;
+                return false;
             }
-
-            return false;
         }
 
         public User SyncUserWithWeChat(string userId, string deviceId = null)
@@ -185,63 +198,68 @@ namespace Shsict.Reservation.Mvc.Services
                         }
                     }
 
-                    // 通过userid，从数据库中获取对应用户
-                    if (json["userid"] != null && _repo.Any<User>(x => x.UserName == json["userid"].Value<string>()))
-                    {
-                        user = _repo.Single<User>(x => x.UserName == json["userid"].Value<string>());
-                    }
-
                     using (IDapperHelper dapper = DapperHelper.GetInstance())
                     {
                         var trans = dapper.BeginTransaction();
 
                         try
                         {
-                            #region 封装 User 实例
-
-                            user.UserName = json["userid"] != null ? json["userid"].Value<string>() : string.Empty;
-                            user.EmployeeName = json["name"] != null ? json["name"].Value<string>() : string.Empty;
-                            user.EmployeeNo = userdict.ContainsKey("工号") && userdict["工号"] != null ? userdict["工号"] : string.Empty;
-
-                            if (json["department"]?.Value<JArray>() != null && json["department"].Value<JArray>().Count > 0)
+                            using (IRepository repo = new Repository())
                             {
-                                user.Department = GetDepartment(json["department"].Value<JArray>()[0].Value<int>());
+
+                                // 通过userid，从数据库中获取对应用户
+                                if (json["userid"] != null && repo.Any<User>(x => x.UserName == json["userid"].Value<string>()))
+                                {
+                                    user = repo.Single<User>(x => x.UserName == json["userid"].Value<string>());
+                                }
+
+
+                                #region 封装 User 实例
+
+                                user.UserName = json["userid"] != null ? json["userid"].Value<string>() : string.Empty;
+                                user.EmployeeName = json["name"] != null ? json["name"].Value<string>() : string.Empty;
+                                user.EmployeeNo = userdict.ContainsKey("工号") && userdict["工号"] != null ? userdict["工号"] : string.Empty;
+
+                                if (json["department"]?.Value<JArray>() != null && json["department"].Value<JArray>().Count > 0)
+                                {
+                                    user.Department = GetDepartment(json["department"].Value<JArray>()[0].Value<int>());
+                                }
+                                else
+                                {
+                                    user.Department = string.Empty;
+                                }
+
+                                user.Team = userdict.ContainsKey("班组") && userdict["班组"] != null ? userdict["班组"] : string.Empty;
+                                user.Position = json["position"] != null ? json["position"].Value<string>() : string.Empty;
+                                user.Mobile = json["mobile"] != null ? json["mobile"].Value<string>() : string.Empty;
+                                user.IsApproved = json["status"]?.Value<bool>() ?? true;
+                                user.LastLoginDate = DateTime.Now;
+
+                                user.Remark = json.ToString();
+
+                                repo.Save(user, out var key);
+
+                                #endregion
+
+                                #region 封装 UserWeChat 实例
+
+                                userWeChat.ID = (Guid)key;
+                                userWeChat.UserName = json["userid"] != null ? json["userid"].Value<string>() : string.Empty;
+                                userWeChat.LastAuthorizeDate = DateTime.Now;
+                                userWeChat.Gender = json["gender"]?.Value<short>() ?? -1;
+                                userWeChat.Avatar = json["avatar"] != null ? json["avatar"].Value<string>() : string.Empty;
+
+                                if (!string.IsNullOrEmpty(deviceId))
+                                { userWeChat.DeviceId = deviceId; }
+
+                                repo.Save(userWeChat, out key);
+
+                                #endregion
+
+                                trans.Commit();
+
+                                return user;
                             }
-                            else
-                            {
-                                user.Department = string.Empty;
-                            }
-
-                            user.Team = userdict.ContainsKey("班组") && userdict["班组"] != null ? userdict["班组"] : string.Empty;
-                            user.Position = json["position"] != null ? json["position"].Value<string>() : string.Empty;
-                            user.Mobile = json["mobile"] != null ? json["mobile"].Value<string>() : string.Empty;
-                            user.IsApproved = json["status"]?.Value<bool>() ?? true;
-                            user.LastLoginDate = DateTime.Now;
-
-                            user.Remark = json.ToString();
-
-                            _repo.Save(user, out var key);
-
-                            #endregion
-
-                            #region 封装 UserWeChat 实例
-
-                            userWeChat.ID = (Guid)key;
-                            userWeChat.UserName = json["userid"] != null ? json["userid"].Value<string>() : string.Empty;
-                            userWeChat.LastAuthorizeDate = DateTime.Now;
-                            userWeChat.Gender = json["gender"]?.Value<short>() ?? -1;
-                            userWeChat.Avatar = json["avatar"] != null ? json["avatar"].Value<string>() : string.Empty;
-
-                            if (!string.IsNullOrEmpty(deviceId))
-                            { userWeChat.DeviceId = deviceId; }
-
-                            _repo.Save(userWeChat, out key);
-
-                            #endregion
-
-                            trans.Commit();
-
-                            return user;
                         }
                         catch
                         {
