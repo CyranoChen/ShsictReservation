@@ -23,7 +23,7 @@ namespace Shsict.Reservation.Mvc.Models.SecureNode
                     }
                 }))
                 .ForMember(d => d.SecureNode, opt => opt.MapFrom(s =>
-                    OperationStandardDto.Load(s.SecureNodeId)))
+                    OperationStandardDto.Cache.Load(s.SecureNodeId)))
             );
 
             return config;
@@ -34,7 +34,7 @@ namespace Shsict.Reservation.Mvc.Models.SecureNode
 
         public int ID { get; set; }
 
-        [Display(Name= "重点危险节点")]
+        [Display(Name = "重点危险节点")]
         public OperationStandardDto SecureNode { get; set; }
 
         public DateTime OperateDate { get; set; }

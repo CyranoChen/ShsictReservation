@@ -1,6 +1,10 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using AutoMapper;
 using Newtonsoft.Json.Linq;
+using Shsict.Core;
+using Shsict.Core.Dapper;
 using Shsict.Reservation.Mvc.Entities.SecureNode;
 
 namespace Shsict.Reservation.Mvc.Models.SecureNode
@@ -14,13 +18,6 @@ namespace Shsict.Reservation.Mvc.Models.SecureNode
             );
 
             return config;
-        }
-
-        public static OperationStandardDto Load(int id)
-        {
-            var mapper = OperationStandardDto.ConfigMapper().CreateMapper();
-
-            return mapper.Map<OperationStandardDto>(OperationStandard.Cache.Load(id));
         }
 
         public string DisplayCheckRequirement()
@@ -38,6 +35,35 @@ namespace Shsict.Reservation.Mvc.Models.SecureNode
 
             return result.ToString();
         }
+
+        public static class Cache
+        {
+            public static List<OperationStandardDto> OperationStandardDtoList;
+
+            static Cache()
+            {
+                InitCache();
+            }
+
+            public static void RefreshCache()
+            {
+                InitCache();
+            }
+
+            private static void InitCache()
+            {
+                var mapper = OperationStandardDto.ConfigMapper().CreateMapper();
+
+                OperationStandardDtoList = mapper.Map<IEnumerable<OperationStandardDto>>(
+                    OperationStandard.Cache.OperationStandardList.AsEnumerable()).ToList();
+            }
+
+            public static OperationStandardDto Load(int id)
+            {
+                return OperationStandardDtoList.Find(x => x.ID.Equals(id));
+            }
+        }
+
 
         #region Members and Properties
 

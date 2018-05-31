@@ -6,6 +6,7 @@ using Shsict.Core.Scheduler;
 using Shsict.Core.Utility;
 using Shsict.Reservation.Mvc.Entities;
 using Shsict.Reservation.Mvc.Entities.SecureNode;
+using Shsict.Reservation.Mvc.Models.SecureNode;
 
 namespace Shsict.Reservation.Mvc.Scheduler
 {
@@ -37,6 +38,7 @@ namespace Shsict.Reservation.Mvc.Scheduler
                 Order.Clean(-30);
 
                 OperationStandard.Cache.RefreshCache();
+                OperationStandardDto.Cache.RefreshCache();
 
                 // 删除30天前的无效安全检查记录
                 CheckList.Clean(-30);
