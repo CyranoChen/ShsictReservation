@@ -189,7 +189,7 @@ namespace Shsict.Reservation.Mvc.Controllers
             {
                 var client = new WeChatAuthClient();
 
-                var authUri = client.GetOAuthUrl($"http://{HttpContext.Request.Url.Authority}/Account/WeChatAuth?returnUrl={returnUrl}",
+                var authUri = client.GetOAuthUrl($"{HttpContext.Request.Url.Scheme}://{HttpContext.Request.Url.Authority}/Account/WeChatAuth?returnUrl={returnUrl}",
                     ScopeType.snsapi_base, "ShsictReservation");
 
                 if (!string.IsNullOrEmpty(authUri))
